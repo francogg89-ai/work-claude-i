@@ -88,8 +88,10 @@ trabajo y evidencia.
 U1 --> U2 --> U3 --> U4 --> U5
 ```
 
-- `U1` precede a todo: fija los contratos que los tres documentos repiten. `U2`, `U3` y `U4`
-  dependen de `U1` por sus contratos, y no unas de otras por su contenido.
+- `U1` precede a todo: asigna, conforme a `D7`, la autoridad normativa única de cada contrato
+  transversal y las relaciones de referencia entre documentos. No ordena repetir el texto
+  normativo en varios destinos. `U2`, `U3` y `U4` dependen de esa asignación, y no unas de otras
+  por su contenido.
 - `U2` sigue a `U1` porque es la superficie más cerrada y mecánica, y fija el contorno exacto
   del paquete de constitución que `U3` debe producir.
 - `U3` sigue a `U2` porque `metodo-manifiestos-ai` produce lo que el orquestador consume en el
@@ -113,21 +115,35 @@ no `10 desde el último relevo`.
 Hechos Git que cuentan:
 
 ```text
-entrega autoritativa del CONSTRUCTOR   = un commit en la historia de main de work-*
-intervención autoritativa del AUDITOR  = un commit en la historia de main de audit-*
+entrega autoritativa del CONSTRUCTOR   = un commit de work-*  alcanzable desde el corte
+intervención autoritativa del AUDITOR  = un commit de audit-* alcanzable desde el corte
 ```
 
-La equivalencia es exacta por `P1` y `P2`: una intervención principal es un commit autoritativo
-y todo commit de `work-*` es una entrega. No existen commits de control que haya que excluir.
+La equivalencia es exacta por `P1` y `P2`: una intervención principal es un commit autoritativo y
+todo commit de `work-*` es una entrega. No existen commits de control, de modo que el conjunto
+contable no necesita ningún filtro que los excluya.
 
-Derivación en el punto de uso:
+Ese conjunto es el de los commits alcanzables desde el corte. La derivación cuenta ese conjunto,
+no un recorrido sobre él:
 
 ```text
-N_CONSTRUCTOR = git -C <work>  rev-list --count --first-parent <corte-work>
-N_AUDITOR     = git -C <audit> rev-list --count --first-parent <corte-audit>
+N_CONSTRUCTOR = git -C <work>  rev-list --count <corte-work>
+N_AUDITOR     = git -C <audit> rev-list --count <corte-audit>
 
 corresponde relevo cuando  N % <cadencia> == 0
 ```
+
+`rev-list --count` sin filtros cuenta cada commit alcanzable exactamente una vez, cualquiera sea
+la topología de la historia.
+
+No se usa `--first-parent`: ese recorrido omite los commits alcanzables por los padres
+secundarios de un merge, que `P2` también declara entregas, de modo que ante una historia válida
+con merges produciría un número menor que el conjunto normativo. La cadencia dejaría de
+corresponder a las intervenciones autoritativas reales, y ningún invariante del método garantiza
+que ambas cuentas coincidan.
+
+Tampoco se filtra por path ni se leen mensajes de commit: no existe convención de commits que
+sostenga tal filtro y ninguna operación del protocolo de derivación los lee.
 
 Propiedades que esto satisface:
 
@@ -139,6 +155,10 @@ Propiedades que esto satisface:
   no hace falta `relay_pending` ni una taxonomía de intervenciones;
 - el commit de bootstrap de cada actor es su primera intervención autoritativa y cuenta como
   tal, lo que hace la regla uniforme y sin excepciones;
+- la derivación no supone linealidad ni ausencia de merges, de modo que no depende de una
+  propiedad de la historia que este plan no puede garantizar;
+- el resultado es un hecho ligado a un corte exacto y no una verdad presente que envejezca: dos
+  actores que lo derivan sobre el mismo SHA obtienen el mismo número;
 - el ORQUESTADOR no la evalúa: la deriva el actor con autoridad, y el orquestador sólo ejecuta
   `next_instance`.
 
