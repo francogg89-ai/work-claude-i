@@ -4,18 +4,18 @@ Describe el estado de la unidad. No acumula sus versiones anteriores: la histori
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@92251b0563e009aea9d1f2f8bd373a59a97f694e` y
-`audit-chatgpt-i@4020fc2ff4a4ba8e12a24637d86f2d829fdce09f`.
+El corte `work-claude-i@aef34428c7f636765d62642f7f3124c4a5bc9f80` y
+`audit-chatgpt-i@a8f3de526bfb67820f4fa101d0f198205aa24d79`.
 
-Esa auditoría no aprobó el `VEREDICTO=EXITO` de la corrida y devolvió `D-07` como bloqueante: el
-control `N18` no atravesaba la guardia `X4`/`F12` que gobierna una invocación real. El contrato
-quedó agotado.
+Esa auditoría aceptó la arquitectura propuesta para `D-07` —que la invocación real, `N17` y `N18`
+atraviesen la misma función de corrida, y que la guardia `X4` no viva separada en el punto de
+entrada— y dio `E13` por conceptualmente adecuado.
 
-Reconoció que la prueba de humo previa a `INICIO` no era una segunda corrida contractual, que la
-bitácora preservó un único `INICIO` y `CIERRE`, que el candidato mantuvo su blob congelado, y
-corroboró la cobertura 83/83, `P-C` 11/14 y que `S24` y `S28` ahora discriminan.
+No congeló el contrato por `D-08`: `F14`, tal como estaba redactado, alcanzaba a los controles de
+reintento **y** de aborto, de modo que `N17` podía cumplir su propio criterio y activar `F14` al
+mismo tiempo.
 
-Las auditorías anteriores de esta unidad habían corregido `D-01` a `D-06`.
+Las auditorías anteriores de esta unidad corrigieron `D-01` a `D-07`.
 
 ## D-03: lo que hice mal
 
@@ -38,9 +38,27 @@ quien ejecuta.
 
 ## Qué hizo esta intervención
 
-Corrigió `D-07` en el contrato propuesto. No tocó el candidato, que conserva su blob
+Corrigió `D-08` en el contrato propuesto. No tocó el candidato, que conserva su blob
 `b871240fd38d28430fc86fc4b14f1b851dad1f10`, no ejecutó ninguna corrida y no escribió mecanismo
 nuevo. `verificador/`, `verificacion-2/` y `verificacion-3/` quedan intactas.
+
+### D-08: la contradicción que introduje
+
+`F14` decía que un control falla si «no atraviesa la función de corrida real, **o** su invocación
+sintética evaluó criterios o modificó su bitácora en lugar de detenerse».
+
+La primera cláusula vale para los dos controles. La segunda vale sólo para `N18`, y describe
+exactamente lo que `N17` **debe** hacer: anotar `INICIO`, ejecutar el cuerpo y dejar su bitácora
+sintética escrita. Un mismo enunciado exigía y prohibía la misma conducta según el control, y el
+criterio no distinguía cuál era cuál.
+
+El error viene de haber escrito `F14` pensando en `N18` y haberlo redactado para «los controles»
+en plural, después de extender el tratamiento a `N17`. Extender el alcance de una corrección sin
+revisar los criterios que ya la nombraban es cómo se fabrica una contradicción interna.
+
+La corrección separa las tres exigencias en criterios distintos: la que comparten ambos controles,
+la que sólo aplica al reintento y la que sólo aplica al aborto. Cada uno queda con un criterio de
+fallo propio, y ninguna conducta esperada activa el fallo de otra.
 
 ### D-07 y por qué el control era falso
 
@@ -254,7 +272,20 @@ E12  la bitácora preservada contiene exactamente un INICIO y un CIERRE, y su id
      contrato y de candidato coincide con las congeladas
 E13  los controles de reintento y de aborto atraviesan la misma función de corrida que la
      invocación real, y observan su decisión efectiva y no una función auxiliar consultada aparte
+E14  el control de reintento devuelve el resultado de reintento: no anota en su bitácora
+     sintética y no evalúa los demás criterios
+E15  el control de aborto anota INICIO en su bitácora sintética, ejecuta el cuerpo con la falla
+     inyectada, la resuelve como F11 con su traza, anota CIERRE, y deja esa bitácora con un
+     INICIO y un CIERRE
 ```
+
+`E14` y `E15` describen conductas opuestas porque los dos controles demuestran cosas opuestas.
+`N18` demuestra que una invocación prohibida se detiene antes de empezar; `N17` demuestra que una
+invocación que sí empezó resuelve su falla dentro del veredicto en lugar de desaparecer. Exigirle
+a `N17` que «se detenga sin modificar su bitácora» sería exigirle que no demuestre nada.
+
+Ningún control sintético toca `BITACORA.txt`. Cada uno usa su propia bitácora, bajo una identidad
+de contrato sintética.
 
 `E7` es la lección de `S24` y `S28`. Bajo el contrato anterior una comprobación podía fallar sobre
 su mutante por razones ajenas a la obligación; exigir que el observable difiera obliga a que el
@@ -281,9 +312,33 @@ F12  al abrir, la bitácora ya contenía una marca de inicio para este contrato:
      un reintento conforme a X4 y no reemplaza el resultado anterior
 F13  la bitácora preservada no contiene exactamente un INICIO y un CIERRE, o su identidad de
      contrato o de candidato no coincide con las congeladas
-F14  algún control de reintento o de aborto no atraviesa la función de corrida real, o su
-     invocación sintética evaluó criterios o modificó su bitácora en lugar de detenerse
+F14  el control de reintento o el de aborto no atraviesa la función de corrida real, u observa
+     una función auxiliar consultada aparte en lugar de su decisión efectiva
+F15  el control de reintento anotó en su bitácora sintética o evaluó los demás criterios en lugar
+     de devolver el resultado de reintento
+F16  el control de aborto no resolvió su falla inyectada como F11, o no dejó en su bitácora
+     sintética un INICIO y un CIERRE
+F17  algún control sintético leyó o modificó BITACORA.txt en lugar de su bitácora sintética
 ```
+
+`F15` y `F16` son excluyentes por construcción: cada uno nombra a un único control y ninguna
+conducta esperada de uno activa el fallo del otro.
+
+### Alcance de los criterios frente a las invocaciones sintéticas
+
+`F1` a `F13` califican a la **invocación real**. `F11` y `F12`, en particular, describen lo que le
+ocurre a la corrida contractual.
+
+Los resultados que producen las invocaciones sintéticas de `N17` y `N18` son observaciones de esos
+controles y no fallos de la corrida real. Que `N17` obtenga `F11` sobre su bitácora sintética y que
+`N18` obtenga el resultado de reintento sobre la suya es precisamente lo que deben demostrar: es
+su éxito, no el fracaso de la corrida.
+
+Lo que sí activa un fallo de la corrida real es que esos controles no exhiban la conducta
+esperada, y eso lo dicen `F14`, `F15`, `F16` y `F17`.
+
+Sin esta acotación, `N17` cumpliendo `E15` haría FALLAR la corrida por `F11`, que es la misma
+forma de contradicción que `D-08` señaló un nivel más abajo.
 
 No existe tercera salida. Toda observación de la corrida cae en éxito o fallo.
 
@@ -332,6 +387,10 @@ enterarse, y sólo se entera si lo recorre.
 
 Esa es la corrección de `D-07`, y `E13`/`F14` la vuelven exigible en lugar de dejarla a la forma
 que tenga el mecanismo.
+
+Las conductas que cada uno debe exhibir son opuestas y quedan en criterios separados: `E14`/`F15`
+para el reintento, que se detiene antes de anotar; `E15`/`F16` para el aborto, que anota, ejecuta
+y cierra. Esa separación es la corrección de `D-08`.
 
 ### Limitaciones conocidas
 
@@ -438,7 +497,8 @@ de ella debe poder juzgarlo el AUDITOR sin depender de que se lo cuenten despué
 
 Este contrato previo, propuesto y no ejecutado, con `D-07` cerrado por `E13`/`F14` y por los
 controles `N17` y `N18` reescritos para atravesar la misma función de corrida que la invocación
-real.
+real, y con `D-08` cerrado separando en `E14`/`F15` y `E15`/`F16` las conductas opuestas que cada
+uno debe exhibir.
 
 `u2-reglas-orquestador/REGLAS-ORQUESTADOR.md` conserva sin cambios el blob
 `b871240fd38d28430fc86fc4b14f1b851dad1f10`. `verificador/`, `verificacion-2/` y `verificacion-3/`
