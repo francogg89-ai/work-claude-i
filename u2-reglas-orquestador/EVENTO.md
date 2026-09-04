@@ -311,9 +311,72 @@ que un reintento sobre esa evidencia es detectado y no puede sustituir el result
 
 ---
 
-## Qué verificó esta intervención
+---
 
-Nada. Corrige el candidato y propone el contrato.
+## Corrida bajo el contrato congelado
+
+Se ejecutó una única corrida contra el candidato y el criterio congelados en
+`audit-chatgpt-i@c1586576249d37070a8f2fb9ecaa1d3740e522b0`. Ni el candidato ni este evento fueron
+modificados antes de producir el resultado.
+
+El mecanismo, su corpus, sus insumos sintéticos, la bitácora, la salida literal y la evidencia
+están en `u2-reglas-orquestador/verificacion-3/`. `verificador/` y `verificacion-2/` quedaron
+intactas.
+
+```text
+código de retorno   0
+VEREDICTO           EXITO
+```
+
+### Regla de ejecución
+
+```text
+BITACORA.txt antes de la corrida   no existía
+INICIO                             anotado antes del primer caso
+CIERRE                             anotado al emitir el veredicto
+coherencia                         un INICIO y un CIERRE, sin líneas ajenas
+```
+
+### Resultado contra el criterio congelado
+
+```text
+E1   84 casos, todos con el resultado que su obligación predice            SI
+E2   13 identificadores emitidos, ninguno ajeno al candidato               SI
+E3   83 obligaciones, 83 ejercitadas                                       SI
+E4   ninguna sección mecánica sin obligación                               SI
+E5   ninguna sección mecánica viola su forma declarada                     SI
+E6   toda comprobación estructural falla sobre su mutante                  SI
+E7   el observable difiere entre real y mutante en las 36 comprobaciones   SI
+E8   P-C: N_CONSTRUCTOR = 11, N_AUDITOR = 14, coincidentes                 SI
+E9   el blob leído es exactamente el congelado                             SI
+E10  INICIO y CIERRE preservados                                           SI
+E11  no existía INICIO previo para esta identidad                          SI
+E12  bitácora coherente                                                    SI
+
+F1 a F13   ninguno ocurrió
+N1 a N18   todos presentes; N1-N11 rechazados, N12-N18 discriminaron
+```
+
+### Las dos comprobaciones que antes no discriminaban
+
+`S24` y `S28` habían activado `F7` en la corrida anterior. Con las obligaciones reformuladas y
+`E7` exigiendo que el observable difiera, ahora discriminan:
+
+```text
+S24  obs_real = (entregado False, conservado True)   obs_mut = (True, False)
+S28  obs_real = (identico True, contiene False)      obs_mut = (False, True)
+```
+
+`N16` reproduce sintéticamente ese defecto y demuestra que el mecanismo lo detecta; `N17` y `N18`
+hacen lo mismo con las dos mitades de `D-03`.
+
+### Trabajo previo a INICIO, declarado
+
+Antes de invocar la corrida se ejecutó una prueba de humo que sólo importó los módulos, ejercitó
+los insumos sintéticos y comprobó que `BITACORA.txt` no existía. No leyó el candidato, no ejecutó
+ningún caso del corpus y no ejercitó ninguna comprobación estructural sobre el sujeto real.
+`EVIDENCIA.md` la declara en detalle. La frontera de la corrida es `INICIO`, y qué ocurrió antes
+de ella debe poder juzgarlo el AUDITOR sin depender de que se lo cuenten después.
 
 ## Limitaciones de esta entrega
 
@@ -323,17 +386,17 @@ Nada. Corrige el candidato y propone el contrato.
   todavía no existen. Las referencias son por repositorio, path y contrato, y no congelan SHA.
 - Las dos obligaciones reformuladas cambian su enunciado, no la conducta que exigen. Que la nueva
   redacción sea fiel a esa conducta es lectura del AUDITOR.
-- La bitácora todavía no existe: se crea cuando se construya el mecanismo, después del
-  congelamiento. Hasta entonces `X4` y `X5` están definidos y no ejercitados.
+- La corrida demuestra que el candidato es aplicable y que sus obligaciones discriminan sobre el
+  corpus declarado. No demuestra que el candidato exija todo lo que `CT-7` debería exigir: esa
+  suficiencia sustantiva es lectura del AUDITOR.
 
 ## Resultado
 
-Este contrato previo, propuesto y no ejecutado, con `X4` y `X5` discriminados por la bitácora y
-por el control `N18`.
+La corrida única bajo el contrato congelado, con veredicto `EXITO`, su mecanismo, su corpus, sus
+insumos sintéticos, su bitácora, su salida literal y su evidencia.
 
-`u2-reglas-orquestador/REGLAS-ORQUESTADOR.md` conserva sin cambios el blob
-`b871240fd38d28430fc86fc4b14f1b851dad1f10`, con la forma de `§10.1` restaurada y las obligaciones
-`R-9.1-frontera` y `R-9.3-no-en-json` observables.
+`u2-reglas-orquestador/REGLAS-ORQUESTADOR.md` conserva sin cambios el blob congelado
+`b871240fd38d28430fc86fc4b14f1b851dad1f10`.
 
 ## Necesidad humana detectada
 
