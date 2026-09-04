@@ -38,11 +38,36 @@ quien ejecuta.
 
 ## Qué hizo esta intervención
 
-Corrigió `D-08` en el contrato propuesto. No tocó el candidato, que conserva su blob
+Corrigió `D-09` en el contrato propuesto. No tocó el candidato, que conserva su blob
 `b871240fd38d28430fc86fc4b14f1b851dad1f10`, no ejecutó ninguna corrida y no escribió mecanismo
-nuevo. `verificador/`, `verificacion-2/` y `verificacion-3/` quedan intactas.
+nuevo. `verificador/`, `verificacion-2/` y `verificacion-3/` quedan intactas. Las correcciones
+aceptadas de `D-07` y `D-08` se conservan.
 
-### D-08: la contradicción que introduje
+### D-09: dos semánticas para la misma cosa
+
+`X2` y la sección de bitácora describían una invocación abortada como la que termina sin veredicto
+y deja `INICIO` sin `CIERRE`. `E15` y `N17` exigían que la falla se capturara, se resolviera como
+`F11` y dejara `INICIO` y `CIERRE`. Las dos cosas no pueden regir a la vez, y el contrato no decía
+cuál mandaba.
+
+El origen es el mismo que el de `D-08`: arrastré la redacción original de `X2` —escrita cuando el
+aborto era el incidente de `D-03`, una excepción que efectivamente mató la invocación— y después
+diseñé un mecanismo que captura sus propias excepciones, sin volver a `X2` a decidir cuál de las
+dos conductas es la contractual.
+
+La corrección elige una y sólo una: el mecanismo captura lo que puede capturar. Una excepción del
+cuerpo se registra como `F11` con su traza, se resuelve dentro del veredicto y se anota `CIERRE`.
+Una falla observada produce un resultado, no un vacío, porque un resultado es mejor evidencia que
+una ausencia.
+
+`INICIO` sin `CIERRE` deja de ser la conducta esperada de una falla y pasa a nombrar lo único que
+ningún mecanismo puede manejar de sí mismo: que el proceso sea terminado antes de poder escribir.
+Eso el mecanismo no lo produce, lo sufre, y su firma la lee el AUDITOR en la bitácora preservada.
+
+`E12`/`F13` ya exigen un `INICIO` y un `CIERRE` en la entrega, de modo que una bitácora con
+`INICIO` colgado es `F13` y no una corrida aprobable.
+
+### D-08: la contradicción anterior
 
 `F14` decía que un control falla si «no atraviesa la función de corrida real, **o** su invocación
 sintética evaluó criterios o modificó su bitácora en lugar de detenerse».
@@ -159,17 +184,39 @@ Esta regla gobierna sobre cualquier otra lectura del contrato.
 
 ```text
 X1  antes del primer caso, el mecanismo lee la bitácora y anota en ella su marca de inicio
-X2  una invocación que empezó y termina por excepción, aborto, interrupción, error de entorno o
-    cualquier terminación distinta de la emisión del veredicto, es una ejecución observada
-X3  esa observación se resuelve como FALLO. No existe tercera salida y no existe la categoría
-    "no llegó a correr"
-X4  esa ejecución agota el contrato. Si al leer la bitácora el mecanismo encuentra una marca de
-    inicio previa para este mismo contrato, la invocación en curso es un reintento: se resuelve
-    como FALLO, no evalúa los demás criterios como si fuera la corrida contractual, y no
+X2  toda invocación que anotó INICIO es una ejecución observada, cualquiera sea su final
+X3  una invocación observada sólo puede aprobarse si emitió veredicto EXITO. Cualquier otro
+    final es FALLO. No existe tercera salida ni la categoría "no llegó a correr"
+X4  una ejecución observada agota el contrato. Si al leer la bitácora el mecanismo encuentra una
+    marca de inicio previa para este mismo contrato, la invocación en curso es un reintento: se
+    resuelve como FALLO, no evalúa los demás criterios como si fuera la corrida contractual, y no
     reemplaza el resultado anterior
 X5  una corrida nueva exige un contrato nuevo, propuesto y congelado antes de ejecutarla. Una
     bitácora bajo otra identidad de contrato es una bitácora distinta
 ```
+
+### Las tres terminaciones posibles, y sólo tres
+
+```text
+T1  veredicto EXITO                            anota CIERRE   única terminación aprobable
+T2  veredicto FALLO                            anota CIERRE   incluye F11: falla capturada
+T3  terminación sin veredicto                  no anota CIERRE
+```
+
+`T2` es la semántica del fallo dentro de la corrida. El mecanismo captura cualquier excepción del
+cuerpo, la registra como `F11` con su traza, la resuelve dentro del veredicto y anota `CIERRE`.
+Una falla observada produce un resultado, no un vacío.
+
+`T3` es lo que el mecanismo no puede manejar por definición: una terminación del proceso que le
+impide escribir. No la produce el mecanismo, la sufre. Su firma es un `INICIO` sin `CIERRE`, y esa
+asimetría la lee el AUDITOR en la bitácora preservada, no el mecanismo mientras corre.
+
+Esta es la corrección de `D-09`. Las versiones anteriores describían `T3` en la regla de ejecución
+y exigían `T2` en `N17`, sin decir cuál regía. Rige `T2` para todo lo que el mecanismo puede
+capturar, y `T3` sólo nombra lo que ningún mecanismo puede capturar de sí mismo.
+
+`CIERRE` se anota al emitir veredicto, sea `EXITO` o `FALLO`. No significa que la corrida haya
+salido bien: significa que terminó diciendo qué pasó.
 
 ### La bitácora
 
@@ -177,16 +224,16 @@ X5  una corrida nueva exige un contrato nuevo, propuesto y congelado antes de ej
 path       u2-reglas-orquestador/verificacion-3/BITACORA.txt
 formato    una línea por evento, sólo se agrega, nunca se reescribe
 identidad  cada línea lleva la identidad del contrato congelado y el blob del candidato
-eventos    INICIO al abrir la corrida; CIERRE al emitir el veredicto
+eventos    INICIO al abrir la corrida; CIERRE al emitir el veredicto, sea EXITO o FALLO
 ```
 
 La bitácora es lo que convierte `X2`, `X4` y `X5` en hechos comprobables en lugar de
 declaraciones de quien ejecutó.
 
 ```text
-una invocación normal        deja INICIO y CIERRE
-una invocación abortada      deja INICIO sin CIERRE
-un reintento                 encuentra un INICIO previo y se detiene por X4
+T1 y T2   una invocación que emitió veredicto     deja INICIO y CIERRE
+T3        una terminación sin veredicto           deja INICIO sin CIERRE
+reintento encuentra un INICIO previo              se detiene por X4 sin anotar nada
 ```
 
 La bitácora se preserva en Git junto con la evidencia. Su contenido es parte del delta que el
@@ -307,7 +354,8 @@ F7   alguna comprobación estructural no falla sobre su mutante
 F8   el observable de alguna comprobación estructural no difiere entre real y mutante
 F9   P-C difiere entre sus dos derivaciones
 F10  el blob leído no es el congelado
-F11  la invocación empezó y terminó por excepción, aborto o interrupción, conforme a X2
+F11  el cuerpo de la corrida produjo una excepción: se captura, se registra con su traza y se
+     resuelve dentro del veredicto conforme a T2
 F12  al abrir, la bitácora ya contenía una marca de inicio para este contrato: la invocación es
      un reintento conforme a X4 y no reemplaza el resultado anterior
 F13  la bitácora preservada no contiene exactamente un INICIO y un CIERRE, o su identidad de
@@ -368,9 +416,10 @@ N15  un blob sintético ajeno debe producir F10
 N16  una comprobación sintética cuyo mutante no altera el observable que ella lee debe producir
      F8, y si además pasa sobre ese mutante, F7
 N17  una invocación sintética de la misma función de corrida, con una falla inyectada en el
-     cuerpo, debe resolverse como FALLO por F11 con su traza preservada, y dejar su bitácora
-     sintética con INICIO y CIERRE. Si en cambio la falla se propaga sin resolverse en el
-     veredicto, el manejo de X2 no discrimina
+     cuerpo, debe terminar conforme a T2: capturar la falla, registrarla como F11 con su traza,
+     emitir veredicto FALLO y dejar su bitácora sintética con INICIO y CIERRE. Si en cambio la
+     falla se propaga sin resolverse en el veredicto, el mecanismo produce T3 donde el contrato
+     exige T2, y el control no discrimina
 N18  una invocación sintética de la misma función de corrida, sobre una bitácora sintética que ya
      contiene un INICIO para esa identidad, debe devolver el resultado de reintento: sin anotar
      nada, sin evaluar los demás criterios y sin emitir un veredicto que reemplace al anterior.
@@ -495,10 +544,14 @@ de ella debe poder juzgarlo el AUDITOR sin depender de que se lo cuenten despué
 
 ## Resultado
 
-Este contrato previo, propuesto y no ejecutado, con `D-07` cerrado por `E13`/`F14` y por los
-controles `N17` y `N18` reescritos para atravesar la misma función de corrida que la invocación
-real, y con `D-08` cerrado separando en `E14`/`F15` y `E15`/`F16` las conductas opuestas que cada
-uno debe exhibir.
+Este contrato previo, propuesto y no ejecutado, con:
+
+```text
+D-07  cerrado por E13/F14 y por N17 y N18 atravesando la misma función de corrida
+D-08  cerrado separando en E14/F15 y E15/F16 las conductas opuestas de cada control
+D-09  cerrado eligiendo T2 como semántica contractual de la falla: el mecanismo captura lo que
+      puede capturar, y T3 nombra sólo lo que ningún mecanismo puede manejar de sí mismo
+```
 
 `u2-reglas-orquestador/REGLAS-ORQUESTADOR.md` conserva sin cambios el blob
 `b871240fd38d28430fc86fc4b14f1b851dad1f10`. `verificador/`, `verificacion-2/` y `verificacion-3/`
