@@ -4,15 +4,18 @@ Describe el estado de la unidad. No acumula sus versiones anteriores: la histori
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@8facccd089a651f9b097269b791ab33c895e725e` y
-`audit-chatgpt-i@693498fc8ff681069cf3997ea7e3f8636826a2d3`.
+El corte `work-claude-i@92251b0563e009aea9d1f2f8bd373a59a97f694e` y
+`audit-chatgpt-i@4020fc2ff4a4ba8e12a24637d86f2d829fdce09f`.
 
-Esa auditoría dio por corregidos `D-04` y `D-05`, reconoció que `X1`-`X3` cubren adecuadamente el
-aborto, y no congeló el contrato por `D-06`: `X4` y `X5` no quedaban discriminados frente a
-evidencia preexistente de una invocación del mismo mecanismo bajo el mismo contrato.
+Esa auditoría no aprobó el `VEREDICTO=EXITO` de la corrida y devolvió `D-07` como bloqueante: el
+control `N18` no atravesaba la guardia `X4`/`F12` que gobierna una invocación real. El contrato
+quedó agotado.
 
-La auditoría anterior, `audit-chatgpt-i@b679065c468cd1ba3bc8289965ec0bdc1b1b7c0d`, había
-interpretado la corrida contractual como FALLO y registrado `D-03`, `D-04` y `D-05`.
+Reconoció que la prueba de humo previa a `INICIO` no era una segunda corrida contractual, que la
+bitácora preservó un único `INICIO` y `CIERRE`, que el candidato mantuvo su blob congelado, y
+corroboró la cobertura 83/83, `P-C` 11/14 y que `S24` y `S28` ahora discriminan.
+
+Las auditorías anteriores de esta unidad habían corregido `D-01` a `D-06`.
 
 ## D-03: lo que hice mal
 
@@ -35,25 +38,47 @@ quien ejecuta.
 
 ## Qué hizo esta intervención
 
-Corrigió `D-06` en el contrato propuesto. No tocó el candidato, que conserva su blob
-`b871240fd38d28430fc86fc4b14f1b851dad1f10`, no ejecutó ninguna mitad de verificación y no escribió
-`verificacion-3/`.
+Corrigió `D-07` en el contrato propuesto. No tocó el candidato, que conserva su blob
+`b871240fd38d28430fc86fc4b14f1b851dad1f10`, no ejecutó ninguna corrida y no escribió mecanismo
+nuevo. `verificador/`, `verificacion-2/` y `verificacion-3/` quedan intactas.
 
-`D-06` era exacto: `X4` y `X5` estaban enunciados pero ninguna corrida los obligaba a demostrarse.
-`E10` probaba el caso positivo y `N17` el aborto, y entre los dos quedaba abierto justamente el
-escenario que produjo `D-03`: una invocación previa ya existente y un intento posterior bajo el
-mismo contrato.
+### D-07 y por qué el control era falso
 
-La corrección introduce una bitácora append-only que el mecanismo lee antes de empezar, y el
-control `N18`, que exige demostrar que un reintento sobre una bitácora con marca previa se detiene
-y no reemplaza el resultado anterior. Con eso `X4` y `X5` dejan de ser una declaración del
-contrato y pasan a ser una propiedad que la corrida debe exhibir.
+`N18` creaba una bitácora sintética con `INICIO` y llamaba a `hay_inicio_previo()`. Eso comprueba
+que la función sabe leer una bitácora. No comprueba nada sobre la conducta que `X4` exige.
 
-Las intervenciones anteriores de esta unidad corrigieron `D-04` en el candidato y la
-verificabilidad de las dos propiedades de `D-05`.
+La guardia real vivía en `main()`, como un retorno temprano que el control nunca ejercitaba.
+Borrar ese retorno habría dejado `N18` en verde y el mecanismo habría aceptado un reintento.
 
-`u2-reglas-orquestador/verificador/` y `u2-reglas-orquestador/verificacion-2/` no fueron tocadas:
-son historia y evidencia de dos corridas ya interpretadas.
+Es el mismo defecto que `E6` y `E7` fueron creados para cerrar, un nivel más arriba: una
+comprobación que no atraviesa la decisión que dice comprobar no puede fallar cuando esa decisión
+se rompe, y por lo tanto no demuestra nada. Que el observable de una comprobación difiera no
+alcanza si la comprobación no toca el camino que gobierna la conducta real.
+
+### La corrección
+
+La decisión de `X4` deja de vivir en `main()` y pasa a una única función de corrida que ambos
+caminos atraviesan:
+
+```text
+correr(identidad, ruta de bitácora, ...)
+    1  aplica la guardia X4 leyendo esa bitácora
+    2  si hay INICIO previo, devuelve el resultado de reintento sin anotar y sin evaluar criterios
+    3  si no, anota INICIO, ejecuta el cuerpo, anota CIERRE y devuelve el resultado
+
+main()  invoca correr con la identidad y la bitácora reales
+N18     invoca la misma correr con una identidad sintética, sobre una bitácora sintética que ya
+        contiene INICIO
+```
+
+Si alguien borra o rompe la guardia, `N18` deja de recibir el resultado de reintento: la
+invocación sintética evalúa criterios y modifica su bitácora, y el control falla. Esa es la
+propiedad que `D-07` pedía y que la versión anterior no tenía.
+
+`N17` recibe el mismo tratamiento, aunque la auditoría no lo señaló. Tenía exactamente la misma
+debilidad: simulaba la firma de un aborto en vez de atravesar el manejo real de excepciones. Ahora
+invoca la misma `correr` con una falla inyectada y comprueba el camino que el mecanismo usa de
+verdad. Corregir sólo lo señalado y dejar en pie a su gemelo habría sido cuestión de tiempo.
 
 ### D-04 — forma de `§10.1`
 
@@ -187,9 +212,19 @@ Un verificador determinista, sin modelo de lenguaje y sin red, en
 No declara catálogo propio de reglas: extrae del candidato las obligaciones y la estructura de sus
 secciones, y de ahí obtiene el denominador.
 
-Antes del primer caso lee la bitácora. Si encuentra una marca de inicio previa para este contrato,
-se detiene por `X4` sin evaluar los demás criterios. Si no, anota su marca de inicio y, al emitir
-el veredicto, su marca de cierre. La bitácora se preserva.
+Toda invocación —la real y las sintéticas de los controles— atraviesa una única función de
+corrida, parametrizada por identidad de contrato y ruta de bitácora. Esa función contiene la
+guardia `X4`: si encuentra una marca de inicio previa, devuelve el resultado de reintento sin
+anotar nada y sin evaluar los demás criterios; si no, anota `INICIO`, ejecuta el cuerpo, anota
+`CIERRE` y devuelve el resultado.
+
+La guardia no vive en el punto de entrada del programa ni se comprueba consultando por separado
+una función auxiliar. Vive en el camino que ambas invocaciones recorren, de modo que romperla haga
+fallar el control.
+
+Las invocaciones sintéticas de los controles no re-ejecutan los controles: exercitan la guardia y
+la regla de ejecución, no el conjunto de controles. Esa acotación es parte del mecanismo y se
+declara aquí para que no se confunda con una excepción al criterio.
 
 Antes de comparar comprueba que el candidato que lee es el blob congelado.
 
@@ -217,6 +252,8 @@ E10  la corrida preserva su marca de inicio y su marca de cierre
 E11  al abrir, la bitácora no contenía ninguna marca de inicio previa para este contrato
 E12  la bitácora preservada contiene exactamente un INICIO y un CIERRE, y su identidad de
      contrato y de candidato coincide con las congeladas
+E13  los controles de reintento y de aborto atraviesan la misma función de corrida que la
+     invocación real, y observan su decisión efectiva y no una función auxiliar consultada aparte
 ```
 
 `E7` es la lección de `S24` y `S28`. Bajo el contrato anterior una comprobación podía fallar sobre
@@ -244,6 +281,8 @@ F12  al abrir, la bitácora ya contenía una marca de inicio para este contrato:
      un reintento conforme a X4 y no reemplaza el resultado anterior
 F13  la bitácora preservada no contiene exactamente un INICIO y un CIERRE, o su identidad de
      contrato o de candidato no coincide con las congeladas
+F14  algún control de reintento o de aborto no atraviesa la función de corrida real, o su
+     invocación sintética evaluó criterios o modificó su bitácora en lugar de detenerse
 ```
 
 No existe tercera salida. Toda observación de la corrida cae en éxito o fallo.
@@ -273,22 +312,26 @@ N14  un candidato sintético con contenido fuera de forma debe producir F6
 N15  un blob sintético ajeno debe producir F10
 N16  una comprobación sintética cuyo mutante no altera el observable que ella lee debe producir
      F8, y si además pasa sobre ese mutante, F7
-N17  una invocación sintética que anota su marca de inicio y termina por excepción debe dejar en
-     su bitácora sintética un INICIO sin CIERRE, y quedar registrada como ejecución observada
-     conforme a X2
-N18  sobre una bitácora sintética que ya contiene un INICIO para el mismo contrato, una segunda
-     invocación debe detenerse por X4 y resolver F12, sin evaluar los demás criterios y sin
-     emitir un veredicto que reemplace al anterior. Si en cambio continúa y produce un resultado
-     normal, la detección de reintento no discrimina y la corrida es FALLO
+N17  una invocación sintética de la misma función de corrida, con una falla inyectada en el
+     cuerpo, debe resolverse como FALLO por F11 con su traza preservada, y dejar su bitácora
+     sintética con INICIO y CIERRE. Si en cambio la falla se propaga sin resolverse en el
+     veredicto, el manejo de X2 no discrimina
+N18  una invocación sintética de la misma función de corrida, sobre una bitácora sintética que ya
+     contiene un INICIO para esa identidad, debe devolver el resultado de reintento: sin anotar
+     nada, sin evaluar los demás criterios y sin emitir un veredicto que reemplace al anterior.
+     Si en cambio evalúa criterios o modifica su bitácora, la guardia X4 no discrimina
 ```
 
 `N16` reproduce sintéticamente el defecto de `S24` y `S28` y obliga al mecanismo a demostrar que
 lo detecta.
 
-`N17` y `N18` son las dos mitades del defecto `D-03`, y sólo juntas lo cubren. `N17` demuestra que
-una invocación abortada queda observable en lugar de desaparecer. `N18` demuestra lo que faltaba:
-que un reintento sobre esa evidencia es detectado y no puede sustituir el resultado anterior. Sin
-`N18`, `X4` y `X5` eran una promesa del contrato que ninguna corrida obligaba a cumplir.
+`N17` y `N18` son las dos mitades del defecto `D-03`, y ahora atraviesan el camino real. Un
+control que consulta una función auxiliar por separado comprueba que esa función existe; no
+comprueba la conducta. Si la guardia se borra del camino que gobierna una invocación, `N18` debe
+enterarse, y sólo se entera si lo recorre.
+
+Esa es la corrección de `D-07`, y `E13`/`F14` la vuelven exigible en lugar de dejarla a la forma
+que tenga el mecanismo.
 
 ### Limitaciones conocidas
 
@@ -313,15 +356,15 @@ que un reintento sobre esa evidencia es detectado y no puede sustituir el result
 
 ---
 
-## Corrida bajo el contrato congelado
+## La corrida anterior, no aprobada
 
 Se ejecutó una única corrida contra el candidato y el criterio congelados en
-`audit-chatgpt-i@c1586576249d37070a8f2fb9ecaa1d3740e522b0`. Ni el candidato ni este evento fueron
-modificados antes de producir el resultado.
+`audit-chatgpt-i@c1586576249d37070a8f2fb9ecaa1d3740e522b0`, y el mecanismo emitió `EXITO`. El
+AUDITOR no lo aprobó por `D-07`, y ese contrato quedó agotado.
 
-El mecanismo, su corpus, sus insumos sintéticos, la bitácora, la salida literal y la evidencia
-están en `u2-reglas-orquestador/verificacion-3/`. `verificador/` y `verificacion-2/` quedaron
-intactas.
+Lo que sigue es el registro de esa corrida, no un resultado vigente. Su mecanismo, corpus,
+insumos sintéticos, bitácora, salida literal y evidencia se conservan sin modificación en
+`u2-reglas-orquestador/verificacion-3/`, junto con `verificador/` y `verificacion-2/`.
 
 ```text
 código de retorno   0
@@ -380,23 +423,26 @@ de ella debe poder juzgarlo el AUDITOR sin depender de que se lo cuenten despué
 
 ## Limitaciones de esta entrega
 
-- El candidato no cambió, pero ninguna evidencia anterior lo cubre: las dos corridas ya
-  interpretadas corrieron contra blobs distintos y bajo contratos agotados.
+- El candidato no cambió, pero ninguna evidencia anterior lo cubre: las tres corridas ya
+  interpretadas corrieron bajo contratos agotados, y la última no fue aprobada.
 - `REGLAS-ORQUESTADOR.md` referencia `CT-1`, `CT-2` y `CT-3`, cuyos documentos autoritativos
   todavía no existen. Las referencias son por repositorio, path y contrato, y no congelan SHA.
-- Las dos obligaciones reformuladas cambian su enunciado, no la conducta que exigen. Que la nueva
-  redacción sea fiel a esa conducta es lectura del AUDITOR.
-- La corrida demuestra que el candidato es aplicable y que sus obligaciones discriminan sobre el
-  corpus declarado. No demuestra que el candidato exija todo lo que `CT-7` debería exigir: esa
-  suficiencia sustantiva es lectura del AUDITOR.
+- Que el candidato exija todo lo que `CT-7` debería exigir es lectura del AUDITOR: ningún
+  mecanismo de este contrato la sustituye.
+- `E13` exige que los controles atraviesen la función de corrida real. No demuestra que esa
+  función sea el único camino posible hacia una ejecución: un mecanismo futuro que abriera un
+  segundo camino quedaría fuera de lo que el control recorre. Lo que el criterio cierra es la
+  desconexión entre el control y la decisión que dice comprobar.
 
 ## Resultado
 
-La corrida única bajo el contrato congelado, con veredicto `EXITO`, su mecanismo, su corpus, sus
-insumos sintéticos, su bitácora, su salida literal y su evidencia.
+Este contrato previo, propuesto y no ejecutado, con `D-07` cerrado por `E13`/`F14` y por los
+controles `N17` y `N18` reescritos para atravesar la misma función de corrida que la invocación
+real.
 
-`u2-reglas-orquestador/REGLAS-ORQUESTADOR.md` conserva sin cambios el blob congelado
-`b871240fd38d28430fc86fc4b14f1b851dad1f10`.
+`u2-reglas-orquestador/REGLAS-ORQUESTADOR.md` conserva sin cambios el blob
+`b871240fd38d28430fc86fc4b14f1b851dad1f10`. `verificador/`, `verificacion-2/` y `verificacion-3/`
+quedan intactas como historia y evidencia de tres corridas ya interpretadas.
 
 ## Necesidad humana detectada
 
