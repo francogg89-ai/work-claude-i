@@ -261,8 +261,9 @@ Nota. Es una orden de control del orquestador emitida por el humano.
 ## 9.1. Frontera segura
 
 ```text
-R-9.1-frontera           la frontera preferida de detencion es un sobre valido del CONSTRUCTOR
-                         hacia el AUDITOR todavia no entregado
+R-9.1-frontera           con un sobre valido del CONSTRUCTOR hacia el AUDITOR todavia no
+                         entregado, DETENER pausa en ese punto exacto: conserva el sobre y no lo
+                         entrega al AUDITOR
 R-9.1-constructor-1      DETENER durante el CONSTRUCTOR: se permite que termine
 R-9.1-constructor-2      DETENER durante el CONSTRUCTOR: se recibe y valida su sobre
 R-9.1-constructor-3      DETENER durante el CONSTRUCTOR: se detiene antes de entregarlo al AUDITOR
@@ -298,7 +299,9 @@ R-9.3-canal-separado     entrega al actor competente dos entradas diferenciadas:
                          ACTOR_PROMPT_LITERAL y HUMAN_DIRECTIVE_LITERAL
 R-9.3-no-modifica        la directiva no modifica, concatena, reinterpreta ni falsifica el
                          next_prompt emitido
-R-9.3-no-en-json         la directiva no se agrega al JSON del sobre
+R-9.3-no-en-json         en ningun momento del transporte la directiva aparece dentro de un
+                         campo del sobre: el sobre observado despues de emitirla es identico al
+                         recibido
 R-9.3-no-saltea          un relevo nunca saltea una entrega que todavia no fue auditada
 ```
 
@@ -331,6 +334,11 @@ R-10.1-fail-closed       ante una falla, un reinicio o cualquier situacion en la
 R-10.1-no-degrada        no degrada el salto a una alternativa mas comoda y no continua con una
                          suposicion
 ```
+
+Nota. Fail-closed significa que la conducta ante lo imprevisto es detenerse, no elegir la
+alternativa más cómoda. Un orquestador que ante una falla continúa con una suposición es más
+difícil de diagnosticar que uno que se detiene, porque su estado deja de corresponder a ninguna
+decisión que un actor del método haya tomado.
 
 ---
 
