@@ -2,11 +2,17 @@
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@67f0d8f3d8e768e4c1c17cef49c6aeda669884cf` y
-`audit-chatgpt-i@0ae8d8525c7ac0f6b84f547af44a1d00dfb59b03`.
+Esta unidad se construyó en dos intervenciones. La historia de ambas vive en Git; este evento
+describe el estado de la unidad, no acumula sus versiones anteriores.
 
-La auditoría aplicable cerró `U1`, aceptó como cambio local la ampliación a siete contratos
-transversales, y dejó una observación no bloqueante sobre verificación previa.
+La primera partió del corte `work-claude-i@67f0d8f3d8e768e4c1c17cef49c6aeda669884cf` y
+`audit-chatgpt-i@0ae8d8525c7ac0f6b84f547af44a1d00dfb59b03`, cuya auditoría cerró `U1`, aceptó
+como cambio local la ampliación a siete contratos transversales y dejó una observación no
+bloqueante sobre verificación previa.
+
+La segunda partió del corte `work-claude-i@b2a7c472732e5da59b8c82da7278a0e66ed26e93` y
+`audit-chatgpt-i@9679ca4ca6987a3706a0b06cebd3b03cce1dcc7a`, cuya auditoría evaluó el candidato
+como apto para verificación discriminante y congeló el contrato previo.
 
 ## Observación D-01 de la auditoría de U1
 
@@ -27,6 +33,9 @@ Cada regla quedó redactada como una comparación, una selección o una detenci�
 presentes en el sobre, para que el manifiesto pueda cumplirse: que el documento sea implementable
 por código determinista sin un modelo razonador.
 
+Después, con el contrato ya congelado, construyó dentro de `verificador/` el mecanismo y el
+corpus previstos y ejecutó una única corrida contra el candidato exacto, sin modificarlo.
+
 ### Frontera deliberada respecto del contrato de transporte
 
 El documento no reproduce el contrato `revolutions-hop/v1`. Esa es la decisión de diseño que más
@@ -46,11 +55,16 @@ política, que pertenece a `METODO-MANIFIESTOS.md`.
 
 ---
 
-## Contrato previo de verificación — PROPUESTO, NO EJECUTADO
+## Contrato previo de verificación
 
 Conforme a REVOLUTIONS §6.1 y `PLAN.md` §5.2. Ninguna mitad se ejecuta hasta que el AUDITOR lo
 evalúe y lo congele. Si lo devuelve por insuficiente, se propone uno nuevo; no se ejecuta el
 mecanismo mientras tanto.
+
+Fue propuesto en `work-claude-i@b2a7c472732e5da59b8c82da7278a0e66ed26e93`, blob
+`22e27586b42b5a0ec0e2dfcb4608dcd934568a98`, y congelado en
+`audit-chatgpt-i@9679ca4ca6987a3706a0b06cebd3b03cce1dcc7a` antes de toda ejecución. Su texto se
+conserva abajo sin modificación: éxito, fallo, controles y limitaciones son los congelados.
 
 ### Candidato exacto
 
@@ -185,25 +199,72 @@ positivos pasen.
 
 ---
 
-## Qué verificó esta intervención
+---
 
-Nada. Esta intervención construye el candidato y propone el contrato.
+## Corrida bajo el contrato congelado
 
-La revisión de que el documento cubre las obligaciones de `CT-7` es lectura de diseño y
-corresponde al AUDITOR, que tiene acceso directo al candidato y a las fuentes.
+Se ejecutó una única corrida contra el candidato y el criterio congelados. El candidato no fue
+modificado: su blob sigue siendo `49ad9e04a6ea2f04e4ec6f1f0efd2c5adf51f367`, de modo que el
+contrato congelado sigue aplicando a lo que efectivamente se verificó.
+
+La evidencia completa está en `u2-reglas-orquestador/verificador/EVIDENCIA.md` y la salida
+literal en `u2-reglas-orquestador/verificador/salida.txt`.
+
+```text
+comando        python verificar.py --repo-metodo <revolutions-orchestra-ai>
+                                   --repo-work   <work-claude-i>
+                                   --repo-audit  <audit-chatgpt-i>
+código de retorno   0
+VEREDICTO           EXITO
+```
+
+### Resultado contra el criterio congelado
+
+```text
+E1  34 casos, cada uno con el resultado que la regla aplicable predice     satisfecho
+E2  cada rechazo cita una regla declarada del candidato                    satisfecho
+E3  28 reglas mecánicas declaradas, 28 ejercitadas por al menos un caso    satisfecho
+E4  P-C: N_CONSTRUCTOR = 5 y N_AUDITOR = 7 por dos derivaciones Git
+    distintas sobre los SHAs congelados, coincidentes                      satisfecho
+
+F1  ningún caso difirió del resultado normativo esperado                   no ocurrió
+F2  ningún rechazo quedó sin regla declarada                               no ocurrió
+F3  ninguna regla quedó sin caso y N1-N9 están todos presentes             no ocurrió
+F4  el mecanismo no necesitó inventar ninguna regla                        no ocurrió
+F5  P-C no difirió de la derivación independiente                          no ocurrió
+
+N1-N9  los nueve controles negativos fueron rechazados; ninguno aceptado
+```
+
+### Sobre `F4` y la autoridad de transporte
+
+`F4` era el criterio con más probabilidad de disparar, porque `V8` no enumera las formas
+admitidas y una implementación perezosa las habría inventado.
+
+No fue necesario: `autoridad.py` obtiene los doce campos, el conjunto de tipos admitidos por
+campo y las tres formas admitidas leyendo
+`revolutions-orchestra-ai@e05b24cc501ce839ffabee6d9666d069e056255c:metodo/REVOLUTIONS.md`, que es
+la referencia autoritativa explícita que el propio candidato declara. Eso es lo que `F4` admite
+como fuente legítima, y es evidencia directa de que la decisión de no duplicar el contrato en
+`V8` deja al candidato aplicable en lugar de ambiguo.
 
 ## Limitaciones de esta entrega
 
-- El texto normativo de `CT-7` queda escrito, pero su suficiencia operacional no está demostrada
-  hasta que la corrida bajo contrato congelado la ejercite.
+Las de la corrida son las que el contrato congelado declara, y están en `EVIDENCIA.md` sin
+agregados. Además, propias de la entrega:
+
 - `REGLAS-ORQUESTADOR.md` referencia `CT-1`, `CT-2` y `CT-3`, cuyos documentos autoritativos
   todavía no existen. Las referencias son por repositorio, path y contrato, y no congelan SHA,
   por lo que no crean dependencia circular ni quedan rotas cuando esos documentos se escriban.
+- El verificador no se promueve a `reglas-orquestador-ai`: es evidencia y vive sólo aquí.
+- El contrato quedó agotado al producir este resultado. Una corrida nueva necesita un contrato
+  nuevo, y una modificación del candidato que cambie su blob deja de estar cubierta por el
+  contrato congelado.
 
 ## Resultado
 
-`u2-reglas-orquestador/REGLAS-ORQUESTADOR.md`, candidato de `CT-7`, y este contrato previo
-propuesto y no ejecutado.
+`u2-reglas-orquestador/REGLAS-ORQUESTADOR.md`, candidato de `CT-7` sin modificar, y la corrida
+única bajo contrato congelado con su mecanismo, su corpus, su salida literal y su evidencia.
 
 ## Necesidad humana detectada
 

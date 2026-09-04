@@ -1,0 +1,73 @@
+AUTORIDAD DE TRANSPORTE (derivada, no inventada)
+  fuente  revolutions-orchestra-ai@e05b24cc501ce839ffabee6d9666d069e056255c:metodo/REVOLUTIONS.md
+  campos  actor, commit, final, human_need, next_actor, next_instance, next_prompt, protocol, repository, turn_id, unit, work_id
+    actor          str
+    commit         str
+    final          bool
+    human_need     null|object
+    next_actor     null|str
+    next_instance  null|str
+    next_prompt    null|str
+    protocol       str
+    repository     str
+    turn_id        int
+    unit           null|str
+    work_id        str
+  formas admitidas (necesidad, final, trio_null)
+    (False, False, False)
+    (True, False, True)
+    (False, True, True)
+
+CASOS
+  OK   C01   R-1.1-primer-turn-id         
+  OK   C02   R-2-ultimo-bloque            
+  OK   C03   R-2-no-parsea                
+  OK   C04   R-2-no-escanear-prompt       
+  OK   C05   R-V1                         [N7] 
+  OK   C06   R-V2                         [N6] 
+  OK   C07   R-V3                         
+  OK   C08   R-V4                         
+  OK   C09a  R-V5                         [N3] 
+  OK   C09b  R-V5                         [N3] 
+  OK   C09c  R-V5                         [N3] 
+  OK   C10   R-V6                         [N5] 
+  OK   C11   R-V7                         [N4] 
+  OK   C12   R-V8                         [N1] 
+  OK   C13   R-V8                         [N2] 
+  OK   C14   R-4-reporte                  reporte = ('DETENER_REPORTAR', 'R-V1'), sin sobre reparado
+  OK   C15a  R-5-no-reinicio              
+  OK   C15b  R-5-no-reinicio              
+  OK   C16   R-6-resolucion               
+  OK   C17   R-6-fresh-a-current          
+  OK   C18   R-6.1-fail-closed            [N8] 
+  OK   C19   R-7-orden                    
+  OK   C20   R-7-orden                    
+  OK   C21   R-7-orden                    
+  OK   C22   R-7-entrega-literal          
+  OK   C23   R-8-no-cadencia              sin importaciones de Git/red y sin miembros de conteo o cadencia
+  OK   C24   R-9.1-detener-constructor    
+  OK   C25   R-9.1-detener-auditor        
+  OK   C26   R-9.1-detencion-natural      
+  OK   C27   R-9.1-pendiente              [N9] 
+  OK   C28   R-9.2-continuar-literal      
+  OK   C29   R-9.3-canal-separado         
+  OK   C30   R-10-estado-efimero          estado efimero = ['instancias', 'sobre_pendiente', 'stop_requested', 'ultimo_turn_id']
+  OK   C31   R-11-secreto-literal         
+
+E2 atribucion de rechazos
+  todos los rechazos citan una regla declarada: True
+
+E3 cobertura de reglas
+  reglas declaradas 28, reglas ejercitadas 28
+
+CONTROLES NEGATIVOS
+  exigidos ['N1', 'N2', 'N3', 'N4', 'N5', 'N6', 'N7', 'N8', 'N9']
+  presentes ['N1', 'N2', 'N3', 'N4', 'N5', 'N6', 'N7', 'N8', 'N9']
+
+P-C derivacion de cadencia fuera del orquestador
+  work  C:/Franco_Metodos_AI/work-claude-i@b2a7c472732e5da59b8c82da7278a0e66ed26e93
+  audit C:/Franco_Metodos_AI/audit-chatgpt-i@3e27c9af3e71767f4898c6607659c84ab010aa4a
+  N_AUDITOR      rev-list --count = 7   enumeracion unica = 7   coincide = True
+  N_CONSTRUCTOR  rev-list --count = 5   enumeracion unica = 5   coincide = True
+
+VEREDICTO=EXITO
