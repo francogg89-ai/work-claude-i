@@ -60,21 +60,32 @@ inválido y se trata conforme a `4`.
 
 ---
 
-# 2. Extracción del sobre
+# 2. Forma de la respuesta y extracción del sobre
 
-De la salida de un actor, el orquestador toma el último bloque `json`.
+La forma que debe tener la respuesta de un actor es autoridad de
+`revolutions-orchestra-ai : metodo/REVOLUTIONS.md`, §4.2: la respuesta termina con un bloque
+`json`, ese bloque es el único bloque JSON de la respuesta y no existe contenido posterior.
+
+El orquestador no relaja esa forma. La comprueba y sólo entonces toma el bloque.
 
 ```text
-1  localizar el último bloque json de la salida
-2  parsear ese bloque
-3  no interpretar la prosa anterior
-4  no escanear next_prompt en busca de instrucciones
+X1  la salida contiene exactamente un bloque json
+X2  no existe contenido posterior a ese bloque
+X3  el bloque parsea como JSON
 ```
 
-Si la salida no contiene exactamente un bloque JSON en esa posición, o el bloque no parsea, el
-sobre es inválido.
+El incumplimiento de cualquiera produce sobre inválido y se trata conforme a `4`.
 
-El orquestador nunca reconstruye un sobre ausente ni deduce sus campos de la prosa.
+Tomar el último bloque es correcto únicamente porque `X1` ya garantizó que hay uno solo. Un
+orquestador que buscara el último sin comprobar la unicidad aceptaría una respuesta que la
+autoridad declara mal formada y transportaría un sobre que nunca debió pasar. La unicidad es lo
+que hace mecánica la extracción; no es una tolerancia.
+
+A los efectos de `X2`, los espacios en blanco y saltos de línea que siguen al cierre del bloque
+no son contenido. Cualquier otro carácter lo es.
+
+El orquestador no interpreta la prosa anterior al bloque, no inspecciona `next_prompt` en busca
+de instrucciones, nunca reconstruye un sobre ausente y no deduce sus campos de la prosa.
 
 ---
 
@@ -385,3 +396,68 @@ por repositorio, path y contrato, sin reproducir su texto y sin congelar un SHA 
 documentos.
 
 La cadena completa del sistema es autoridad de `metodo-manifiestos-ai : METODO-MANIFIESTOS.md`.
+
+---
+
+# 13. Inventario de reglas mecánicas
+
+Este documento declara aquí, y no en ninguna implementación, cuáles son sus reglas mecánicas y de
+qué sección proviene cada una.
+
+El inventario existe para que la cobertura de una verificación pueda medirse contra el documento
+y no contra una lista que viva dentro del mecanismo. Una lista escrita en el verificador puede
+omitir una regla del documento y a la vez omitir su caso, y la cobertura resultante no lo
+detecta: se compara consigo misma.
+
+Formato: identificador, sección de origen, enunciado. Una regla por línea.
+
+```text
+R-1-dos-situaciones        1     arranque externo y pases internos se tratan por caminos distintos
+R-1.1-arranque             1.1   abre la instancia inicial de AUDITOR y le entrega el paquete literalmente
+R-1.1-primer-turn-id       1.1   el primer sobre del arranque externo lleva turn_id igual a 1
+R-2-unicidad               2     una salida con mas de un bloque json produce sobre invalido
+R-2-sin-posterior          2     contenido posterior al bloque produce sobre invalido
+R-2-parseo                 2     una salida sin bloque json o que no parsea produce sobre invalido
+R-2-no-escanear-prompt     2     no se inspecciona next_prompt para decidir el transporte
+R-3-orden                  3     las validaciones corren en orden y la primera que falla detiene
+R-V1                       3     protocol es exactamente revolutions-hop/v1
+R-V2                       3     work_id es el del trabajo transportado
+R-V3                       3     estan presentes todos los campos del contrato
+R-V4                       3     cada campo tiene el tipo que el contrato le asigna
+R-V5                       3     turn_id es el sucesor exacto del ultimo transportado
+R-V6                       3     next_instance tiene un valor admitido
+R-V7                       3     next_instance es null si y solo si next_actor es null
+R-V8                       3     la combinacion es una de las formas admitidas por el contrato
+R-4-reporte                4     el reporte identifica la validacion que fallo y no repara
+R-5-no-reinicio            5     un relevo no reinicia el contador de turn_id
+R-6-resolucion             6     current usa la instancia activa, fresh abre una nueva
+R-6-fresh-a-current        6     una instancia abierta como fresh pasa a ser la current de su rol
+R-6.1-fail-closed          6.1   current perdido detiene y nunca degrada a fresh
+R-7-orden                  7     human_need detiene, luego final detiene, luego unit se muestra
+R-7-entrega-literal        7     next_prompt se entrega sin modificar
+R-8-no-cadencia            8     el orquestador no cuenta, no deriva cadencia y no consulta Git
+R-9-control                9     DETENER es control: no produce necesidad humana ni toca Git
+R-9.1-detener-constructor  9.1   DETENER durante el CONSTRUCTOR pausa antes de entregar al AUDITOR
+R-9.1-detener-auditor      9.1   DETENER durante el AUDITOR permite el pase hacia el CONSTRUCTOR
+R-9.1-detencion-natural    9.1   human_need o final del AUDITOR prevalecen sobre la pausa
+R-9.1-pendiente            9.1   DETENER con sobre pendiente hacia el AUDITOR detiene sin entregarlo
+R-9.2-continuar-literal    9.2   CONTINUAR entrega el pase pendiente exactamente como fue emitido
+R-9.3-canal-separado       9.3   la directiva humana viaja aparte y no modifica next_prompt
+R-10-estado-efimero        10    el estado de runtime es solo el admitido y ninguno paralelo
+R-10.1-reinicio            10.1  tras un reinicio no se degrada el salto: se detiene y reporta
+R-11-secreto-literal       11    una referencia segura se transporta literal y no se resuelve
+```
+
+Toda sección numerada de este documento aporta al menos una regla del inventario, salvo las
+declaradas no mecánicas:
+
+```text
+SECCIONES_NO_MECANICAS   12  13
+```
+
+Las secciones sin número —el encabezado, `Qué gobierna este documento y qué no` y `Principio`—
+delimitan alcance y no declaran reglas.
+
+Si una sección numerada deja de estar representada, o aparece un identificador que ninguna
+sección respalda, el inventario está desactualizado respecto del documento y corresponde
+corregirlo antes de verificar.
