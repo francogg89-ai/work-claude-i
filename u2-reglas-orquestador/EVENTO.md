@@ -4,12 +4,15 @@ Describe el estado de la unidad. No acumula sus versiones anteriores: la histori
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@6c8630ad5144c9de44b172139314c3d5b90a35d1` y
-`audit-chatgpt-i@b679065c468cd1ba3bc8289965ec0bdc1b1b7c0d`.
+El corte `work-claude-i@8facccd089a651f9b097269b791ab33c895e725e` y
+`audit-chatgpt-i@693498fc8ff681069cf3997ea7e3f8636826a2d3`.
 
-Esa auditoría interpretó la corrida contractual como FALLO y registró tres defectos: `D-03` por
-violación de la condición de corrida única, `D-04` por la forma de `§10.1` del candidato, y `D-05`
-por dos comprobaciones estructurales sin capacidad demostrada de fallar.
+Esa auditoría dio por corregidos `D-04` y `D-05`, reconoció que `X1`-`X3` cubren adecuadamente el
+aborto, y no congeló el contrato por `D-06`: `X4` y `X5` no quedaban discriminados frente a
+evidencia preexistente de una invocación del mismo mecanismo bajo el mismo contrato.
+
+La auditoría anterior, `audit-chatgpt-i@b679065c468cd1ba3bc8289965ec0bdc1b1b7c0d`, había
+interpretado la corrida contractual como FALLO y registrado `D-03`, `D-04` y `D-05`.
 
 ## D-03: lo que hice mal
 
@@ -32,9 +35,22 @@ quien ejecuta.
 
 ## Qué hizo esta intervención
 
-Corrigió `D-04` en el candidato, corrigió la verificabilidad de las dos propiedades de `D-05`, y
-propone un contrato previo nuevo. No ejecutó ninguna mitad de verificación y no escribió mecanismo
-nuevo.
+Corrigió `D-06` en el contrato propuesto. No tocó el candidato, que conserva su blob
+`b871240fd38d28430fc86fc4b14f1b851dad1f10`, no ejecutó ninguna mitad de verificación y no escribió
+`verificacion-3/`.
+
+`D-06` era exacto: `X4` y `X5` estaban enunciados pero ninguna corrida los obligaba a demostrarse.
+`E10` probaba el caso positivo y `N17` el aborto, y entre los dos quedaba abierto justamente el
+escenario que produjo `D-03`: una invocación previa ya existente y un intento posterior bajo el
+mismo contrato.
+
+La corrección introduce una bitácora append-only que el mecanismo lee antes de empezar, y el
+control `N18`, que exige demostrar que un reintento sobre una bitácora con marca previa se detiene
+y no reemplaza el resultado anterior. Con eso `X4` y `X5` dejan de ser una declaración del
+contrato y pasan a ser una propiedad que la corrida debe exhibir.
+
+Las intervenciones anteriores de esta unidad corrigieron `D-04` en el candidato y la
+verificabilidad de las dos propiedades de `D-05`.
 
 `u2-reglas-orquestador/verificador/` y `u2-reglas-orquestador/verificacion-2/` no fueron tocadas:
 son historia y evidencia de dos corridas ya interpretadas.
@@ -99,19 +115,45 @@ blob         b871240fd38d28430fc86fc4b14f1b851dad1f10
 Esta regla gobierna sobre cualquier otra lectura del contrato.
 
 ```text
-X1  la corrida empieza cuando el mecanismo escribe su marca de inicio, antes del primer caso
+X1  antes del primer caso, el mecanismo lee la bitácora y anota en ella su marca de inicio
 X2  una invocación que empezó y termina por excepción, aborto, interrupción, error de entorno o
     cualquier terminación distinta de la emisión del veredicto, es una ejecución observada
 X3  esa observación se resuelve como FALLO. No existe tercera salida y no existe la categoría
     "no llegó a correr"
-X4  esa ejecución agota el contrato. Corregir el mecanismo y volver a invocarlo bajo el mismo
-    contrato no produce una corrida válida y no reemplaza el resultado
-X5  una corrida nueva exige un contrato nuevo, propuesto y congelado antes de ejecutarla
+X4  esa ejecución agota el contrato. Si al leer la bitácora el mecanismo encuentra una marca de
+    inicio previa para este mismo contrato, la invocación en curso es un reintento: se resuelve
+    como FALLO, no evalúa los demás criterios como si fuera la corrida contractual, y no
+    reemplaza el resultado anterior
+X5  una corrida nueva exige un contrato nuevo, propuesto y congelado antes de ejecutarla. Una
+    bitácora bajo otra identidad de contrato es una bitácora distinta
 ```
 
-La marca de inicio existe para que `X2` sea comprobable y no dependa de que quien ejecutó lo
-declare. Una invocación abortada deja su marca de inicio sin marca de cierre, y esa asimetría es
-la evidencia.
+### La bitácora
+
+```text
+path       u2-reglas-orquestador/verificacion-3/BITACORA.txt
+formato    una línea por evento, sólo se agrega, nunca se reescribe
+identidad  cada línea lleva la identidad del contrato congelado y el blob del candidato
+eventos    INICIO al abrir la corrida; CIERRE al emitir el veredicto
+```
+
+La bitácora es lo que convierte `X2`, `X4` y `X5` en hechos comprobables en lugar de
+declaraciones de quien ejecutó.
+
+```text
+una invocación normal        deja INICIO y CIERRE
+una invocación abortada      deja INICIO sin CIERRE
+un reintento                 encuentra un INICIO previo y se detiene por X4
+```
+
+La bitácora se preserva en Git junto con la evidencia. Su contenido es parte del delta que el
+AUDITOR inspecciona, de modo que la cantidad de invocaciones deja de ser algo que el CONSTRUCTOR
+informe y pasa a ser algo que el AUDITOR lee.
+
+Esta es la corrección de `D-06`. La versión anterior de esta regla probaba el caso positivo y el
+aborto, pero no el reintento: un mecanismo podía escribir su marca, abortar, ser corregido y
+volver a invocarse sin que nada lo detectara, que es exactamente lo que ocurrió en la corrida
+interpretada como `D-03`.
 
 ### Propiedad que debe demostrarse
 
@@ -145,8 +187,9 @@ Un verificador determinista, sin modelo de lenguaje y sin red, en
 No declara catálogo propio de reglas: extrae del candidato las obligaciones y la estructura de sus
 secciones, y de ahí obtiene el denominador.
 
-Escribe su marca de inicio antes del primer caso y su marca de cierre al emitir el veredicto.
-Ambas se preservan.
+Antes del primer caso lee la bitácora. Si encuentra una marca de inicio previa para este contrato,
+se detiene por `X4` sin evaluar los demás criterios. Si no, anota su marca de inicio y, al emitir
+el veredicto, su marca de cierre. La bitácora se preserva.
 
 Antes de comparar comprueba que el candidato que lee es el blob congelado.
 
@@ -170,8 +213,10 @@ E7   para toda comprobación estructural, el observable leído difiere entre suj
      mutante, y ambos valores quedan preservados
 E8   P-C reproduce los mismos números por dos derivaciones Git distintas
 E9   el candidato leído es exactamente el blob congelado
-E10  la corrida preserva su marca de inicio y su marca de cierre, y no existe evidencia de una
-     invocación anterior de este mecanismo bajo este contrato
+E10  la corrida preserva su marca de inicio y su marca de cierre
+E11  al abrir, la bitácora no contenía ninguna marca de inicio previa para este contrato
+E12  la bitácora preservada contiene exactamente un INICIO y un CIERRE, y su identidad de
+     contrato y de candidato coincide con las congeladas
 ```
 
 `E7` es la lección de `S24` y `S28`. Bajo el contrato anterior una comprobación podía fallar sobre
@@ -195,6 +240,10 @@ F8   el observable de alguna comprobación estructural no difiere entre real y m
 F9   P-C difiere entre sus dos derivaciones
 F10  el blob leído no es el congelado
 F11  la invocación empezó y terminó por excepción, aborto o interrupción, conforme a X2
+F12  al abrir, la bitácora ya contenía una marca de inicio para este contrato: la invocación es
+     un reintento conforme a X4 y no reemplaza el resultado anterior
+F13  la bitácora preservada no contiene exactamente un INICIO y un CIERRE, o su identidad de
+     contrato o de candidato no coincide con las congeladas
 ```
 
 No existe tercera salida. Toda observación de la corrida cae en éxito o fallo.
@@ -224,13 +273,22 @@ N14  un candidato sintético con contenido fuera de forma debe producir F6
 N15  un blob sintético ajeno debe producir F10
 N16  una comprobación sintética cuyo mutante no altera el observable que ella lee debe producir
      F8, y si además pasa sobre ese mutante, F7
-N17  una invocación sintética que escribe su marca de inicio y termina por excepción debe
-     quedar registrada como ejecución observada conforme a X2
+N17  una invocación sintética que anota su marca de inicio y termina por excepción debe dejar en
+     su bitácora sintética un INICIO sin CIERRE, y quedar registrada como ejecución observada
+     conforme a X2
+N18  sobre una bitácora sintética que ya contiene un INICIO para el mismo contrato, una segunda
+     invocación debe detenerse por X4 y resolver F12, sin evaluar los demás criterios y sin
+     emitir un veredicto que reemplace al anterior. Si en cambio continúa y produce un resultado
+     normal, la detección de reintento no discrimina y la corrida es FALLO
 ```
 
 `N16` reproduce sintéticamente el defecto de `S24` y `S28` y obliga al mecanismo a demostrar que
-lo detecta. `N17` hace lo mismo con el defecto `D-03`: obliga a demostrar que una invocación
-abortada es observable en la evidencia y no queda como si no hubiera ocurrido.
+lo detecta.
+
+`N17` y `N18` son las dos mitades del defecto `D-03`, y sólo juntas lo cubren. `N17` demuestra que
+una invocación abortada queda observable en lugar de desaparecer. `N18` demuestra lo que faltaba:
+que un reintento sobre esa evidencia es detectado y no puede sustituir el resultado anterior. Sin
+`N18`, `X4` y `X5` eran una promesa del contrato que ninguna corrida obligaba a cumplir.
 
 ### Limitaciones conocidas
 
@@ -243,6 +301,13 @@ abortada es observable en la evidencia y no queda como si no hubiera ocurrido.
   exija todo lo que debería.
 - `P-F` demuestra que cada mutante altera el observable que su comprobación lee. No demuestra que
   ese observable sea el más adecuado para la obligación: esa elección es lectura del AUDITOR.
+- La bitácora hace auditable la cantidad de invocaciones **siempre que se preserve**. Un
+  CONSTRUCTOR que la borrara antes de cerrar su commit no dejaría rastro en el árbol de trabajo.
+  Lo que el mecanismo cierra es la posibilidad de reintentar sin darse cuenta y la de reintentar
+  sin que quede escrito; lo que no puede cerrar es la supresión deliberada de la evidencia. Ese
+  residuo lo cubre `E12`, que exige la bitácora completa y coherente en la entrega: una entrega
+  con veredicto y sin bitácora es FALLO por `F13`, de modo que borrarla no produce una corrida
+  aprobable sino una entrega defectuosa.
 
 ---
 
@@ -252,18 +317,23 @@ Nada. Corrige el candidato y propone el contrato.
 
 ## Limitaciones de esta entrega
 
-- El candidato cambió de blob, por lo que ninguna evidencia anterior lo cubre.
+- El candidato no cambió, pero ninguna evidencia anterior lo cubre: las dos corridas ya
+  interpretadas corrieron contra blobs distintos y bajo contratos agotados.
 - `REGLAS-ORQUESTADOR.md` referencia `CT-1`, `CT-2` y `CT-3`, cuyos documentos autoritativos
   todavía no existen. Las referencias son por repositorio, path y contrato, y no congelan SHA.
 - Las dos obligaciones reformuladas cambian su enunciado, no la conducta que exigen. Que la nueva
   redacción sea fiel a esa conducta es lectura del AUDITOR.
+- La bitácora todavía no existe: se crea cuando se construya el mecanismo, después del
+  congelamiento. Hasta entonces `X4` y `X5` están definidos y no ejercitados.
 
 ## Resultado
 
-`u2-reglas-orquestador/REGLAS-ORQUESTADOR.md` corregido, blob
+Este contrato previo, propuesto y no ejecutado, con `X4` y `X5` discriminados por la bitácora y
+por el control `N18`.
+
+`u2-reglas-orquestador/REGLAS-ORQUESTADOR.md` conserva sin cambios el blob
 `b871240fd38d28430fc86fc4b14f1b851dad1f10`, con la forma de `§10.1` restaurada y las obligaciones
-`R-9.1-frontera` y `R-9.3-no-en-json` reformuladas para ser observables; y este contrato previo
-propuesto y no ejecutado.
+`R-9.1-frontera` y `R-9.3-no-en-json` observables.
 
 ## Necesidad humana detectada
 
