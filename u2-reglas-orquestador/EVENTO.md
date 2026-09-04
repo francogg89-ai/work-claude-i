@@ -4,12 +4,16 @@ Describe el estado de la unidad. No acumula sus versiones anteriores: la histori
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@3960b4865474daa0d53142cbf2e7cdc4236552c8` y
-`audit-chatgpt-i@9f8512f1e7228fb81692c62b33414b11d974bd8d`.
+El corte `work-claude-i@5f5e2ee8e9bcc7f471cabcd0ecd865ff5cfa0a39` y
+`audit-chatgpt-i@fd356b9369cf5bd80a9a15a6695453f2e191dcfe`.
 
-Esa auditoría dio por corregido `D-01`, no congeló el contrato propuesto y devolvió `D-02` como
-bloqueante: el inventario de `§13` podía representar una sección y a la vez omitir otras
-obligaciones mecánicas de esa misma sección. Los ejemplos comprobados fueron `§8` y `§11`.
+Esa auditoría dio por corregidos `D-01` y `D-02`, congeló el contrato previo para el candidato
+exacto y registró `OBS-01` sobre la sección `10.1`, indicando que debía resolverse dentro de
+`E5`/`F6`/`F4` sin modificar el criterio después del resultado.
+
+La intervención anterior de esta unidad corrigió `D-02`, que había quedado bloqueante porque el
+inventario de `§13` podía representar una sección y a la vez omitir otras obligaciones mecánicas
+de esa misma sección. Los ejemplos comprobados fueron `§8` y `§11`.
 
 ## Qué hizo y por qué
 
@@ -244,23 +248,85 @@ como evidencia.
 
 ---
 
-## Qué verificó esta intervención
+---
 
-Nada. Reestructura el candidato y propone el contrato.
+## Corrida bajo el contrato congelado
+
+Se ejecutó una única corrida contra el candidato y el criterio congelados en
+`audit-chatgpt-i@fd356b9369cf5bd80a9a15a6695453f2e191dcfe`. El candidato no fue modificado antes
+de producir el resultado: el blob leído es el congelado.
+
+El mecanismo nuevo, su corpus, sus insumos sintéticos, la salida literal y la evidencia están en
+`u2-reglas-orquestador/verificacion-2/`. La evidencia de la corrida anterior sigue intacta en
+`u2-reglas-orquestador/verificador/`.
+
+```text
+código de retorno   1
+VEREDICTO           FALLO
+```
+
+### Resultado contra el criterio congelado
+
+```text
+E1  84 casos; 82 con el resultado que su obligación predice, 2 discrepantes      NO
+E2  13 identificadores emitidos, ninguno ajeno al candidato                      SI
+E3  83 obligaciones del candidato, 83 ejercitadas                                SI
+E4  ninguna sección mecánica sin obligación                                      SI
+E5  una violación de forma en la sección 10.1                                    NO
+E6  dos comprobaciones estructurales no fallaron sobre su mutante                NO
+E7  P-C coincidente: N_CONSTRUCTOR = 8, N_AUDITOR = 10                           SI
+E8  el blob leído es exactamente el congelado                                    SI
+
+F1 ocurrió (S24, S28)   F6 ocurrió (10.1)   F7 ocurrió (S24, S28)
+F2, F3, F4, F5, F8 y F9 no ocurrieron
+```
+
+Ninguno de `N1`-`N11` fue aceptado. `N12`-`N15` discriminaron sobre sus insumos sintéticos.
+
+### Los tres hallazgos y a quién pertenecen
+
+**`F6` es un defecto del candidato.** Es exactamente `OBS-01`: la sección `10.1` lleva un
+separador `---` después de su bloque de obligaciones y sin `Nota.` previa. El candidato declara
+defecto a cualquier contenido no vacío en esa zona, y `---` es contenido no vacío. El mecanismo
+aplicó la regla declarada sin completarla, de modo que `F6` ocurre y `F4` no. La lectura
+alternativa —tratar `---` como separador tipográfico— habría exigido una regla que el candidato
+no declara, y habría activado `F4`. Ninguna lectura del criterio congelado conduce a ÉXITO sobre
+este blob.
+
+**`S24` y `S28` son defectos del mecanismo, no del candidato.** En ambos casos el sujeto real se
+comportó como la obligación exige; lo que falló es la capacidad de la comprobación para
+detectar una violación. En `S24` el mutante reproduce la conducta correcta en lugar de violarla;
+en `S28` la comprobación observa el sobre antes de que el mutante lo altere. `E6` es el criterio
+que los descubrió: bajo el contrato anterior, esas dos comprobaciones habrían entrado en la
+evidencia como verdes sin demostrar nada.
+
+### Lo que no se hizo
+
+No se corrigió el mecanismo para volver a correr. El contrato se agota al producir su resultado,
+y una segunda corrida necesita un contrato nuevo. Tampoco se tocó el candidato ni el criterio
+después de observar el resultado.
+
+`EVIDENCIA.md` declara además una invocación previa que abortó con una excepción sin producir
+veredicto ni evaluar criterio alguno, y los tres archivos que esa invocación dejó en el
+directorio antes de ser eliminados. Corresponde al AUDITOR juzgar si esa invocación afecta la
+condición de corrida única.
 
 ## Limitaciones de esta entrega
 
-- El candidato cambió de blob, por lo que ninguna evidencia anterior lo cubre.
+Las de la corrida son las que el contrato congelado declara, sin agregados, y están en
+`EVIDENCIA.md`. Además:
+
 - `REGLAS-ORQUESTADOR.md` referencia `CT-1`, `CT-2` y `CT-3`, cuyos documentos autoritativos
   todavía no existen. Las referencias son por repositorio, path y contrato, y no congelan SHA.
-- La desagregación de obligaciones aumentó la superficie del candidato de forma material. Que
-  cada enunciado sea fiel a la conducta que describe es lectura del AUDITOR.
+- Que cada enunciado del candidato sea fiel a la conducta que describe es lectura del AUDITOR.
+- El mecanismo de `verificacion-2/` tiene dos comprobaciones que no demostraron capacidad de
+  fallar. No es un mecanismo apto para una corrida futura sin corregirlas.
 
 ## Resultado
 
-`u2-reglas-orquestador/REGLAS-ORQUESTADOR.md` reestructurado, blob
-`4cfc8f88ead6a1466f61522496605b6c89ed4057`, con 83 obligaciones etiquetadas sobre 17 secciones
-mecánicas, y este contrato previo propuesto y no ejecutado.
+La corrida única bajo contrato congelado, con veredicto `FALLO`, su mecanismo, su corpus, sus
+insumos sintéticos, su salida literal y su evidencia. El candidato conserva el blob congelado
+`4cfc8f88ead6a1466f61522496605b6c89ed4057`.
 
 ## Necesidad humana detectada
 
