@@ -1,0 +1,169 @@
+X0 PRE-VUELO, ESTRICTAMENTE ANTES DE INICIO
+  V1   local   25a6e890351a5f402867dd6343bf80c041dd8cfc resuelve=True
+  V2   local   f44f2a0797cde6f569cca6fe5397d45917680258 resuelve=True
+  V3   local   636a5d095574130b56c232da7958691f87234516 resuelve=True
+  V4   local   5bd6b0f582c7970a7b8c6c838b9971a70df43dfc resuelve=True
+  V5   remota  ('origin', 'refs/heads/main')            resuelve=True
+  irresolubles: ninguna
+  R1 interacciones de red en X0: 1
+
+REGLA DE EJECUCION
+  contrato  audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6
+  candidato f44f2a0797cde6f569cca6fe5397d45917680258
+  bitacora  C:\Franco_Metodos_AI\work-claude-i\u3-metodo-manifiestos\BITACORA.txt
+  lineas al abrir: 0 (ajenas: 0)
+  E13 no existe INICIO previo de esta identidad
+  INICIO anotado antes del primer caso
+
+E16 RESULTADO DE X0, VINCULACION POR VINCULACION
+  V1   local   25a6e890351a5f402867dd6343bf80c041dd8cfc resuelve=True
+  V2   local   f44f2a0797cde6f569cca6fe5397d45917680258 resuelve=True
+  V3   local   636a5d095574130b56c232da7958691f87234516 resuelve=True
+  V4   local   5bd6b0f582c7970a7b8c6c838b9971a70df43dfc resuelve=True
+  V5   remota  ('origin', 'refs/heads/main')            resuelve=True
+  forma del resultado: solo booleanos = True
+
+E17 TRAZA EXTERNA DE X0, COBERTURA NOMINAL
+  #1 git -C C:/Franco_Metodos_AI/work-claude-i cat-file -e 25a6e890351a5f402867dd6343bf80c041dd8cfc^{object}
+     satisface: V1
+  #2 git -C C:/Franco_Metodos_AI/work-claude-i cat-file -e f44f2a0797cde6f569cca6fe5397d45917680258^{object}
+     satisface: V2
+  #3 git -C C:/Franco_Metodos_AI/work-claude-i cat-file -e 636a5d095574130b56c232da7958691f87234516^{object}
+     satisface: V3
+  #4 git -C C:/Franco_Metodos_AI/work-claude-i cat-file -e 5bd6b0f582c7970a7b8c6c838b9971a70df43dfc^{object}
+     satisface: V4
+  #5 git -C C:/Franco_Metodos_AI/work-claude-i ls-remote --exit-code origin refs/heads/main
+     satisface: V5
+  declaradas 5  cubiertas ['V1', 'V2', 'V3', 'V4', 'V5']  sin cubrir ninguna  no-sondas 0  archivos 0
+
+E18 / E19 TRAZA INTERNA E IMPORTS DEL PRE-VUELO
+  modulos llamados: ['__main__', 'abc', 'collections.abc', 'contextlib', 'instrumentacion', 'os', 'prevuelo', 'sondas', 'subprocess']
+  llamadas a modulos de la corrida: ninguna
+  prevuelo  importa ['sondas']  cruce: ninguno
+  sondas    importa ['subprocess']  cruce: ninguno
+
+E11 IDENTIDAD DEL CANDIDATO, LEIDA DESPUES DE INICIO
+  leido f44f2a0797cde6f569cca6fe5397d45917680258  congelado f44f2a0797cde6f569cca6fe5397d45917680258  coincide True
+
+SUPERFICIE NORMATIVA EXTRAIDA DEL CANDIDATO
+  obligaciones 56  unicas 56  secciones ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']  no mecanicas ['10', '9']
+  secciones mecanicas sin obligacion: ninguna
+  violaciones de forma: ninguna
+
+P-C1 REFERENCIA REMOTA VIGENTE (R2)
+  origin refs/heads/main -> 25a6e890351a5f402867dd6343bf80c041dd8cfc
+
+P-C2 DISCRIMINACION SOBRE LOS CORTES CONGELADOS
+  paths modificados 636a5d09..5bd6b0f5: ['u3-metodo-manifiestos/EVENTO.md', 'u3-metodo-manifiestos/METODO-MANIFIESTOS.md']
+  superficie disjunta  interseccion=vacia procede=True ruteo=False
+  superficie solapada  interseccion=['u3-metodo-manifiestos/EVENTO.md', 'u3-metodo-manifiestos/METODO-MANIFIESTOS.md'] procede=False ruteo=True
+
+CASOS DE LLAMADA
+  OK    L01   R-2-cierra               
+  OK    L02   R-2-contexto             
+  OK    L03   R-2-solo-lo-material     
+  OK    L04   R-2-no-repite            
+  OK    L05   R-2-no-formulario        
+  OK    L06   R-2-traduce              
+  OK    L07   R-3-no-publica           
+  OK    L08   R-3-no-silencio          
+  OK    L09   R-3-orden                
+  OK    L10   R-4-campos               [N1] 
+  OK    L11   R-4-project              [N4] 
+  OK    L12   R-4-aplicables           
+  OK    L13   R-4-identidades          [N2] 
+  OK    L14   R-4-sin-secretos         [N3] 
+  OK    L15   R-4-no-bootstrap         
+  OK    L16   R-4-campos               
+  OK    L17   R-5-opciones             
+  OK    L18   R-5-sin-contadores       [N8] 
+  OK    L19   R-5-constitucion         
+  OK    L20   R-5-multiplos            
+  OK    L21   R-5-hechos               
+  OK    L22   R-5-derivacion           
+  OK    L23   R-5-uniforme             
+  OK    L24   R-6-contrato             
+  OK    L25   R-6-contenido            
+  OK    L26   R-6-prohibido            [N7] 
+  OK    L27   R-6-aislado              
+  OK    L28   R-6-superficie           
+  OK    L29   R-6-descubrimiento       
+  OK    L30   R-6-no-presuncion        [N5] 
+  OK    L31   R-6-no-presuncion        [N6] 
+  OK    L32   R-6-rutea                
+  OK    L33   R-7-source-repos         
+  OK    L34   R-7-solo-lectura         
+  OK    L35   R-7-no-autoriza          [N10] 
+  OK    L36   R-7-utilidad             
+
+CASOS ESTRUCTURALES
+  FALLO S01   R-1-cadena               real=False mut=False difiere=True | [1273, 1080, 1378, 1413, 1448] | [1273, 1080, 1378, 12784, 1416]
+  OK    S02   R-1-no-sustituye         real=True mut=False difiere=True | [] | ['ninguno de esos documentos sustituye a otro']
+  OK    S03   R-1-no-amplia            real=True mut=False difiere=True | [] | ['ninguno amplia las autoridades de REVOLUTIONS']
+  OK    S04   R-1-no-ejecuta           real=True mut=False difiere=True | [] | ['EJECUTAR_TRABAJO']
+  OK    S05   R-1-no-decide            real=True mut=False difiere=True | [] | ['DECIDIR_UNIDAD']
+  FALLO S06   R-1-referencias          real=True mut=True difiere=False | [] | []
+  OK    S07   R-1-sin-sha              real=True mut=False difiere=True | [] | ['eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee']
+  OK    S08   R-2-alternativas         real=True mut=False difiere=True | [] | ['PROPONER']
+  OK    S09   R-3-puede                real=True mut=False difiere=True | [] | ['SUGERIR']
+  OK    S10   R-5-pregunta             real=True mut=False difiere=True | 'R-5-opciones' | None
+  OK    S11   R-5-no-orquestador       real=True mut=False difiere=True | [] | ['DECIDIR_RELEVO']
+  OK    S12   R-6-remoto               real=True mut=False difiere=True | (True, True) | (False, False)
+  FALLO S13   R-6-sin-registro         real=False mut=False difiere=True | ['lista_de_carriles'] | ['EVENT.md', 'lista_de_carriles']
+  OK    S14   R-6-sha-constitutivo     real=True mut=False difiere=True | (['a/x.md', 'b/y.md'], {'repo': 'r', 'paths': ('a/',)}) | (['a/x.md', 'b/y.md', 'colado/por/el/mecanismo.md'], {'repo': 'r', 'paths': ('a/',)})
+  OK    S15   R-7-capacidades          real=True mut=False difiere=True | [] | ['las capacidades se derivan de la constitucion']
+  OK    S16   R-7-sin-campos           real=True mut=False difiere=True | [] | ['next_model']
+  OK    S17   R-8-no-ejecuta           real=True mut=False difiere=True | [] | ['DESPLEGAR']
+  OK    S18   R-8-no-reemplaza         real=True mut=False difiere=True | [] | ['no reemplaza a REVOLUTIONS']
+  OK    S19   R-8-no-decide            real=True mut=False difiere=True | [] | ['DECLARAR_VEREDICTO']
+  OK    S20   R-8-no-estado            real=True mut=False difiere=True | [] | ['ultima_entrega', 'unidad_actual']
+  OK    S21   R-8-no-circular          real=True mut=False difiere=True | [] | ['ffffffffffffffffffffffffffffffffffffffff']
+  OK    S22   R-8-no-modelo            real=True mut=False difiere=True | [] | ['ELEGIR_MODELO']
+
+E2 / E3 ATRIBUCION Y COBERTURA
+  identificadores emitidos 18, ajenos: ninguno
+  obligaciones 56, ejercitadas 56
+  sin caso: ninguna | sobre obligaciones inexistentes: ninguno
+
+CONTROLES SOBRE EL PROPIO MECANISMO
+  N9 historia sintetica con merge: efectiva=5 primer_padre=3 difieren=True
+     *   6d2601a merge
+     |\  
+     | * 4c69aca rama-2
+     | * e72d0e8 rama-1
+     * | 363e17e main-1
+     |/  
+     * 343be91 base
+  N11 obligacion sintetica sin caso -> F3 = True (['R-1-beta'])
+  N12 seccion sintetica sin obligacion -> F5 = True (['3'])
+  N13 contenido sintetico fuera de forma -> F6 = True
+  N14 blob sintetico ajeno -> F12 = True
+  N15 mutante sintetico inerte -> F8 = True (obs iguales = True)
+  N16 aborto capturado via correr() -> ruta=corrida veredicto=FALLO propias=2
+  N17 reintento via correr() -> ruta=reintento criterios=False sin cambios=True
+  N18 historia ajena -> intacta=True alterada detectada=True
+  N19 vinculacion sintetica irresoluble -> NO_EJECUTABLE = True
+  N20 X0 sintetico que lee el candidato -> F18 = True, traza difiere = True
+  N21 X0 sintetico que ejecuta en memoria -> F19 = True ([('metodo', 'orden_de_publicacion')]), traza interna difiere = True
+  N22 pre-vuelo sintetico que importa la corrida -> F20 = True (['casos'])
+  N23 dos vinculaciones con el mismo valor -> nominal=2 valor=1 declaradas=2
+  N24 ruta de bitacora -> real=True mutante derivado=False
+  N25 interaccion de red adicional fuera de fase -> F24 = True (1)
+  N26 conjunto sintetico distinto de V1-V5 -> F25 = True
+  N27 X0 sintetico que transporta el valor -> F26 = True
+
+CONTROLES NEGATIVOS
+  exigidos N1..N27
+  presentes ['N1', 'N2', 'N3', 'N4', 'N5', 'N6', 'N7', 'N8', 'N9', 'N10', 'N11', 'N12', 'N13', 'N14', 'N15', 'N16', 'N17', 'N18', 'N19', 'N20', 'N21', 'N22', 'N23', 'N24', 'N25', 'N26', 'N27']
+
+E12 / E14 BITACORA
+  INICIO audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6 f44f2a0797cde6f569cca6fe5397d45917680258
+  CIERRE audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6 f44f2a0797cde6f569cca6fe5397d45917680258
+  coherente=True (propias: INICIO=1 CIERRE=1 | ajenas=0) | historia ajena intacta=True (ajenas antes=0 despues=0 iguales=True)
+
+VEREDICTO=FALLO
+  F1 S01 posiciones de la cadena = [1273, 1080, 1378, 1413, 1448]
+  F7 S06 la comprobacion no falla sobre su mutante
+  F8 S06 el observable no difiere
+  F1 S06 referencias ausentes = []
+  F1 S13 registro central = ['lista_de_carriles']

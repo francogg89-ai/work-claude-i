@@ -1,0 +1,10 @@
+efectiva=5
+primer_padre=3
+
+*   6d2601a merge
+|\  
+| * 4c69aca rama-2
+| * e72d0e8 rama-1
+* | 363e17e main-1
+|/  
+* 343be91 base
