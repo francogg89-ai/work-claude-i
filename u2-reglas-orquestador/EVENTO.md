@@ -4,18 +4,16 @@ Describe el estado de la unidad. No acumula sus versiones anteriores: la histori
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@aef34428c7f636765d62642f7f3124c4a5bc9f80` y
-`audit-chatgpt-i@a8f3de526bfb67820f4fa101d0f198205aa24d79`.
+El corte `work-claude-i@b2cb76be7ba4b2e901bf89e7512cb81ae1d6ac37` y
+`audit-chatgpt-i@d6dba9decf6091078fa1b7f4f49b044e59f4df02`.
 
-Esa auditoría aceptó la arquitectura propuesta para `D-07` —que la invocación real, `N17` y `N18`
-atraviesen la misma función de corrida, y que la guardia `X4` no viva separada en el punto de
-entrada— y dio `E13` por conceptualmente adecuado.
+Esa auditoría dio `D-09` por corregido y confirmó que `D-07` y `D-08` siguen corregidos.
 
-No congeló el contrato por `D-08`: `F14`, tal como estaba redactado, alcanzaba a los controles de
-reintento **y** de aborto, de modo que `N17` podía cumplir su propio criterio y activar `F14` al
-mismo tiempo.
+No congeló el contrato por `D-10`: la bitácora estaba fijada dentro del directorio de un mecanismo
+cuyo archivo ya contenía eventos de un contrato anterior, y `E12`/`F13` no definían si calificaban
+el archivo físico completo o sólo los eventos de la identidad congelada.
 
-Las auditorías anteriores de esta unidad corrigieron `D-01` a `D-07`.
+Las auditorías anteriores de esta unidad corrigieron `D-01` a `D-09`.
 
 ## D-03: lo que hice mal
 
@@ -38,10 +36,37 @@ quien ejecuta.
 
 ## Qué hizo esta intervención
 
-Corrigió `D-09` en el contrato propuesto. No tocó el candidato, que conserva su blob
+Corrigió `D-10` en el contrato propuesto. No tocó el candidato, que conserva su blob
 `b871240fd38d28430fc86fc4b14f1b851dad1f10`, no ejecutó ninguna corrida y no escribió mecanismo
 nuevo. `verificador/`, `verificacion-2/` y `verificacion-3/` quedan intactas. Las correcciones
-aceptadas de `D-07` y `D-08` se conservan.
+aceptadas de `D-07`, `D-08` y `D-09` se conservan.
+
+### D-10: qué califica un criterio sobre un archivo con historia
+
+El contrato fijaba la bitácora dentro del directorio de un mecanismo, y ese archivo ya contenía un
+`INICIO` y un `CIERRE` de un contrato anterior. `E12`/`F13` exigían «exactamente un `INICIO` y un
+`CIERRE`» sin decir si contaban el archivo entero o sólo los eventos de la identidad congelada.
+Leídos sobre el archivo físico, ya estaban incumplidos antes de correr.
+
+La corrección tiene dos partes, y la segunda es la que importa.
+
+**Dónde vive la bitácora.** Pasa a un path fijo de la unidad, por encima de los directorios de
+mecanismo. Si cada contrato tuviera la suya dentro de su propio directorio, empezar una corrida
+nueva bastaría con crear un directorio nuevo y la bitácora aparecería vacía: mover y reiniciar
+serían indistinguibles, que es justo lo que `X4` existe para impedir. `E17`/`F19` y el control
+`N20` lo vuelven exigible, porque una regla que sólo vive en la prosa no se comprueba.
+
+**Qué se califica.** Todo criterio sobre la bitácora se evalúa exclusivamente sobre las líneas de
+la identidad congelada. Las de otras identidades no se cuentan, y `E16`/`F18` exigen que estén
+byte a byte al cerrar. Que el archivo tenga historia de contratos anteriores no es una anomalía:
+es lo que un registro append-only compartido debe verse. La anomalía sería que esa historia
+cambiara.
+
+`verificacion-3/BITACORA.txt` no se migra ni se toca: es evidencia de aquella corrida bajo un
+contrato agotado. Migrar sus marcas sería escribir en un registro hechos que no presenció, que es
+la clase de reconstrucción que un append-only existe para no tener que creer. La bitácora de la
+unidad empieza vacía con este contrato; es una transición única y queda declarada en el contrato
+para que se vea.
 
 ### D-09: dos semánticas para la misma cosa
 
@@ -183,7 +208,8 @@ blob         b871240fd38d28430fc86fc4b14f1b851dad1f10
 Esta regla gobierna sobre cualquier otra lectura del contrato.
 
 ```text
-X1  antes del primer caso, el mecanismo lee la bitácora y anota en ella su marca de inicio
+X1  antes del primer caso, el mecanismo lee la bitácora de la unidad, busca en ella una marca de
+    inicio de la identidad congelada y, si no la hay, anota la suya
 X2  toda invocación que anotó INICIO es una ejecución observada, cualquiera sea su final
 X3  una invocación observada sólo puede aprobarse si emitió veredicto EXITO. Cualquier otro
     final es FALLO. No existe tercera salida ni la categoría "no llegó a correr"
@@ -221,9 +247,10 @@ salido bien: significa que terminó diciendo qué pasó.
 ### La bitácora
 
 ```text
-path       u2-reglas-orquestador/verificacion-3/BITACORA.txt
+path       u2-reglas-orquestador/BITACORA.txt
+alcance    una sola bitácora para la unidad, compartida por todos los contratos
 formato    una línea por evento, sólo se agrega, nunca se reescribe
-identidad  cada línea lleva la identidad del contrato congelado y el blob del candidato
+identidad  cada línea lleva la identidad del contrato y el blob del candidato
 eventos    INICIO al abrir la corrida; CIERRE al emitir el veredicto, sea EXITO o FALLO
 ```
 
@@ -233,8 +260,49 @@ declaraciones de quien ejecutó.
 ```text
 T1 y T2   una invocación que emitió veredicto     deja INICIO y CIERRE
 T3        una terminación sin veredicto           deja INICIO sin CIERRE
-reintento encuentra un INICIO previo              se detiene por X4 sin anotar nada
+reintento encuentra un INICIO previo de su identidad, se detiene por X4 sin anotar nada
 ```
+
+#### Por qué la bitácora pertenece a la unidad y no al mecanismo
+
+Esta es la corrección de `D-10`, y la decisión de fondo es dónde vive el archivo.
+
+Si cada contrato tuviera su bitácora dentro del directorio de su propio mecanismo, empezar una
+corrida nueva bastaría con crear un directorio nuevo, y la bitácora aparecería vacía. Un registro
+que se reinicia al moverse no registra nada: mover y reiniciar serían indistinguibles, que es
+exactamente la propiedad que `X4` existe para impedir.
+
+Por eso la bitácora es una sola, vive en un path fijo de la unidad, por encima de los directorios
+de mecanismo, y no se mueve ni se recrea junto a ellos. El mecanismo de cada contrato vive en su
+directorio; la bitácora no.
+
+#### Cómo se califica sobre un archivo que ya tiene historia
+
+Ninguna línea de otra identidad de contrato se cuenta, se borra, se reescribe ni se
+reinterpreta. Todo criterio sobre la bitácora se evalúa **exclusivamente sobre las líneas cuya
+identidad de contrato y blob de candidato coinciden con los congelados**.
+
+```text
+líneas de la identidad congelada   se cuentan y se califican
+líneas de otra identidad           se conservan byte a byte y no se cuentan
+```
+
+Que el archivo contenga historia de contratos anteriores no es una anomalía: es lo que un
+registro append-only compartido debe verse. Lo que sí sería una anomalía es que esa historia
+cambiara.
+
+#### La transición, dicha explícitamente
+
+`u2-reglas-orquestador/verificacion-3/BITACORA.txt` no es esta bitácora. Es evidencia de aquella
+corrida, bajo un contrato agotado, y queda donde está sin modificarse.
+
+Sus marcas no se migran a la bitácora de la unidad. Migrarlas sería escribir en un registro
+hechos que ese registro no presenció, que es la clase de reconstrucción que un append-only
+existe para no tener que creer.
+
+La bitácora de la unidad empieza vacía con este contrato. Es una transición única y queda
+declarada aquí para que se vea: de aquí en adelante el path no cambia, y cualquier corrida futura
+de esta unidad encuentra en él todo lo que ocurrió antes.
 
 La bitácora se preserva en Git junto con la evidencia. Su contenido es parte del delta que el
 AUDITOR inspecciona, de modo que la cantidad de invocaciones deja de ser algo que el CONSTRUCTOR
@@ -271,8 +339,12 @@ fuentes   el candidato, del que se leen obligaciones, secciones y declaración d
 
 ### Mecanismo
 
-Un verificador determinista, sin modelo de lenguaje y sin red, en
-`u2-reglas-orquestador/verificacion-3/`. `verificador/` y `verificacion-2/` no se modifican.
+Un verificador determinista, sin modelo de lenguaje y sin red, en un directorio propio de este
+contrato dentro de `u2-reglas-orquestador/`. `verificador/`, `verificacion-2/` y `verificacion-3/`
+no se modifican: son evidencia de corridas ya interpretadas.
+
+La ruta de la bitácora es una constante de la unidad y no se deriva del directorio del mecanismo.
+El mecanismo cambia de directorio con cada contrato; la bitácora no cambia de lugar nunca.
 
 No declara catálogo propio de reglas: extrae del candidato las obligaciones y la estructura de sus
 secciones, y de ahí obtiene el denominador.
@@ -314,9 +386,14 @@ E7   para toda comprobación estructural, el observable leído difiere entre suj
 E8   P-C reproduce los mismos números por dos derivaciones Git distintas
 E9   el candidato leído es exactamente el blob congelado
 E10  la corrida preserva su marca de inicio y su marca de cierre
-E11  al abrir, la bitácora no contenía ninguna marca de inicio previa para este contrato
-E12  la bitácora preservada contiene exactamente un INICIO y un CIERRE, y su identidad de
-     contrato y de candidato coincide con las congeladas
+E11  al abrir, la bitácora de la unidad no contenía ninguna marca de inicio de la identidad
+     congelada
+E12  la bitácora preservada contiene exactamente un INICIO y un CIERRE de la identidad
+     congelada; las líneas de otras identidades no se cuentan
+E16  las líneas de otras identidades presentes al abrir están, byte a byte, al cerrar: ninguna
+     fue borrada, alterada ni reordenada
+E17  la ruta de la bitácora es la constante fija de la unidad, y el mecanismo no la deriva de su
+     propio directorio ni usa ninguna otra
 E13  los controles de reintento y de aborto atraviesan la misma función de corrida que la
      invocación real, y observan su decisión efectiva y no una función auxiliar consultada aparte
 E14  el control de reintento devuelve el resultado de reintento: no anota en su bitácora
@@ -356,10 +433,13 @@ F9   P-C difiere entre sus dos derivaciones
 F10  el blob leído no es el congelado
 F11  el cuerpo de la corrida produjo una excepción: se captura, se registra con su traza y se
      resuelve dentro del veredicto conforme a T2
-F12  al abrir, la bitácora ya contenía una marca de inicio para este contrato: la invocación es
-     un reintento conforme a X4 y no reemplaza el resultado anterior
-F13  la bitácora preservada no contiene exactamente un INICIO y un CIERRE, o su identidad de
-     contrato o de candidato no coincide con las congeladas
+F12  al abrir, la bitácora ya contenía una marca de inicio de la identidad congelada: la
+     invocación es un reintento conforme a X4 y no reemplaza el resultado anterior
+F13  la bitácora preservada no contiene exactamente un INICIO y un CIERRE de la identidad
+     congelada
+F18  alguna línea de otra identidad presente al abrir fue borrada, alterada o reordenada
+F19  la ruta de la bitácora no es la constante fija de la unidad, o el mecanismo la deriva de su
+     propio directorio
 F14  el control de reintento o el de aborto no atraviesa la función de corrida real, u observa
      una función auxiliar consultada aparte en lugar de su decisión efectiva
 F15  el control de reintento anotó en su bitácora sintética o evaluó los demás criterios en lugar
@@ -424,6 +504,12 @@ N18  una invocación sintética de la misma función de corrida, sobre una bitá
      contiene un INICIO para esa identidad, debe devolver el resultado de reintento: sin anotar
      nada, sin evaluar los demás criterios y sin emitir un veredicto que reemplace al anterior.
      Si en cambio evalúa criterios o modifica su bitácora, la guardia X4 no discrimina
+N19  sobre una bitácora sintética que contiene líneas de otra identidad, una invocación sintética
+     debe dejarlas byte a byte. Una variante que las borre o las altere debe producir F18; si la
+     comprobación no lo detecta, no discrimina
+N20  un mecanismo sintético que derive la ruta de la bitácora de su propio directorio, en lugar
+     de la constante de la unidad, debe producir F19. Ese es el camino por el que una corrida
+     nueva podría encontrar una bitácora vacía y eludir X4
 ```
 
 `N16` reproduce sintéticamente el defecto de `S24` y `S28` y obliga al mecanismo a demostrar que
@@ -482,7 +568,7 @@ VEREDICTO           EXITO
 ### Regla de ejecución
 
 ```text
-BITACORA.txt antes de la corrida   no existía
+su bitácora antes de la corrida     no existía
 INICIO                             anotado antes del primer caso
 CIERRE                             anotado al emitir el veredicto
 coherencia                         un INICIO y un CIERRE, sin líneas ajenas
@@ -524,7 +610,7 @@ hacen lo mismo con las dos mitades de `D-03`.
 ### Trabajo previo a INICIO, declarado
 
 Antes de invocar la corrida se ejecutó una prueba de humo que sólo importó los módulos, ejercitó
-los insumos sintéticos y comprobó que `BITACORA.txt` no existía. No leyó el candidato, no ejecutó
+los insumos sintéticos y comprobó que la bitácora de aquella corrida no existía. No leyó el candidato, no ejecutó
 ningún caso del corpus y no ejercitó ninguna comprobación estructural sobre el sujeto real.
 `EVIDENCIA.md` la declara en detalle. La frontera de la corrida es `INICIO`, y qué ocurrió antes
 de ella debe poder juzgarlo el AUDITOR sin depender de que se lo cuenten después.
@@ -551,6 +637,9 @@ D-07  cerrado por E13/F14 y por N17 y N18 atravesando la misma función de corri
 D-08  cerrado separando en E14/F15 y E15/F16 las conductas opuestas de cada control
 D-09  cerrado eligiendo T2 como semántica contractual de la falla: el mecanismo captura lo que
       puede capturar, y T3 nombra sólo lo que ningún mecanismo puede manejar de sí mismo
+D-10  cerrado llevando la bitácora a un path fijo de la unidad y calificando todo criterio
+      exclusivamente sobre las líneas de la identidad congelada, con E16/F18 protegiendo la
+      historia y E17/F19 más N20 impidiendo el reinicio por mudanza
 ```
 
 `u2-reglas-orquestador/REGLAS-ORQUESTADOR.md` conserva sin cambios el blob
