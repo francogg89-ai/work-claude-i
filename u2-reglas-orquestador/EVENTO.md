@@ -4,16 +4,16 @@ Describe el estado de la unidad. No acumula sus versiones anteriores: la histori
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@aa9d66718046eba0a48a8a6d7a1be18c82570a19` y
-`audit-chatgpt-i@f3cf91f7e08752b8941934b84bee1a052e2e430d`.
+El corte `work-claude-i@c04c3437888f2bb2d74675ba3e0e0ac2346f479b` y
+`audit-chatgpt-i@063cb3ac7edaa9a1457708a17be1789a862f6bd9`.
 
-Esa auditoría confirmó que `D-07` a `D-10` siguen corregidos y aceptó la dirección conceptual de
-`X0`, incluidas su anterioridad a `INICIO`, `NO_EJECUTABLE`, `E18`, la primera rama de `F20` y
-`N21`.
+Esa auditoría confirmó que `D-07` a `D-10` siguen corregidos, que las partes ya aceptadas de `X0`
+siguen válidas, y aceptó `P-G`, `E19`, `F21` y `N22` como avance sobre las interacciones externas.
 
-No congeló el contrato por `D-11`: `F20` declaraba además que `X0` no puede comprobar nada
-distinto de la resolubilidad, y ningún control alcanzaba esa conducta. `N21` sólo ejercitaba la
-identidad irresoluble.
+No congeló el contrato porque `D-11` no quedaba completamente cerrado: la traza externa no
+demuestra que `X0` se abstenga de ejecutar, antes de `INICIO`, lógica ya disponible en memoria. Un
+`X0` podría hacer todas las sondas permitidas, no abrir archivos ni invocar procesos, y aun así
+ejecutar un caso o evaluar un criterio con la misma traza externa que un `X0` correcto.
 
 La corrida anterior había terminado en `FALLO` por `F11` en `P-C`, por un clon local
 desactualizado. El AUDITOR clasificó esa causa como fallo de preparación del entorno y no abrió
@@ -40,7 +40,7 @@ quien ejecuta.
 
 ## Qué hizo esta intervención
 
-Corrigió `D-11` en el contrato propuesto para la corrida nueva de `U2`. No tocó el candidato, que
+Completó `D-11` en el contrato propuesto para la corrida nueva de `U2`. No tocó el candidato, que
 conserva su blob `b871240fd38d28430fc86fc4b14f1b851dad1f10`, no ejecutó ninguna corrida y no
 escribió mecanismo nuevo. Lo aceptado de `D-07` a `D-10` y de `X0` se conserva.
 
@@ -108,6 +108,44 @@ pre-vuelo que se auto-reportara sería otra comprobación que no puede fallar.
 `E19` exige esa propiedad, `F21` la niega y `N22` demuestra que el control discrimina: un `X0`
 sintético que resuelve las identidades y además lee el candidato debe producir `F21`, y su traza
 debe diferir de la del `X0` real.
+
+#### Lo que la traza externa no ve
+
+La observación anterior tenía un punto ciego que el AUDITOR nombró con precisión: la traza externa
+ve procesos y archivos, y no ve memoria. Un `X0` que hiciera exactamente las sondas permitidas y
+además ejecutara un caso del corpus o evaluara un criterio con código ya cargado produciría una
+traza externa idéntica a la de un `X0` correcto.
+
+Y `N22` no lo alcanzaba: exige que un `X0` que «ejecuta una comprobación» produzca `F21`, pero
+`F21` sólo califica la traza externa. El control pedía una cosa y el criterio calificaba otra.
+
+Se cierra por dos vías, cada una con su control.
+
+**La traza interna.** `X0` se ejecuta además bajo intercepción del intérprete, que registra cada
+llamada de función. La propiedad es que toda llamada pertenezca al módulo del pre-vuelo o a su
+ayudante de sondeo, y ninguna a los módulos de la corrida. Ese conjunto se declara cerrado y por
+nombre, para que la comprobación sea mecánica:
+
+```text
+MODULOS_DE_LA_CORRIDA   candidato  corpus  orquestador  estructurales  autoridad
+                        y el cuerpo de la corrida
+```
+
+Un `X0` que ejecute un caso en memoria aparece en esa traza, porque ejecutar un caso es llamar a
+algo. `E20`, `F22` y `N23` la vuelven exigible.
+
+**El aislamiento por importación.** El módulo del pre-vuelo no importa ninguno de esos módulos, ni
+al cargarse ni dentro del cuerpo de sus funciones. Sin importarlos no puede alcanzarlos, y con
+importarlos queda visible en su propia fuente. `E21`, `F23` y `N24` lo vuelven exigible.
+
+Las dos vías se complementan y ninguna sobra: el aislamiento hace difícil llegar al material de la
+corrida, y la traza interna muestra si se llegó igual por un camino que el aislamiento no previó.
+
+Queda un residuo, y lo digo sin adornarlo: la traza interna observa llamadas, no código en línea.
+Un `X0` que copiara dentro de sí la lógica de un caso, en vez de llamarla, no aparecería como
+llamada ajena. Lo que ese residuo exige es duplicar material de la corrida dentro de la fuente del
+pre-vuelo, que es visible en la evidencia y es lectura del AUDITOR. Ningún mecanismo de este
+contrato la sustituye.
 
 ### D-10: qué califica un criterio sobre un archivo con historia
 
@@ -398,7 +436,8 @@ P-E  el denominador de la cobertura es el conjunto completo de obligaciones etiq
 P-F  cada comprobación estructural discrimina de verdad: su mutante viola la obligación que la
      comprobación lee, y esa diferencia queda observable en la evidencia
 P-G  el pre-vuelo se limita a resolver las identidades congeladas, y esa limitación es
-     observable en su traza de interacciones y no sólo declarada
+     observable —en su traza de interacciones externas, en su traza de llamadas internas y en
+     los módulos que su propio módulo puede alcanzar— y no sólo declarada
 ```
 
 ### Entorno y fuentes relevantes
@@ -482,6 +521,11 @@ E18  la evidencia preserva el resultado de X0 identidad por identidad, y todas r
 E19  la evidencia preserva la traza de interacciones externas de X0, obtenida por intercepción y
      no por auto-reporte, y esa traza contiene exactamente una sonda de resolubilidad por
      identidad congelada, ninguna otra invocación externa y ninguna apertura de archivo
+E20  la evidencia preserva la traza de llamadas internas de X0, obtenida por intercepción del
+     intérprete y no por auto-reporte, y toda llamada pertenece al módulo del pre-vuelo o a su
+     ayudante de sondeo: ninguna pertenece a los módulos de la corrida ni a su cuerpo
+E21  el módulo del pre-vuelo no importa ningún módulo de la corrida, ni al cargarse ni dentro del
+     cuerpo de sus funciones
 E13  los controles de reintento y de aborto atraviesan la misma función de corrida que la
      invocación real, y observan su decisión efectiva y no una función auxiliar consultada aparte
 E14  el control de reintento devuelve el resultado de reintento: no anota en su bitácora
@@ -529,9 +573,11 @@ F18  alguna línea de otra identidad presente al abrir fue borrada, alterada o r
 F19  la ruta de la bitácora no es la constante fija de la unidad, o el mecanismo la deriva de su
      propio directorio
 F20  se anotó INICIO con alguna identidad congelada irresoluble
-F21  la traza de X0 contiene una interacción que no es una sonda de resolubilidad de una
+F21  la traza externa de X0 contiene una interacción que no es una sonda de resolubilidad de una
      identidad congelada, le falta la sonda de alguna de ellas, o alguna sonda devuelve el
      contenido del objeto en lugar de sólo resolverlo
+F22  la traza interna de X0 contiene una llamada a un módulo de la corrida o a su cuerpo
+F23  el módulo del pre-vuelo importa algún módulo de la corrida
 F14  el control de reintento o el de aborto no atraviesa la función de corrida real, u observa
      una función auxiliar consultada aparte en lugar de su decisión efectiva
 F15  el control de reintento anotó en su bitácora sintética o evaluó los demás criterios en lugar
@@ -605,9 +651,13 @@ N20  un mecanismo sintético que derive la ruta de la bitácora de su propio dir
 N21  un conjunto sintético de identidades congeladas que contenga una irresoluble debe hacer que
      X0 termine NO_EJECUTABLE, nombrando esa identidad y sin anotar nada en su bitácora
      sintética. Si en cambio X0 la deja pasar, el pre-vuelo no discrimina y la corrida es FALLO
-N22  un X0 sintético que resuelve todas las identidades y además lee el candidato o ejecuta una
-     comprobación debe producir F21, y su traza debe diferir de la del X0 real. Si la traza no
-     los distingue, la frontera del pre-vuelo está declarada y no observada
+N22  un X0 sintético que resuelve todas las identidades y además lee el candidato debe producir
+     F21, y su traza externa debe diferir de la del X0 real. Si la traza no los distingue, la
+     frontera del pre-vuelo está declarada y no observada
+N23  un X0 sintético que, sin abrir archivos ni invocar procesos adicionales, ejecute en memoria
+     un caso del corpus o una comprobación estructural debe producir F22, y su traza interna
+     debe diferir de la del X0 real. Ese es el punto ciego que la traza externa no alcanza
+N24  un módulo de pre-vuelo sintético que importe un módulo de la corrida debe producir F23
 ```
 
 `N16` reproduce sintéticamente el defecto de `S24` y `S28` y obliga al mecanismo a demostrar que
@@ -694,8 +744,9 @@ D-10  cerrado llevando la bitácora a un path fijo de la unidad y calificando to
       historia y E17/F19 más N20 impidiendo el reinicio por mudanza
 X0    agregado tras el fallo de preparación de la corrida anterior: pre-vuelo de resolubilidad
       anterior a INICIO, acotado a las identidades congeladas, con E18, F20 y N21
-D-11  cerrado haciendo observable la frontera del pre-vuelo: P-G, E19, F21 y N22 sobre la traza
-      de interacciones interceptadas de X0, en lugar de una prohibición sólo declarada
+D-11  cerrado haciendo observable la frontera del pre-vuelo por tres vías interceptadas y no
+      declaradas: E19/F21/N22 sobre las interacciones externas, E20/F22/N23 sobre las llamadas
+      internas, y E21/F23/N24 sobre los módulos que el pre-vuelo puede alcanzar
 ```
 
 El candidato no cambia: no hubo razón material para modificarlo. Su blob sigue siendo
