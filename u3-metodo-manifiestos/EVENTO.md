@@ -4,13 +4,17 @@ Describe el estado de la unidad. No acumula sus versiones anteriores: la histori
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@ffec93ee05b954fbd289fa974791f373f9542138` y
-`audit-chatgpt-i@9c58964a88bcc2446349b87ffb61fcdcf1277fca`.
+El corte `work-claude-i@94f283553298d22a01a4325c61ccd2b8fecbcda9` y
+`audit-chatgpt-i@819e47edab6d151e680c37f784527153e14a3fa6`.
 
-Esa auditoría cerró `D-19` y dejó `D-18` abierto: mi corrección anterior introdujo una
-incompatibilidad nueva en lugar de eliminar la vieja.
+Esa auditoría interpretó la corrida contra el contrato congelado
+`audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6`: `FALLO`, contrato consumido, reintento
+prohibido. El candidato no quedó demostrado defectuoso.
 
-Las auditorías previas cerraron `D-13` a `D-17` y dieron el candidato por aceptable.
+Abrió `D-20`, `D-21` y `D-22`, los tres exclusivamente sobre el mecanismo de una futura
+verificación, y registró `OBS-03`.
+
+Las auditorías previas cerraron `D-13` a `D-19`.
 
 La auditoría anterior había aprobado la corrida contractual de `U2` y cerrado la unidad. La
 superficie aprobada es `u2-reglas-orquestador/REGLAS-ORQUESTADOR.md`, blob
@@ -21,9 +25,62 @@ superficie aprobada de `U2`, `PLAN.md` y el método autoritativo.
 
 ## Qué hizo esta intervención
 
-Corrigió `D-18` en el contrato propuesto. No tocó el candidato, que conserva su blob
-`f44f2a0797cde6f569cca6fe5397d45917680258`; no ejecutó ninguna mitad, no creó la bitácora y no
-escribió mecanismo. `U1`, `U2`, `PLAN.md` y `BOOTSTRAP.md` no fueron tocados.
+Propone un contrato previo nuevo, con identidad contractual nueva, para otra corrida de `U3`. No
+tocó el candidato, que conserva su blob `f44f2a0797cde6f569cca6fe5397d45917680258`; no ejecutó
+ninguna mitad, no escribió mecanismo y no agregó ninguna línea a la bitácora.
+
+`u3-metodo-manifiestos/BITACORA.txt` y `u3-metodo-manifiestos/verificacion-1/` quedan intactas:
+son evidencia de la corrida agotada. `U1`, `U2`, `PLAN.md` y `BOOTSTRAP.md` tampoco fueron
+tocados.
+
+### D-20, D-21 y D-22: una sola raíz
+
+Los tres hallazgos son de mis comprobaciones y comparten una causa: **la comprobación leyó una
+superficie más ancha que la obligación que decía verificar.**
+
+```text
+S01  busco la cadena en el documento completo, y una ocurrencia del preambulo, anterior a
+     R-1-cadena, altero el orden observado
+S06  el mutante quito la primera ocurrencia global de una cita, que estaba en el preambulo, y
+     dejo intacta la obligacion que pretendia violar
+S13  busco nombres prohibidos en toda la fuente y encontro `lista_de_carriles` dentro de la
+     lista que existe para rechazarla
+```
+
+Los dos primeros leen de más en el documento; el tercero lee de más en la fuente y confunde
+mencionar con usar.
+
+Por eso el contrato incorpora una regla, junto a la de medición:
+
+```text
+REGLA DE ALCANCE
+toda comprobacion lee la superficie material de la obligacion que dice verificar, y no una
+superficie mas ancha que la contenga.
+Una ocurrencia fuera de esa superficie no puede cambiar su resultado.
+Un mutante que altere algo fuera de esa superficie no viola la obligacion y no discrimina.
+Cuando una obligacion prohibe mantener o usar algo, la comprobacion observa la conducta, no la
+mencion del nombre.
+```
+
+La superficie material de una obligación es su propia línea etiquetada con sus continuaciones.
+Cuando una obligación necesita otra superficie, el contrato la nombra.
+
+`E25` a `E28`, `F27` a `F30` y los controles `N28` a `N31` la vuelven exigible. `N28` y `N29` son
+el par que cierra `D-20`: alterar la cadena fuera de su obligación no debe cambiar el observable,
+y alterarla dentro sí. `N30` cierra `D-21`. `N31` cierra `D-22` con dos sujetos sintéticos, uno
+que sólo nombra la clave prohibida y otro que efectivamente mantiene ese estado.
+
+### OBS-03: leí el transporte como si fuera la autoridad
+
+`EVIDENCIA.md` afirmó que el prompt de congelamiento citaba un path inexistente. La autoridad
+durable de congelamiento no contiene ese error: estaba en el transporte, no en la auditoría.
+
+Registré una afirmación sobre la autoridad sin abrir la autoridad. Es exactamente lo que el propio
+método advierte —lo que un prompt afirma es cita de transporte y no evidencia— y lo escribí en una
+evidencia mientras lo repetía en cada pase.
+
+No reescribo `EVIDENCIA.md`. Queda como está, con su error, porque es evidencia de una corrida ya
+interpretada y corregirla retroactivamente sería peor que el error.
 
 ### D-18 — dos intentos y qué falló en el primero
 
@@ -268,6 +325,20 @@ Dos elementos con nombres distintos siguen siendo dos aunque compartan valor.
 Alcanza a las obligaciones del candidato, a las vinculaciones congeladas de `X0` y a la
 enumeración de controles negativos.
 
+### Regla de alcance
+
+```text
+toda comprobacion lee la superficie material de la obligacion que dice verificar, y no una
+superficie mas ancha que la contenga.
+Una ocurrencia fuera de esa superficie no puede cambiar su resultado.
+Un mutante que altere algo fuera de esa superficie no viola la obligacion y no discrimina.
+Cuando una obligacion prohibe mantener o usar algo, la comprobacion observa la conducta, no la
+mencion del nombre.
+```
+
+La superficie material de una obligacion es su propia linea etiquetada con sus continuaciones.
+Cuando una obligacion necesita otra superficie, este contrato la nombra.
+
 ### Propiedad que debe demostrarse
 
 ```text
@@ -415,6 +486,13 @@ E23  la corrida realiza exactamente dos interacciones de red, R1 en X0 y R2 en e
      ambas. Ninguna otra parte del mecanismo usa red
 E24  el resultado de X0 para V5 es un booleano de alcanzabilidad: no transporta el valor de la
      referencia, y la forma del resultado de X0 no tiene campo donde ese valor pueda viajar
+E25  cada comprobacion declara la superficie material que lee, y la evidencia la preserva
+E26  para cada comprobacion que lee el candidato, una alteracion fuera de su superficie no
+     cambia su observable
+E27  el mutante de cada comprobacion estructural altera la superficie que esa comprobacion lee,
+     y la diferencia del observable proviene de esa alteracion
+E28  las comprobaciones de estado o registro prohibido observan si el mecanismo lo mantiene o lo
+     usa, no si su nombre aparece en la fuente
 ```
 
 ### Criterio discriminante de fallo
@@ -458,6 +536,12 @@ F25  el conjunto de vinculaciones que X0 resuelve no es exactamente V1 a V5, o e
      obtiene por inferencia en lugar de la lista literal congelada
 F26  el resultado de X0 transporta el valor de la referencia remota en lugar de un booleano de
      alcanzabilidad
+F27  alguna comprobacion no declara la superficie que lee, o lee una mas ancha que la obligacion
+F28  el observable de alguna comprobacion cambia por una ocurrencia ajena a su superficie
+F29  el mutante de alguna comprobacion estructural altera algo fuera de la superficie que esa
+     comprobacion lee
+F30  alguna comprobacion de estado prohibido se satisface o falla por la ocurrencia lexica de un
+     nombre en lugar de por la conducta del mecanismo
 ```
 
 No existe tercera salida.
@@ -516,6 +600,15 @@ N26  un conjunto sintetico de vinculaciones distinto de V1 a V5, o derivado esca
      lugar de tomado de la lista literal, debe producir F25
 N27  un X0 sintetico cuyo resultado para V5 transporte el valor de la referencia en lugar de un
      booleano debe producir F26, y la forma de su resultado debe diferir de la del X0 real
+N28  un candidato sintetico con la cadena alterada FUERA de la obligacion que la enuncia no debe
+     cambiar el observable de esa comprobacion. Si lo cambia, la comprobacion lee de mas
+N29  un candidato sintetico con la cadena alterada DENTRO de esa obligacion si debe cambiarlo.
+     N28 y N29 solo juntos demuestran que la comprobacion lee su superficie y no otra
+N30  un mutante sintetico que altere algo fuera de la superficie que su comprobacion lee debe
+     quedar detectado como no discriminante, aunque el observable coincidentemente difiera
+N31  dos sujetos sinteticos frente a una prohibicion de estado: uno que solo nombra la clave
+     para rechazarla debe pasar, y uno que efectivamente mantiene ese estado debe fallar. Si la
+     comprobacion no los distingue, mide ocurrencia lexica y no conducta
 ```
 
 `N9` es el control que ejercita, sobre una historia sintética con merge, la razón por la que
@@ -557,10 +650,14 @@ Nada. Construye el candidato y propone el contrato.
 
 ## Resultado
 
-Este contrato previo, corregido, propuesto y no ejecutado, con `D-18` cerrado por una frontera de
-red contada por fase y propósito —`R1` en `X0`, `R2` en el cuerpo, con `E23`, `E24`, `F24`, `F26`,
-`N25` y `N27`— y `D-19` cerrado enumerando las cinco vinculaciones que `X0` resuelve, con `F25` y
-`N26` negando que el mecanismo las obtenga de otro modo.
+Este contrato previo nuevo, propuesto y no ejecutado, con `D-20`, `D-21` y `D-22` cerrados por la
+regla de alcance y por `E25`-`E28`, `F27`-`F30` y los controles `N28`-`N31`. Conserva lo aceptado
+de `D-13` a `D-19`: `X0`-`X5`, `T1`-`T3`, `V1`-`V5`, `R1`/`R2`, `P-C1`/`P-C2`, `E20`/`F21`/`N9`,
+`E21`/`F22`/`N24`, `E23`/`E24`/`F24`/`F26`/`N25`/`N27` y la regla de medición nominal.
+
+La bitácora de la unidad ya contiene el `INICIO` y el `CIERRE` del contrato consumido. Para esta
+identidad son líneas ajenas: no cuentan para `E13`/`E14` y deben quedar byte a byte, de modo que
+`E14` se ejercita por primera vez en esta unidad sobre historia real.
 
 `u3-metodo-manifiestos/METODO-MANIFIESTOS.md` conserva sin cambios el blob
 `f44f2a0797cde6f569cca6fe5397d45917680258`, con 56 obligaciones sobre 8 secciones mecánicas.
