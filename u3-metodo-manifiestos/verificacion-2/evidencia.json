@@ -1,0 +1,4266 @@
+{
+ "alcance": [
+  {
+   "obligacion": "R-1-cadena",
+   "observable": "[25, 56, 130, 165, 200]",
+   "sid": "S01",
+   "superficie": "documento:R-1-cadena",
+   "tipo": "documento",
+   "variantes": {
+    "con-ruido-antes": "[25, 56, 130, 165, 200]",
+    "sin-ocurrencias-fuera": "[25, 56, 130, 165, 200]"
+   }
+  },
+  {
+   "obligacion": "R-1-no-sustituye",
+   "observable": "[]",
+   "sid": "S02",
+   "superficie": "documento:R-1-no-sustituye",
+   "tipo": "documento",
+   "variantes": {
+    "con-ruido-antes": "[]",
+    "sin-ocurrencias-fuera": "[]"
+   }
+  },
+  {
+   "obligacion": "R-1-no-amplia",
+   "observable": "[]",
+   "sid": "S03",
+   "superficie": "documento:R-1-no-amplia",
+   "tipo": "documento",
+   "variantes": {
+    "con-ruido-antes": "[]",
+    "sin-ocurrencias-fuera": "[]"
+   }
+  },
+  {
+   "obligacion": "acciones",
+   "observable": "[]",
+   "sid": "S04",
+   "superficie": "conducta:acciones",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "acciones",
+   "observable": "[]",
+   "sid": "S05",
+   "superficie": "conducta:acciones",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "R-1-referencias",
+   "observable": "[]",
+   "sid": "S06",
+   "superficie": "documento:R-1-referencias",
+   "tipo": "documento",
+   "variantes": {
+    "con-ruido-antes": "[]",
+    "sin-ocurrencias-fuera": "[]"
+   }
+  },
+  {
+   "obligacion": "referencias",
+   "observable": "([], ['contrato', 'path', 'repositorio'])",
+   "sid": "S07",
+   "superficie": "conducta:referencias",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "acciones",
+   "observable": "[]",
+   "sid": "S08",
+   "superficie": "conducta:acciones",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "acciones",
+   "observable": "[]",
+   "sid": "S09",
+   "superficie": "conducta:acciones",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "politica_relevo",
+   "observable": "'R-5-opciones'",
+   "sid": "S10",
+   "superficie": "conducta:politica_relevo",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "acciones",
+   "observable": "[]",
+   "sid": "S11",
+   "superficie": "conducta:acciones",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "vigencia",
+   "observable": "['ls-remote', 'origin']",
+   "sid": "S12",
+   "superficie": "conducta:vigencia",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "descubrir",
+   "observable": "(False, [])",
+   "sid": "S13",
+   "superficie": "conducta:descubrir",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "descubrir",
+   "observable": "(['a/x.md', 'b/y.md'], {'repo': 'r', 'paths': ('a/',)})",
+   "sid": "S14",
+   "superficie": "conducta:descubrir",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "capacidades",
+   "observable": "(['escribir', 'leer'], ['escribir', 'leer'])",
+   "sid": "S15",
+   "superficie": "conducta:capacidades",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "campos_transporte",
+   "observable": "((), ())",
+   "sid": "S16",
+   "superficie": "conducta:campos_transporte",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "acciones",
+   "observable": "[]",
+   "sid": "S17",
+   "superficie": "conducta:acciones",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "R-8-no-reemplaza",
+   "observable": "[]",
+   "sid": "S18",
+   "superficie": "documento:R-8-no-reemplaza",
+   "tipo": "documento",
+   "variantes": {
+    "con-ruido-antes": "[]",
+    "sin-ocurrencias-fuera": "[]"
+   }
+  },
+  {
+   "obligacion": "acciones",
+   "observable": "[]",
+   "sid": "S19",
+   "superficie": "conducta:acciones",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "constituir",
+   "observable": "[]",
+   "sid": "S20",
+   "superficie": "conducta:constituir",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "referencias",
+   "observable": "([], True)",
+   "sid": "S21",
+   "superficie": "conducta:referencias",
+   "tipo": "conducta",
+   "variantes": {}
+  },
+  {
+   "obligacion": "acciones",
+   "observable": "[]",
+   "sid": "S22",
+   "superficie": "conducta:acciones",
+   "tipo": "conducta",
+   "variantes": {}
+  }
+ ],
+ "bitacora": {
+  "ajenas_antes": [
+   "INICIO audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6 f44f2a0797cde6f569cca6fe5397d45917680258",
+   "CIERRE audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6 f44f2a0797cde6f569cca6fe5397d45917680258"
+  ],
+  "ajenas_despues": [
+   "INICIO audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6 f44f2a0797cde6f569cca6fe5397d45917680258",
+   "CIERRE audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6 f44f2a0797cde6f569cca6fe5397d45917680258"
+  ],
+  "propias_despues": [
+   "INICIO audit-chatgpt-i@856a0782cba7b331ee4f2178b7235553b1787c90 f44f2a0797cde6f569cca6fe5397d45917680258",
+   "CIERRE audit-chatgpt-i@856a0782cba7b331ee4f2178b7235553b1787c90 f44f2a0797cde6f569cca6fe5397d45917680258"
+  ],
+  "ruta": "C:\\Franco_Metodos_AI\\work-claude-i\\u3-metodo-manifiestos\\BITACORA.txt"
+ },
+ "casos": [
+  {
+   "coincide": true,
+   "id": "L01",
+   "obligacion": "R-2-cierra",
+   "obtenido": "['alcance', 'criterios_exito', 'decisiones_delegadas', 'decisiones_reservadas', 'exclusiones', 'motivo', 'restricciones', 'resultado_observable', 'riesgos']",
+   "predice": "['alcance', 'criterios_exito', 'decisiones_delegadas', 'decisiones_reservadas', 'exclusiones', 'motivo', 'restricciones', 'resultado_observable', 'riesgos']"
+  },
+  {
+   "coincide": true,
+   "id": "L02",
+   "obligacion": "R-2-contexto",
+   "obtenido": "['capacidades', 'evidencia_y_rigor', 'politicas_relevo', 'proyecto', 'repositorios', 'reproducibilidad']",
+   "predice": "['capacidades', 'evidencia_y_rigor', 'politicas_relevo', 'proyecto', 'repositorios', 'reproducibilidad']"
+  },
+  {
+   "coincide": true,
+   "id": "L03",
+   "obligacion": "R-2-solo-lo-material",
+   "obtenido": "[]",
+   "predice": "[]"
+  },
+  {
+   "coincide": true,
+   "id": "L04",
+   "obligacion": "R-2-no-repite",
+   "obtenido": "['motivo']",
+   "predice": "['motivo']"
+  },
+  {
+   "coincide": true,
+   "id": "L05",
+   "obligacion": "R-2-no-formulario",
+   "obtenido": "[]",
+   "predice": "[]"
+  },
+  {
+   "coincide": true,
+   "id": "L06",
+   "obligacion": "R-2-traduce",
+   "obtenido": "'R-2-traduce'",
+   "predice": "'R-2-traduce'"
+  },
+  {
+   "coincide": true,
+   "id": "L07",
+   "obligacion": "R-3-no-publica",
+   "obtenido": "'R-3-no-publica'",
+   "predice": "'R-3-no-publica'"
+  },
+  {
+   "coincide": true,
+   "id": "L08",
+   "obligacion": "R-3-no-silencio",
+   "obtenido": "'R-3-no-silencio'",
+   "predice": "'R-3-no-silencio'"
+  },
+  {
+   "coincide": true,
+   "id": "L09",
+   "obligacion": "R-3-orden",
+   "obtenido": "['publicar_manifiesto', 'obtener_identidad_manifiesto', 'publicar_project', 'obtener_identidad_project', 'producir_paquete']",
+   "predice": "['publicar_manifiesto', 'obtener_identidad_manifiesto', 'publicar_project', 'obtener_identidad_project', 'producir_paquete']"
+  },
+  {
+   "coincide": true,
+   "id": "L10",
+   "obligacion": "R-4-campos",
+   "obtenido": "'R-4-campos'",
+   "predice": "'R-4-campos'"
+  },
+  {
+   "coincide": true,
+   "id": "L11",
+   "obligacion": "R-4-campos",
+   "obtenido": "['AUDIT_REPO', 'CAPACIDADES_AUDITOR', 'CAPACIDADES_CONSTRUCTOR', 'CARRIL', 'ENTORNOS_RELEVANTES', 'LOCAL_PATHS', 'MANIFEST_PATH', 'MANIFEST_REPO', 'MANIFEST_SHA', 'METHOD_REPO', 'METHOD_SHA', 'POLITICAS_DE_EJECUCION_INICIALES', 'REFERENCIAS_SEGURAS_A_CREDENCIALES', 'ROOT_LOCAL', 'SOURCE_REPOS', 'WORK_ID', 'WORK_REPO']",
+   "predice": "['AUDIT_REPO', 'CAPACIDADES_AUDITOR', 'CAPACIDADES_CONSTRUCTOR', 'CARRIL', 'ENTORNOS_RELEVANTES', 'LOCAL_PATHS', 'MANIFEST_PATH', 'MANIFEST_REPO', 'MANIFEST_SHA', 'METHOD_REPO', 'METHOD_SHA', 'POLITICAS_DE_EJECUCION_INICIALES', 'REFERENCIAS_SEGURAS_A_CREDENCIALES', 'ROOT_LOCAL', 'SOURCE_REPOS', 'WORK_ID', 'WORK_REPO']"
+  },
+  {
+   "coincide": true,
+   "id": "L12",
+   "obligacion": "R-4-project",
+   "obtenido": "'R-4-project'",
+   "predice": "'R-4-project'"
+  },
+  {
+   "coincide": true,
+   "id": "L13",
+   "obligacion": "R-4-aplicables",
+   "obtenido": "'R-4-aplicables'",
+   "predice": "'R-4-aplicables'"
+  },
+  {
+   "coincide": true,
+   "id": "L14",
+   "obligacion": "R-4-identidades",
+   "obtenido": "'R-4-identidades'",
+   "predice": "'R-4-identidades'"
+  },
+  {
+   "coincide": true,
+   "id": "L15",
+   "obligacion": "R-4-sin-secretos",
+   "obtenido": "'R-4-sin-secretos'",
+   "predice": "'R-4-sin-secretos'"
+  },
+  {
+   "coincide": true,
+   "id": "L16",
+   "obligacion": "R-4-no-bootstrap",
+   "obtenido": "False",
+   "predice": "False"
+  },
+  {
+   "coincide": true,
+   "id": "L17",
+   "obligacion": "R-5-opciones",
+   "obtenido": "'R-5-opciones'",
+   "predice": "'R-5-opciones'"
+  },
+  {
+   "coincide": true,
+   "id": "L18",
+   "obligacion": "R-5-sin-contadores",
+   "obtenido": "'R-5-sin-contadores'",
+   "predice": "'R-5-sin-contadores'"
+  },
+  {
+   "coincide": true,
+   "id": "L19",
+   "obligacion": "R-5-constitucion",
+   "obtenido": "'constitucion'",
+   "predice": "'constitucion'"
+  },
+  {
+   "coincide": true,
+   "id": "L20",
+   "obligacion": "R-5-multiplos",
+   "obtenido": "[True, False, True, False, True]",
+   "predice": "[True, False, True, False, True]"
+  },
+  {
+   "coincide": true,
+   "id": "L21",
+   "obligacion": "R-5-hechos",
+   "obtenido": "True",
+   "predice": "True"
+  },
+  {
+   "coincide": true,
+   "id": "L22",
+   "obligacion": "R-5-derivacion",
+   "obtenido": "True",
+   "predice": "True"
+  },
+  {
+   "coincide": true,
+   "id": "L23",
+   "obligacion": "R-5-uniforme",
+   "obtenido": "['corte', 'repo', 'cadencia', 'n']",
+   "predice": "['corte', 'repo', 'cadencia', 'n']"
+  },
+  {
+   "coincide": true,
+   "id": "L24",
+   "obligacion": "R-6-contrato",
+   "obtenido": "'R-6-contrato'",
+   "predice": "'R-6-contrato'"
+  },
+  {
+   "coincide": true,
+   "id": "L25",
+   "obligacion": "R-6-contenido",
+   "obtenido": "'R-6-contenido'",
+   "predice": "'R-6-contenido'"
+  },
+  {
+   "coincide": true,
+   "id": "L26",
+   "obligacion": "R-6-prohibido",
+   "obtenido": "'R-6-prohibido'",
+   "predice": "'R-6-prohibido'"
+  },
+  {
+   "coincide": true,
+   "id": "L27",
+   "obligacion": "R-6-aislado",
+   "obtenido": "'R-6-aislado'",
+   "predice": "'R-6-aislado'"
+  },
+  {
+   "coincide": true,
+   "id": "L28",
+   "obligacion": "R-6-superficie",
+   "obtenido": "'R-6-superficie'",
+   "predice": "'R-6-superficie'"
+  },
+  {
+   "coincide": true,
+   "id": "L29",
+   "obligacion": "R-6-descubrimiento",
+   "obtenido": "['u3-metodo-manifiestos/EVENTO.md', 'u3-metodo-manifiestos/METODO-MANIFIESTOS.md']",
+   "predice": "['u3-metodo-manifiestos/EVENTO.md', 'u3-metodo-manifiestos/METODO-MANIFIESTOS.md']"
+  },
+  {
+   "coincide": true,
+   "id": "L30",
+   "obligacion": "R-6-no-presuncion",
+   "obtenido": "False",
+   "predice": "False"
+  },
+  {
+   "coincide": true,
+   "id": "L31",
+   "obligacion": "R-6-no-presuncion",
+   "obtenido": "True",
+   "predice": "True"
+  },
+  {
+   "coincide": true,
+   "id": "L32",
+   "obligacion": "R-6-rutea",
+   "obtenido": "True",
+   "predice": "True"
+  },
+  {
+   "coincide": true,
+   "id": "L33",
+   "obligacion": "R-7-source-repos",
+   "obtenido": "'R-7-source-repos'",
+   "predice": "'R-7-source-repos'"
+  },
+  {
+   "coincide": true,
+   "id": "L34",
+   "obligacion": "R-7-solo-lectura",
+   "obtenido": "'R-7-solo-lectura'",
+   "predice": "'R-7-solo-lectura'"
+  },
+  {
+   "coincide": true,
+   "id": "L35",
+   "obligacion": "R-7-no-autoriza",
+   "obtenido": "'R-7-no-autoriza'",
+   "predice": "'R-7-no-autoriza'"
+  },
+  {
+   "coincide": true,
+   "id": "L36",
+   "obligacion": "R-7-utilidad",
+   "obtenido": "'SOURCE_REPOS'",
+   "predice": "'SOURCE_REPOS'"
+  }
+ ],
+ "cobertura": {
+  "ejercitadas": [
+   "R-1-cadena",
+   "R-1-no-amplia",
+   "R-1-no-decide",
+   "R-1-no-ejecuta",
+   "R-1-no-sustituye",
+   "R-1-referencias",
+   "R-1-sin-sha",
+   "R-2-alternativas",
+   "R-2-cierra",
+   "R-2-contexto",
+   "R-2-no-formulario",
+   "R-2-no-repite",
+   "R-2-solo-lo-material",
+   "R-2-traduce",
+   "R-3-no-publica",
+   "R-3-no-silencio",
+   "R-3-orden",
+   "R-3-puede",
+   "R-4-aplicables",
+   "R-4-campos",
+   "R-4-identidades",
+   "R-4-no-bootstrap",
+   "R-4-project",
+   "R-4-sin-secretos",
+   "R-5-constitucion",
+   "R-5-derivacion",
+   "R-5-hechos",
+   "R-5-multiplos",
+   "R-5-no-orquestador",
+   "R-5-opciones",
+   "R-5-pregunta",
+   "R-5-sin-contadores",
+   "R-5-uniforme",
+   "R-6-aislado",
+   "R-6-contenido",
+   "R-6-contrato",
+   "R-6-descubrimiento",
+   "R-6-no-presuncion",
+   "R-6-prohibido",
+   "R-6-remoto",
+   "R-6-rutea",
+   "R-6-sha-constitutivo",
+   "R-6-sin-registro",
+   "R-6-superficie",
+   "R-7-capacidades",
+   "R-7-no-autoriza",
+   "R-7-sin-campos",
+   "R-7-solo-lectura",
+   "R-7-source-repos",
+   "R-7-utilidad",
+   "R-8-no-circular",
+   "R-8-no-decide",
+   "R-8-no-ejecuta",
+   "R-8-no-estado",
+   "R-8-no-modelo",
+   "R-8-no-reemplaza"
+  ],
+  "obligaciones": [
+   "R-1-cadena",
+   "R-1-no-amplia",
+   "R-1-no-decide",
+   "R-1-no-ejecuta",
+   "R-1-no-sustituye",
+   "R-1-referencias",
+   "R-1-sin-sha",
+   "R-2-alternativas",
+   "R-2-cierra",
+   "R-2-contexto",
+   "R-2-no-formulario",
+   "R-2-no-repite",
+   "R-2-solo-lo-material",
+   "R-2-traduce",
+   "R-3-no-publica",
+   "R-3-no-silencio",
+   "R-3-orden",
+   "R-3-puede",
+   "R-4-aplicables",
+   "R-4-campos",
+   "R-4-identidades",
+   "R-4-no-bootstrap",
+   "R-4-project",
+   "R-4-sin-secretos",
+   "R-5-constitucion",
+   "R-5-derivacion",
+   "R-5-hechos",
+   "R-5-multiplos",
+   "R-5-no-orquestador",
+   "R-5-opciones",
+   "R-5-pregunta",
+   "R-5-sin-contadores",
+   "R-5-uniforme",
+   "R-6-aislado",
+   "R-6-contenido",
+   "R-6-contrato",
+   "R-6-descubrimiento",
+   "R-6-no-presuncion",
+   "R-6-prohibido",
+   "R-6-remoto",
+   "R-6-rutea",
+   "R-6-sha-constitutivo",
+   "R-6-sin-registro",
+   "R-6-superficie",
+   "R-7-capacidades",
+   "R-7-no-autoriza",
+   "R-7-sin-campos",
+   "R-7-solo-lectura",
+   "R-7-source-repos",
+   "R-7-utilidad",
+   "R-8-no-circular",
+   "R-8-no-decide",
+   "R-8-no-ejecuta",
+   "R-8-no-estado",
+   "R-8-no-modelo",
+   "R-8-no-reemplaza"
+  ]
+ },
+ "controles": [
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "R-4-campos",
+   "id": "N1",
+   "obtenido": "R-4-campos"
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "R-4-identidades",
+   "id": "N2",
+   "obtenido": "R-4-identidades"
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "R-4-sin-secretos",
+   "id": "N3",
+   "obtenido": "R-4-sin-secretos"
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "R-4-project",
+   "id": "N4",
+   "obtenido": "R-4-project"
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "F11",
+   "id": "N5",
+   "obtenido": [
+    "F11"
+   ]
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "F11",
+   "id": "N6",
+   "obtenido": [
+    "F11"
+   ]
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "R-6-prohibido",
+   "id": "N7",
+   "obtenido": [
+    "R-6-prohibido",
+    "R-6-prohibido"
+   ]
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "R-5-sin-contadores",
+   "id": "N8",
+   "obtenido": "R-5-sin-contadores"
+  },
+  {
+   "detalle": "identidad de la derivacion: ('constituyente.py', 'derivar_cadencia', 181)",
+   "discrimina": true,
+   "espera": "efectiva > primer padre",
+   "id": "N9",
+   "obtenido": [
+    5,
+    3
+   ]
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "R-7-no-autoriza",
+   "id": "N10",
+   "obtenido": "R-7-no-autoriza"
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "F3",
+   "id": "N11",
+   "obtenido": [
+    "F3"
+   ]
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "F5",
+   "id": "N12",
+   "obtenido": [
+    "F5"
+   ]
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "F6",
+   "id": "N13",
+   "obtenido": [
+    "F6"
+   ]
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "F12",
+   "id": "N14",
+   "obtenido": [
+    "F12"
+   ]
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "F8",
+   "id": "N15",
+   "obtenido": [
+    "F8"
+   ]
+  },
+  {
+   "detalle": "atraveso ('corrida.py', 'correr', 20)",
+   "discrimina": true,
+   "espera": "T2 con F13, INICIO y CIERRE",
+   "id": "N16",
+   "obtenido": "T2"
+  },
+  {
+   "detalle": "atraveso ('corrida.py', 'correr', 20)",
+   "discrimina": true,
+   "espera": "REINTENTO sin anotar ni evaluar",
+   "id": "N17",
+   "obtenido": "REINTENTO"
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "F15",
+   "id": "N18",
+   "obtenido": [
+    "F15"
+   ]
+  },
+  {
+   "detalle": "irresolubles: ['VX']",
+   "discrimina": true,
+   "espera": "NO_EJECUTABLE",
+   "id": "N19",
+   "obtenido": "NO_EJECUTABLE"
+  },
+  {
+   "detalle": "traza externa distinta de la real: 1 apertura(s)",
+   "discrimina": true,
+   "espera": "F18",
+   "id": "N20",
+   "obtenido": [
+    "F18"
+   ]
+  },
+  {
+   "detalle": "traza interna distinta de la real",
+   "discrimina": true,
+   "espera": "F19",
+   "id": "N21",
+   "obtenido": [
+    "F19"
+   ]
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "F20",
+   "id": "N22",
+   "obtenido": [
+    "F20"
+   ]
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "nominal 2, por valor 1",
+   "id": "N23",
+   "obtenido": [
+    2,
+    1
+   ]
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "F22",
+   "id": "N24",
+   "obtenido": [
+    "F22"
+   ]
+  },
+  {
+   "detalle": "la traza la distingue de la real: 3 remotas contra 2",
+   "discrimina": true,
+   "espera": "F24",
+   "id": "N25",
+   "obtenido": [
+    "F24"
+   ]
+  },
+  {
+   "detalle": "",
+   "discrimina": true,
+   "espera": "F25",
+   "id": "N26",
+   "obtenido": [
+    "F25"
+   ]
+  },
+  {
+   "detalle": "forma distinta de la real: ['bool', 'str'] contra solo booleanos",
+   "discrimina": true,
+   "espera": "F26",
+   "id": "N27",
+   "obtenido": [
+    "F26"
+   ]
+  },
+  {
+   "detalle": "el observable difiere y aun asi no discrimina",
+   "discrimina": true,
+   "espera": "F29",
+   "id": "N30",
+   "obtenido": [
+    "F29"
+   ]
+  },
+  {
+   "detalle": "identidades: calificacion ('comprobaciones.py', 'c_S01', 10), control ('comprobaciones.py', 'c_S01_localizada', 900)",
+   "discrimina": true,
+   "espera": "F31 y F32",
+   "id": "N32",
+   "obtenido": [
+    "F31",
+    "F32"
+   ]
+  },
+  {
+   "detalle": "declara S01 y atraviesa ('comprobaciones.py', 'c_S02', 20)",
+   "discrimina": true,
+   "espera": "F33 en el declarado, nada en el que si la atraviesa",
+   "id": "N33",
+   "obtenido": [
+    [
+     "F31",
+     "F32",
+     "F33"
+    ],
+    []
+   ]
+  },
+  {
+   "detalle": "atraveso ('comprobaciones.py', 'c_S01', 79)",
+   "discrimina": true,
+   "espera": "observable igual al real",
+   "id": "N28",
+   "obtenido": [
+    "[25, 56, 130, 165, 200]",
+    "[25, 56, 130, 165, 200]"
+   ]
+  },
+  {
+   "detalle": "atraveso ('comprobaciones.py', 'c_S01', 79)",
+   "discrimina": true,
+   "espera": "observable distinto del real",
+   "id": "N29",
+   "obtenido": [
+    "[25, 56, 130, 165, 200]",
+    "[-1, 40, 114, 149, 184]"
+   ]
+  },
+  {
+   "detalle": "misma comprobacion en ambos: ('comprobaciones.py', 'c_S13', 167) y ('comprobaciones.py', 'c_S13', 167)",
+   "discrimina": true,
+   "espera": "solo nombra pasa, mantiene falla",
+   "id": "N31",
+   "obtenido": [
+    true,
+    false
+   ]
+  }
+ ],
+ "controles_que_no_discriminan": [],
+ "criterios_de_exito": {
+  "E1": true,
+  "E10": true,
+  "E11": true,
+  "E12": true,
+  "E13": true,
+  "E14": true,
+  "E15": true,
+  "E16": true,
+  "E17": true,
+  "E18": true,
+  "E19": true,
+  "E2": true,
+  "E20": true,
+  "E21": true,
+  "E22": true,
+  "E23": true,
+  "E24": true,
+  "E25": true,
+  "E26": true,
+  "E27": true,
+  "E28": true,
+  "E29": true,
+  "E3": true,
+  "E30": true,
+  "E31": true,
+  "E4": true,
+  "E5": true,
+  "E6": true,
+  "E7": true,
+  "E8": true,
+  "E9": true
+ },
+ "discriminacion": [
+  {
+   "extracto_mutante": "'R-1-cadena la cadena es: AJENO produce, manifiestos-trabajo-ai congela la intencion y el vinculo con el proyecto, el paquete de constitucion inicia, reglas-orquestador-ai transporta y revolutions-orchestra-ai gobierna la ejecucion'",
+   "extracto_real": "'R-1-cadena la cadena es: metodo-manifiestos-ai produce, manifiestos-trabajo-ai congela la intencion y el vinculo con el proyecto, el paquete de constitucion inicia, reglas-orquestador-ai transporta y revolutions-orchestra-ai gobierna la ejecucion'",
+   "obs_mutante": "[-1, 40, 114, 149, 184]",
+   "obs_real": "[25, 56, 130, 165, 200]",
+   "ok_mutante": false,
+   "sid": "S01"
+  },
+  {
+   "extracto_mutante": "'R-1-no-sustituye algun documento sustituye a otro'",
+   "extracto_real": "'R-1-no-sustituye ninguno de esos documentos sustituye a otro'",
+   "obs_mutante": "['ninguno de esos documentos sustituye a otro']",
+   "obs_real": "[]",
+   "ok_mutante": false,
+   "sid": "S02"
+  },
+  {
+   "extracto_mutante": "'R-1-no-amplia alguno amplia las autoridades de REVOLUTIONS'",
+   "extracto_real": "'R-1-no-amplia ninguno amplia las autoridades de REVOLUTIONS'",
+   "obs_mutante": "['ninguno amplia las autoridades de REVOLUTIONS']",
+   "obs_real": "[]",
+   "ok_mutante": false,
+   "sid": "S03"
+  },
+  {
+   "extracto_mutante": "\"['EJECUTAR_TRABAJO', 'ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "extracto_real": "\"['ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "obs_mutante": "['EJECUTAR_TRABAJO']",
+   "obs_real": "[]",
+   "ok_mutante": false,
+   "sid": "S04"
+  },
+  {
+   "extracto_mutante": "\"['DECIDIR_UNIDAD', 'ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "extracto_real": "\"['ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "obs_mutante": "['DECIDIR_UNIDAD']",
+   "obs_real": "[]",
+   "ok_mutante": false,
+   "sid": "S05"
+  },
+  {
+   "extracto_mutante": "'R-1-referencias cuando este documento necesita una regla ajena la referencia por repositorio, path y nombre de contrato. Sus dependencias externas son CT-6, en manifiestos-trabajo-ai, y CT-7, en reglas-orquestador-ai : REGLAS-ORQUESTADOR.md'",
+   "extracto_real": "'R-1-referencias cuando este documento necesita una regla ajena la referencia por repositorio, path y nombre de contrato. Sus dependencias externas son CT-6, en manifiestos-trabajo-ai : README.md, y CT-7, en reglas-orquestador-ai : REGLAS-ORQUESTADOR.md'",
+   "obs_mutante": "['manifiestos-trabajo-ai : README.md']",
+   "obs_real": "[]",
+   "ok_mutante": false,
+   "sid": "S06"
+  },
+  {
+   "extracto_mutante": "('registro.py', 'referencias', 91)",
+   "extracto_real": "('constituyente.py', 'referencias_externas', 69)",
+   "obs_mutante": "(['sha'], ['contrato', 'path', 'repositorio', 'sha'])",
+   "obs_real": "([], ['contrato', 'path', 'repositorio'])",
+   "ok_mutante": false,
+   "sid": "S07"
+  },
+  {
+   "extracto_mutante": "\"['ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "extracto_real": "\"['ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "obs_mutante": "['PROPONER']",
+   "obs_real": "[]",
+   "ok_mutante": false,
+   "sid": "S08"
+  },
+  {
+   "extracto_mutante": "\"['ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION']\"",
+   "extracto_real": "\"['ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "obs_mutante": "['SUGERIR']",
+   "obs_real": "[]",
+   "ok_mutante": false,
+   "sid": "S09"
+  },
+  {
+   "extracto_mutante": "('registro.py', 'politica', 98)",
+   "extracto_real": "('constituyente.py', 'politica_relevo', 169)",
+   "obs_mutante": "None",
+   "obs_real": "'R-5-opciones'",
+   "ok_mutante": false,
+   "sid": "S10"
+  },
+  {
+   "extracto_mutante": "\"['DECIDIR_RELEVO', 'ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "extracto_real": "\"['ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "obs_mutante": "['DECIDIR_RELEVO']",
+   "obs_real": "[]",
+   "ok_mutante": false,
+   "sid": "S11"
+  },
+  {
+   "extracto_mutante": "\"{'argv': ['git', '-C', '.', 'rev-parse', 'refs/heads/main']}\"",
+   "extracto_real": "\"{'fase': 'cuerpo', 'argv': ['git', '-C', 'C:\\\\\\\\Franco_Metodos_AI\\\\\\\\work-claude-i', 'ls-remote', 'origin', 'refs/heads/main'], 'remota': True, 'clase': 'sonda-remota', 'devolvio_contenido': True}\"",
+   "obs_mutante": "['rev-parse']",
+   "obs_real": "['ls-remote', 'origin']",
+   "ok_mutante": false,
+   "sid": "S12"
+  },
+  {
+   "extracto_mutante": "('registro.py', 'descubrir', 113)",
+   "extracto_real": "('constituyente.py', 'descubrir', 247)",
+   "obs_mutante": "(True, [])",
+   "obs_real": "(False, [])",
+   "ok_mutante": false,
+   "sid": "S13"
+  },
+  {
+   "extracto_mutante": "('registro.py', 'descubrir', 120)",
+   "extracto_real": "('constituyente.py', 'descubrir', 247)",
+   "obs_mutante": "(['a/x.md', 'b/y.md', 'colado/por/el/mecanismo.md'], {'repo': 'r', 'paths': ('a/',)})",
+   "obs_real": "(['a/x.md', 'b/y.md'], {'repo': 'r', 'paths': ('a/',)})",
+   "ok_mutante": false,
+   "sid": "S14"
+  },
+  {
+   "extracto_mutante": "('registro.py', 'capacidades', 127)",
+   "extracto_real": "('constituyente.py', 'capacidades', 275)",
+   "obs_mutante": "(['escribir', 'leer'], ['escribir', 'leer', 'skill-que-pide-mas'])",
+   "obs_real": "(['escribir', 'leer'], ['escribir', 'leer'])",
+   "ok_mutante": false,
+   "sid": "S15"
+  },
+  {
+   "extracto_mutante": "('registro.py', 'campos', 133)",
+   "extracto_real": "('constituyente.py', 'campos_de_transporte_agregados', 280)",
+   "obs_mutante": "(('next_model',), ('next_model',))",
+   "obs_real": "((), ())",
+   "ok_mutante": false,
+   "sid": "S16"
+  },
+  {
+   "extracto_mutante": "\"['DESPLEGAR', 'ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "extracto_real": "\"['ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "obs_mutante": "['DESPLEGAR']",
+   "obs_real": "[]",
+   "ok_mutante": false,
+   "sid": "S17"
+  },
+  {
+   "extracto_mutante": "'R-8-no-reemplaza reemplaza a REVOLUTIONS ni redefine sus autoridades'",
+   "extracto_real": "'R-8-no-reemplaza no reemplaza a REVOLUTIONS ni redefine sus autoridades'",
+   "obs_mutante": "['no reemplaza a REVOLUTIONS']",
+   "obs_real": "[]",
+   "ok_mutante": false,
+   "sid": "S18"
+  },
+  {
+   "extracto_mutante": "\"['DECLARAR_VEREDICTO', 'ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "extracto_real": "\"['ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "obs_mutante": "['DECLARAR_VEREDICTO']",
+   "obs_real": "[]",
+   "ok_mutante": false,
+   "sid": "S19"
+  },
+  {
+   "extracto_mutante": "('registro.py', 'constituir', 139)",
+   "extracto_real": "('constituyente.py', 'constituir', 123)",
+   "obs_mutante": "['ultima_entrega', 'unidad_actual']",
+   "obs_real": "[]",
+   "ok_mutante": false,
+   "sid": "S20"
+  },
+  {
+   "extracto_mutante": "('registro.py', 'referencias', 91)",
+   "extracto_real": "('constituyente.py', 'referencias_externas', 69)",
+   "obs_mutante": "(['sha'], True)",
+   "obs_real": "([], True)",
+   "ok_mutante": false,
+   "sid": "S21"
+  },
+  {
+   "extracto_mutante": "\"['ELEGIR_MODELO', 'ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "extracto_real": "\"['ENTREVISTAR', 'OBTENER_IDENTIDAD', 'PRODUCIR_PAQUETE', 'PROPONER', 'PUBLICAR_MANIFIESTO', 'REDACTAR', 'SENALAR_CONTRADICCION', 'SUGERIR']\"",
+   "obs_mutante": "['ELEGIR_MODELO']",
+   "obs_real": "[]",
+   "ok_mutante": false,
+   "sid": "S22"
+  }
+ ],
+ "fallos": {},
+ "frontera": [
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "cat-file",
+    "-e",
+    "05041ddf0e7a687cc8ed1982a3d824570fe57710^{object}"
+   ],
+   "clase": "sonda-local",
+   "devolvio_contenido": false,
+   "fase": "X0",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "cat-file",
+    "-e",
+    "f44f2a0797cde6f569cca6fe5397d45917680258^{object}"
+   ],
+   "clase": "sonda-local",
+   "devolvio_contenido": false,
+   "fase": "X0",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "cat-file",
+    "-e",
+    "636a5d095574130b56c232da7958691f87234516^{object}"
+   ],
+   "clase": "sonda-local",
+   "devolvio_contenido": false,
+   "fase": "X0",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "cat-file",
+    "-e",
+    "5bd6b0f582c7970a7b8c6c838b9971a70df43dfc^{object}"
+   ],
+   "clase": "sonda-local",
+   "devolvio_contenido": false,
+   "fase": "X0",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "ls-remote",
+    "--exit-code",
+    "origin",
+    "refs/heads/main"
+   ],
+   "clase": "sonda-remota",
+   "devolvio_contenido": false,
+   "fase": "X0",
+   "remota": true
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "rev-parse",
+    "05041ddf0e7a687cc8ed1982a3d824570fe57710:u3-metodo-manifiestos/METODO-MANIFIESTOS.md"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "show",
+    "05041ddf0e7a687cc8ed1982a3d824570fe57710:u3-metodo-manifiestos/METODO-MANIFIESTOS.md"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "ls-remote",
+    "origin",
+    "refs/heads/main"
+   ],
+   "clase": "sonda-remota",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": true
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "diff",
+    "--name-only",
+    "636a5d095574130b56c232da7958691f87234516",
+    "5bd6b0f582c7970a7b8c6c838b9971a70df43dfc"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "rev-list",
+    "--count",
+    "636a5d095574130b56c232da7958691f87234516"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "rev-list",
+    "--count",
+    "636a5d095574130b56c232da7958691f87234516"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "rev-list",
+    "--count",
+    "5bd6b0f582c7970a7b8c6c838b9971a70df43dfc"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "rev-list",
+    "--count",
+    "636a5d095574130b56c232da7958691f87234516"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "diff",
+    "--name-only",
+    "636a5d095574130b56c232da7958691f87234516",
+    "5bd6b0f582c7970a7b8c6c838b9971a70df43dfc"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "diff",
+    "--name-only",
+    "636a5d095574130b56c232da7958691f87234516",
+    "5bd6b0f582c7970a7b8c6c838b9971a70df43dfc"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "diff",
+    "--name-only",
+    "636a5d095574130b56c232da7958691f87234516",
+    "5bd6b0f582c7970a7b8c6c838b9971a70df43dfc"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "diff",
+    "--name-only",
+    "636a5d095574130b56c232da7958691f87234516",
+    "5bd6b0f582c7970a7b8c6c838b9971a70df43dfc"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "init",
+    "-b",
+    "main"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "add",
+    "a"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": false,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "commit",
+    "-m",
+    "a"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "checkout",
+    "-b",
+    "rama"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": false,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "add",
+    "b"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": false,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "commit",
+    "-m",
+    "b"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "add",
+    "c"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": false,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "commit",
+    "-m",
+    "c"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "checkout",
+    "main"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": false,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "add",
+    "d"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": false,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "commit",
+    "-m",
+    "d"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "merge",
+    "--no-ff",
+    "-m",
+    "merge",
+    "rama"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "log",
+    "--graph",
+    "--oneline",
+    "--all"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "rev-list",
+    "--count",
+    "HEAD"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Users\\franc\\AppData\\Local\\Temp\\n9-m86hk7vp",
+    "rev-list",
+    "--count",
+    "--first-parent",
+    "HEAD"
+   ],
+   "clase": "no-sonda",
+   "devolvio_contenido": true,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "cat-file",
+    "-e",
+    "ffffffffffffffffffffffffffffffffffffffff^{object}"
+   ],
+   "clase": "sonda-local",
+   "devolvio_contenido": false,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "cat-file",
+    "-e",
+    "636a5d095574130b56c232da7958691f87234516^{object}"
+   ],
+   "clase": "sonda-local",
+   "devolvio_contenido": false,
+   "fase": "cuerpo",
+   "remota": false
+  },
+  {
+   "argv": [
+    "git",
+    "-C",
+    "C:\\Franco_Metodos_AI\\work-claude-i",
+    "cat-file",
+    "-e",
+    "636a5d095574130b56c232da7958691f87234516^{object}"
+   ],
+   "clase": "sonda-local",
+   "devolvio_contenido": false,
+   "fase": "cuerpo",
+   "remota": false
+  }
+ ],
+ "identidad_correr": [
+  "corrida.py",
+  "correr",
+  20
+ ],
+ "identidad_corrida": {
+  "N16": [
+   "corrida.py",
+   "correr",
+   20
+  ],
+  "N17": [
+   "corrida.py",
+   "correr",
+   20
+  ]
+ },
+ "identidad_derivacion": [
+  "constituyente.py",
+  "derivar_cadencia",
+  181
+ ],
+ "identidades_registradas": {
+  "S01": [
+   "comprobaciones.py",
+   "c_S01",
+   79
+  ],
+  "S02": [
+   "comprobaciones.py",
+   "c_S02",
+   87
+  ],
+  "S03": [
+   "comprobaciones.py",
+   "c_S03",
+   94
+  ],
+  "S04": [
+   "comprobaciones.py",
+   "c_S04",
+   101
+  ],
+  "S05": [
+   "comprobaciones.py",
+   "c_S05",
+   107
+  ],
+  "S06": [
+   "comprobaciones.py",
+   "c_S06",
+   113
+  ],
+  "S07": [
+   "comprobaciones.py",
+   "c_S07",
+   120
+  ],
+  "S08": [
+   "comprobaciones.py",
+   "c_S08",
+   130
+  ],
+  "S09": [
+   "comprobaciones.py",
+   "c_S09",
+   136
+  ],
+  "S10": [
+   "comprobaciones.py",
+   "c_S10",
+   146
+  ],
+  "S11": [
+   "comprobaciones.py",
+   "c_S11",
+   152
+  ],
+  "S12": [
+   "comprobaciones.py",
+   "c_S12",
+   160
+  ],
+  "S13": [
+   "comprobaciones.py",
+   "c_S13",
+   167
+  ],
+  "S14": [
+   "comprobaciones.py",
+   "c_S14",
+   173
+  ],
+  "S15": [
+   "comprobaciones.py",
+   "c_S15",
+   185
+  ],
+  "S16": [
+   "comprobaciones.py",
+   "c_S16",
+   192
+  ],
+  "S17": [
+   "comprobaciones.py",
+   "c_S17",
+   202
+  ],
+  "S18": [
+   "comprobaciones.py",
+   "c_S18",
+   208
+  ],
+  "S19": [
+   "comprobaciones.py",
+   "c_S19",
+   215
+  ],
+  "S20": [
+   "comprobaciones.py",
+   "c_S20",
+   221
+  ],
+  "S21": [
+   "comprobaciones.py",
+   "c_S21",
+   228
+  ],
+  "S22": [
+   "comprobaciones.py",
+   "c_S22",
+   236
+  ]
+ },
+ "n9": {
+  "efectiva": 5,
+  "identidad_derivacion": [
+   "constituyente.py",
+   "derivar_cadencia",
+   181
+  ],
+  "log": "*   9a4b116 merge\n|\\  \n| * 93cd63b c\n| * 38fbeb3 b\n* | 018e0e7 d\n|/  \n* d80c021 a\n",
+  "primer_padre": 3
+ },
+ "p_c": {
+  "corte_destino": "5bd6b0f582c7970a7b8c6c838b9971a70df43dfc",
+  "corte_origen": "636a5d095574130b56c232da7958691f87234516",
+  "disjunto": {
+   "interseccion": [],
+   "procede": true,
+   "ruteo": null
+  },
+  "paths": [
+   "u3-metodo-manifiestos/EVENTO.md",
+   "u3-metodo-manifiestos/METODO-MANIFIESTOS.md"
+  ],
+  "referencia": "refs/heads/main",
+  "remoto": "origin",
+  "repo": "https://github.com/francogg89-ai/work-claude-i",
+  "solapado": {
+   "interseccion": [
+    "u3-metodo-manifiestos/EVENTO.md",
+    "u3-metodo-manifiestos/METODO-MANIFIESTOS.md"
+   ],
+   "procede": false,
+   "ruteo": "el CONSTRUCTOR preserva y entrega; el AUDITOR determina"
+  },
+  "vigencia_obtenida": "05041ddf0e7a687cc8ed1982a3d824570fe57710"
+ },
+ "paquetes": {
+  "aislado": [
+   "AUDIT_REPO",
+   "CAPACIDADES_AUDITOR",
+   "CAPACIDADES_CONSTRUCTOR",
+   "CARRIL",
+   "ENTORNOS_RELEVANTES",
+   "LOCAL_PATHS",
+   "MANIFEST_PATH",
+   "MANIFEST_REPO",
+   "MANIFEST_SHA",
+   "METHOD_REPO",
+   "METHOD_SHA",
+   "POLITICAS_DE_EJECUCION_INICIALES",
+   "REFERENCIAS_SEGURAS_A_CREDENCIALES",
+   "ROOT_LOCAL",
+   "SOURCE_REPOS",
+   "WORK_ID",
+   "WORK_REPO",
+   "_orden"
+  ],
+  "completo": [
+   "AUDIT_REPO",
+   "CAPACIDADES_AUDITOR",
+   "CAPACIDADES_CONSTRUCTOR",
+   "CARRIL",
+   "ENTORNOS_RELEVANTES",
+   "LOCAL_PATHS",
+   "MANIFEST_PATH",
+   "MANIFEST_REPO",
+   "MANIFEST_SHA",
+   "METHOD_REPO",
+   "METHOD_SHA",
+   "POLITICAS_DE_EJECUCION_INICIALES",
+   "PROJECT_PATH",
+   "PROJECT_REPO",
+   "PROJECT_SHA",
+   "REFERENCIAS_SEGURAS_A_CREDENCIALES",
+   "ROOT_LOCAL",
+   "SOURCE_REPOS",
+   "WORK_ID",
+   "WORK_REPO",
+   "_orden"
+  ]
+ },
+ "registros_de_travesia": [
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S01",
+     79
+    ],
+    [
+     "comprobaciones.py",
+     "_posiciones",
+     35
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S01",
+    79
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-cadena",
+   "observable": "[25, 56, 130, 165, 200]",
+   "ok": true,
+   "sid_declarado": "S01",
+   "sujeto": "real",
+   "superficie": "documento:R-1-cadena"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S01",
+     79
+    ],
+    [
+     "comprobaciones.py",
+     "_posiciones",
+     35
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S01",
+    79
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-cadena",
+   "observable": "[-1, 40, 114, 149, 184]",
+   "ok": false,
+   "sid_declarado": "S01",
+   "sujeto": "mutante",
+   "superficie": "documento:R-1-cadena"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S01",
+     79
+    ],
+    [
+     "comprobaciones.py",
+     "_posiciones",
+     35
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S01",
+    79
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-cadena",
+   "observable": "[25, 56, 130, 165, 200]",
+   "ok": true,
+   "sid_declarado": "S01",
+   "sujeto": "con-ruido-antes",
+   "superficie": "documento:R-1-cadena"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S01",
+     79
+    ],
+    [
+     "comprobaciones.py",
+     "_posiciones",
+     35
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S01",
+    79
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-cadena",
+   "observable": "[25, 56, 130, 165, 200]",
+   "ok": true,
+   "sid_declarado": "S01",
+   "sujeto": "sin-ocurrencias-fuera",
+   "superficie": "documento:R-1-cadena"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S02",
+     87
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S02",
+    87
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-no-sustituye",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S02",
+   "sujeto": "real",
+   "superficie": "documento:R-1-no-sustituye"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S02",
+     87
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S02",
+    87
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-no-sustituye",
+   "observable": "['ninguno de esos documentos sustituye a otro']",
+   "ok": false,
+   "sid_declarado": "S02",
+   "sujeto": "mutante",
+   "superficie": "documento:R-1-no-sustituye"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S02",
+     87
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S02",
+    87
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-no-sustituye",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S02",
+   "sujeto": "con-ruido-antes",
+   "superficie": "documento:R-1-no-sustituye"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S02",
+     87
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S02",
+    87
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-no-sustituye",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S02",
+   "sujeto": "sin-ocurrencias-fuera",
+   "superficie": "documento:R-1-no-sustituye"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S03",
+     94
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S03",
+    94
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-no-amplia",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S03",
+   "sujeto": "real",
+   "superficie": "documento:R-1-no-amplia"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S03",
+     94
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S03",
+    94
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-no-amplia",
+   "observable": "['ninguno amplia las autoridades de REVOLUTIONS']",
+   "ok": false,
+   "sid_declarado": "S03",
+   "sujeto": "mutante",
+   "superficie": "documento:R-1-no-amplia"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S03",
+     94
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S03",
+    94
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-no-amplia",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S03",
+   "sujeto": "con-ruido-antes",
+   "superficie": "documento:R-1-no-amplia"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S03",
+     94
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S03",
+    94
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-no-amplia",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S03",
+   "sujeto": "sin-ocurrencias-fuera",
+   "superficie": "documento:R-1-no-amplia"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S04",
+     101
+    ],
+    [
+     "comprobaciones.py",
+     "_prohibidas",
+     41
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S04",
+    101
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-no-ejecuta",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S04",
+   "sujeto": "conducta",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S04",
+     101
+    ],
+    [
+     "comprobaciones.py",
+     "_prohibidas",
+     41
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S04",
+    101
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-no-ejecuta",
+   "observable": "['EJECUTAR_TRABAJO']",
+   "ok": false,
+   "sid_declarado": "S04",
+   "sujeto": "mutante",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S05",
+     107
+    ],
+    [
+     "comprobaciones.py",
+     "_prohibidas",
+     41
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S05",
+    107
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-no-decide",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S05",
+   "sujeto": "conducta",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S05",
+     107
+    ],
+    [
+     "comprobaciones.py",
+     "_prohibidas",
+     41
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S05",
+    107
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-no-decide",
+   "observable": "['DECIDIR_UNIDAD']",
+   "ok": false,
+   "sid_declarado": "S05",
+   "sujeto": "mutante",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S06",
+     113
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S06",
+    113
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-referencias",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S06",
+   "sujeto": "real",
+   "superficie": "documento:R-1-referencias"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S06",
+     113
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S06",
+    113
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-referencias",
+   "observable": "['manifiestos-trabajo-ai : README.md']",
+   "ok": false,
+   "sid_declarado": "S06",
+   "sujeto": "mutante",
+   "superficie": "documento:R-1-referencias"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S06",
+     113
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S06",
+    113
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-referencias",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S06",
+   "sujeto": "con-ruido-antes",
+   "superficie": "documento:R-1-referencias"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S06",
+     113
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S06",
+    113
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-referencias",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S06",
+   "sujeto": "sin-ocurrencias-fuera",
+   "superficie": "documento:R-1-referencias"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S07",
+     120
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     123
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S07",
+    120
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-sin-sha",
+   "observable": "([], ['contrato', 'path', 'repositorio'])",
+   "ok": true,
+   "sid_declarado": "S07",
+   "sujeto": "conducta",
+   "superficie": "conducta:referencias"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S07",
+     120
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     123
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     123
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S07",
+    120
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-sin-sha",
+   "observable": "(['sha'], ['contrato', 'path', 'repositorio', 'sha'])",
+   "ok": false,
+   "sid_declarado": "S07",
+   "sujeto": "mutante",
+   "superficie": "conducta:referencias"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S08",
+     130
+    ],
+    [
+     "comprobaciones.py",
+     "_faltantes",
+     44
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S08",
+    130
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-2-alternativas",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S08",
+   "sujeto": "conducta",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S08",
+     130
+    ],
+    [
+     "comprobaciones.py",
+     "_faltantes",
+     44
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S08",
+    130
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-2-alternativas",
+   "observable": "['PROPONER']",
+   "ok": false,
+   "sid_declarado": "S08",
+   "sujeto": "mutante",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S09",
+     136
+    ],
+    [
+     "comprobaciones.py",
+     "_faltantes",
+     44
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S09",
+    136
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-3-puede",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S09",
+   "sujeto": "conducta",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S09",
+     136
+    ],
+    [
+     "comprobaciones.py",
+     "_faltantes",
+     44
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S09",
+    136
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-3-puede",
+   "observable": "['SUGERIR']",
+   "ok": false,
+   "sid_declarado": "S09",
+   "sujeto": "mutante",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S10",
+     146
+    ]
+   ],
+   "clase_observable": "str",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S10",
+    146
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-5-pregunta",
+   "observable": "'R-5-opciones'",
+   "ok": true,
+   "sid_declarado": "S10",
+   "sujeto": "conducta",
+   "superficie": "conducta:politica_relevo"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S10",
+     146
+    ]
+   ],
+   "clase_observable": "NoneType",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S10",
+    146
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-5-pregunta",
+   "observable": "None",
+   "ok": false,
+   "sid_declarado": "S10",
+   "sujeto": "mutante",
+   "superficie": "conducta:politica_relevo"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S11",
+     152
+    ],
+    [
+     "comprobaciones.py",
+     "_prohibidas",
+     41
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S11",
+    152
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-5-no-orquestador",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S11",
+   "sujeto": "conducta",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S11",
+     152
+    ],
+    [
+     "comprobaciones.py",
+     "_prohibidas",
+     41
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S11",
+    152
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-5-no-orquestador",
+   "observable": "['DECIDIR_RELEVO']",
+   "ok": false,
+   "sid_declarado": "S11",
+   "sujeto": "mutante",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S12",
+     160
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S12",
+    160
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-6-remoto",
+   "observable": "['ls-remote', 'origin']",
+   "ok": true,
+   "sid_declarado": "S12",
+   "sujeto": "conducta",
+   "superficie": "conducta:vigencia"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S12",
+     160
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S12",
+    160
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-6-remoto",
+   "observable": "['rev-parse']",
+   "ok": false,
+   "sid_declarado": "S12",
+   "sujeto": "mutante",
+   "superficie": "conducta:vigencia"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S13",
+     167
+    ],
+    [
+     "comprobaciones.py",
+     "_ejercer_descubrimiento",
+     62
+    ],
+    [
+     "comprobaciones.py",
+     "_huella_de_estado",
+     47
+    ],
+    [
+     "comprobaciones.py",
+     "_huella_de_estado",
+     47
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S13",
+    167
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-6-sin-registro",
+   "observable": "(False, [])",
+   "ok": true,
+   "sid_declarado": "S13",
+   "sujeto": "conducta",
+   "superficie": "conducta:descubrir"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S13",
+     167
+    ],
+    [
+     "comprobaciones.py",
+     "_ejercer_descubrimiento",
+     62
+    ],
+    [
+     "comprobaciones.py",
+     "_huella_de_estado",
+     47
+    ],
+    [
+     "comprobaciones.py",
+     "_huella_de_estado",
+     47
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S13",
+    167
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-6-sin-registro",
+   "observable": "(True, [])",
+   "ok": false,
+   "sid_declarado": "S13",
+   "sujeto": "mutante",
+   "superficie": "conducta:descubrir"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S14",
+     173
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S14",
+    173
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-6-sha-constitutivo",
+   "observable": "(['a/x.md', 'b/y.md'], {'repo': 'r', 'paths': ('a/',)})",
+   "ok": true,
+   "sid_declarado": "S14",
+   "sujeto": "conducta",
+   "superficie": "conducta:descubrir"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S14",
+     173
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S14",
+    173
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-6-sha-constitutivo",
+   "observable": "(['a/x.md', 'b/y.md', 'colado/por/el/mecanismo.md'], {'repo': 'r', 'paths': ('a/',)})",
+   "ok": false,
+   "sid_declarado": "S14",
+   "sujeto": "mutante",
+   "superficie": "conducta:descubrir"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S15",
+     185
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S15",
+    185
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-7-capacidades",
+   "observable": "(['escribir', 'leer'], ['escribir', 'leer'])",
+   "ok": true,
+   "sid_declarado": "S15",
+   "sujeto": "conducta",
+   "superficie": "conducta:capacidades"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S15",
+     185
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S15",
+    185
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-7-capacidades",
+   "observable": "(['escribir', 'leer'], ['escribir', 'leer', 'skill-que-pide-mas'])",
+   "ok": false,
+   "sid_declarado": "S15",
+   "sujeto": "mutante",
+   "superficie": "conducta:capacidades"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S16",
+     192
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S16",
+    192
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-7-sin-campos",
+   "observable": "((), ())",
+   "ok": true,
+   "sid_declarado": "S16",
+   "sujeto": "conducta",
+   "superficie": "conducta:campos_transporte"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S16",
+     192
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S16",
+    192
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-7-sin-campos",
+   "observable": "(('next_model',), ('next_model',))",
+   "ok": false,
+   "sid_declarado": "S16",
+   "sujeto": "mutante",
+   "superficie": "conducta:campos_transporte"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S17",
+     202
+    ],
+    [
+     "comprobaciones.py",
+     "_prohibidas",
+     41
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S17",
+    202
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-ejecuta",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S17",
+   "sujeto": "conducta",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S17",
+     202
+    ],
+    [
+     "comprobaciones.py",
+     "_prohibidas",
+     41
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S17",
+    202
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-ejecuta",
+   "observable": "['DESPLEGAR']",
+   "ok": false,
+   "sid_declarado": "S17",
+   "sujeto": "mutante",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S18",
+     208
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S18",
+    208
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-reemplaza",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S18",
+   "sujeto": "real",
+   "superficie": "documento:R-8-no-reemplaza"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S18",
+     208
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S18",
+    208
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-reemplaza",
+   "observable": "['no reemplaza a REVOLUTIONS']",
+   "ok": false,
+   "sid_declarado": "S18",
+   "sujeto": "mutante",
+   "superficie": "documento:R-8-no-reemplaza"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S18",
+     208
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S18",
+    208
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-reemplaza",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S18",
+   "sujeto": "con-ruido-antes",
+   "superficie": "documento:R-8-no-reemplaza"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S18",
+     208
+    ],
+    [
+     "comprobaciones.py",
+     "_ausentes",
+     38
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S18",
+    208
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-reemplaza",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S18",
+   "sujeto": "sin-ocurrencias-fuera",
+   "superficie": "documento:R-8-no-reemplaza"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S19",
+     215
+    ],
+    [
+     "comprobaciones.py",
+     "_prohibidas",
+     41
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S19",
+    215
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-decide",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S19",
+   "sujeto": "conducta",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S19",
+     215
+    ],
+    [
+     "comprobaciones.py",
+     "_prohibidas",
+     41
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S19",
+    215
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-decide",
+   "observable": "['DECLARAR_VEREDICTO']",
+   "ok": false,
+   "sid_declarado": "S19",
+   "sujeto": "mutante",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S20",
+     221
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S20",
+    221
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-estado",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S20",
+   "sujeto": "conducta",
+   "superficie": "conducta:constituir"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S20",
+     221
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S20",
+    221
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-estado",
+   "observable": "['ultima_entrega', 'unidad_actual']",
+   "ok": false,
+   "sid_declarado": "S20",
+   "sujeto": "mutante",
+   "superficie": "conducta:constituir"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S21",
+     228
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     231
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     232
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     232
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     232
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S21",
+    228
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-circular",
+   "observable": "([], True)",
+   "ok": true,
+   "sid_declarado": "S21",
+   "sujeto": "conducta",
+   "superficie": "conducta:referencias"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S21",
+     228
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     231
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "_sha_aparente",
+     72
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     74
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     231
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     232
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     232
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S21",
+    228
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-circular",
+   "observable": "(['sha'], True)",
+   "ok": false,
+   "sid_declarado": "S21",
+   "sujeto": "mutante",
+   "superficie": "conducta:referencias"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S22",
+     236
+    ],
+    [
+     "comprobaciones.py",
+     "_prohibidas",
+     41
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S22",
+    236
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-modelo",
+   "observable": "[]",
+   "ok": true,
+   "sid_declarado": "S22",
+   "sujeto": "conducta",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S22",
+     236
+    ],
+    [
+     "comprobaciones.py",
+     "_prohibidas",
+     41
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S22",
+    236
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-8-no-modelo",
+   "observable": "['ELEGIR_MODELO']",
+   "ok": false,
+   "sid_declarado": "S22",
+   "sujeto": "mutante",
+   "superficie": "conducta:acciones"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S01",
+     79
+    ],
+    [
+     "comprobaciones.py",
+     "_posiciones",
+     35
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S01",
+    79
+   ],
+   "motivo": "calificacion",
+   "obligacion": "R-1-cadena",
+   "observable": "[25, 56, 130, 165, 200]",
+   "ok": true,
+   "sid_declarado": "S01",
+   "sujeto": "real-para-N28-N29",
+   "superficie": "documento:R-1-cadena"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S01",
+     79
+    ],
+    [
+     "comprobaciones.py",
+     "_posiciones",
+     35
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S01",
+    79
+   ],
+   "motivo": "control",
+   "obligacion": "R-1-cadena",
+   "observable": "[25, 56, 130, 165, 200]",
+   "ok": true,
+   "sid_declarado": "S01",
+   "sujeto": "cadena-alterada-fuera",
+   "superficie": "documento:R-1-cadena"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S01",
+     79
+    ],
+    [
+     "comprobaciones.py",
+     "_posiciones",
+     35
+    ],
+    [
+     "comprobaciones.py",
+     "<genexpr>",
+     83
+    ]
+   ],
+   "clase_observable": "list",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S01",
+    79
+   ],
+   "motivo": "control",
+   "obligacion": "R-1-cadena",
+   "observable": "[-1, 40, 114, 149, 184]",
+   "ok": false,
+   "sid_declarado": "S01",
+   "sujeto": "cadena-alterada-dentro",
+   "superficie": "documento:R-1-cadena"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S13",
+     167
+    ],
+    [
+     "comprobaciones.py",
+     "_ejercer_descubrimiento",
+     62
+    ],
+    [
+     "comprobaciones.py",
+     "_huella_de_estado",
+     47
+    ],
+    [
+     "comprobaciones.py",
+     "_huella_de_estado",
+     47
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S13",
+    167
+   ],
+   "motivo": "control",
+   "obligacion": "R-6-sin-registro",
+   "observable": "(False, [])",
+   "ok": true,
+   "sid_declarado": "S13",
+   "sujeto": "solo-nombra",
+   "superficie": "conducta:descubrir"
+  },
+  {
+   "atravesado": [
+    [
+     "comprobaciones.py",
+     "c_S13",
+     167
+    ],
+    [
+     "comprobaciones.py",
+     "_ejercer_descubrimiento",
+     62
+    ],
+    [
+     "comprobaciones.py",
+     "_huella_de_estado",
+     47
+    ],
+    [
+     "comprobaciones.py",
+     "_huella_de_estado",
+     47
+    ]
+   ],
+   "clase_observable": "tuple",
+   "identidad": [
+    "comprobaciones.py",
+    "c_S13",
+    167
+   ],
+   "motivo": "control",
+   "obligacion": "R-6-sin-registro",
+   "observable": "(True, [])",
+   "ok": false,
+   "sid_declarado": "S13",
+   "sujeto": "mantiene-estado",
+   "superficie": "conducta:descubrir"
+  }
+ ],
+ "resultado": {
+  "ajenas_antes": [
+   "INICIO audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6 f44f2a0797cde6f569cca6fe5397d45917680258",
+   "CIERRE audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6 f44f2a0797cde6f569cca6fe5397d45917680258"
+  ],
+  "anoto_cierre": true,
+  "anoto_inicio": true,
+  "criterios": {},
+  "evaluo_criterios": true,
+  "terminacion": "T1",
+  "veredicto": "EXITO"
+ },
+ "veredicto": "EXITO",
+ "x0": {
+  "aperturas": [],
+  "delta_import": [
+   "prevuelo",
+   "sondas"
+  ],
+  "estado": "EJECUTABLE",
+  "imports_prevuelo": [
+   "sondas"
+  ],
+  "imports_sondas": [
+   "subprocess"
+  ],
+  "invocaciones": [
+   {
+    "argv": [
+     "git",
+     "-C",
+     "C:\\Franco_Metodos_AI\\work-claude-i",
+     "cat-file",
+     "-e",
+     "05041ddf0e7a687cc8ed1982a3d824570fe57710^{object}"
+    ],
+    "clase": "sonda-local",
+    "devolvio_contenido": false,
+    "fase": "X0",
+    "remota": false
+   },
+   {
+    "argv": [
+     "git",
+     "-C",
+     "C:\\Franco_Metodos_AI\\work-claude-i",
+     "cat-file",
+     "-e",
+     "f44f2a0797cde6f569cca6fe5397d45917680258^{object}"
+    ],
+    "clase": "sonda-local",
+    "devolvio_contenido": false,
+    "fase": "X0",
+    "remota": false
+   },
+   {
+    "argv": [
+     "git",
+     "-C",
+     "C:\\Franco_Metodos_AI\\work-claude-i",
+     "cat-file",
+     "-e",
+     "636a5d095574130b56c232da7958691f87234516^{object}"
+    ],
+    "clase": "sonda-local",
+    "devolvio_contenido": false,
+    "fase": "X0",
+    "remota": false
+   },
+   {
+    "argv": [
+     "git",
+     "-C",
+     "C:\\Franco_Metodos_AI\\work-claude-i",
+     "cat-file",
+     "-e",
+     "5bd6b0f582c7970a7b8c6c838b9971a70df43dfc^{object}"
+    ],
+    "clase": "sonda-local",
+    "devolvio_contenido": false,
+    "fase": "X0",
+    "remota": false
+   },
+   {
+    "argv": [
+     "git",
+     "-C",
+     "C:\\Franco_Metodos_AI\\work-claude-i",
+     "ls-remote",
+     "--exit-code",
+     "origin",
+     "refs/heads/main"
+    ],
+    "clase": "sonda-remota",
+    "devolvio_contenido": false,
+    "fase": "X0",
+    "remota": true
+   }
+  ],
+  "mapeo": [
+   {
+    "argv": [
+     "git",
+     "-C",
+     "C:\\Franco_Metodos_AI\\work-claude-i",
+     "cat-file",
+     "-e",
+     "05041ddf0e7a687cc8ed1982a3d824570fe57710^{object}"
+    ],
+    "satisface": [
+     "V1"
+    ]
+   },
+   {
+    "argv": [
+     "git",
+     "-C",
+     "C:\\Franco_Metodos_AI\\work-claude-i",
+     "cat-file",
+     "-e",
+     "f44f2a0797cde6f569cca6fe5397d45917680258^{object}"
+    ],
+    "satisface": [
+     "V2"
+    ]
+   },
+   {
+    "argv": [
+     "git",
+     "-C",
+     "C:\\Franco_Metodos_AI\\work-claude-i",
+     "cat-file",
+     "-e",
+     "636a5d095574130b56c232da7958691f87234516^{object}"
+    ],
+    "satisface": [
+     "V3"
+    ]
+   },
+   {
+    "argv": [
+     "git",
+     "-C",
+     "C:\\Franco_Metodos_AI\\work-claude-i",
+     "cat-file",
+     "-e",
+     "5bd6b0f582c7970a7b8c6c838b9971a70df43dfc^{object}"
+    ],
+    "satisface": [
+     "V4"
+    ]
+   },
+   {
+    "argv": [
+     "git",
+     "-C",
+     "C:\\Franco_Metodos_AI\\work-claude-i",
+     "ls-remote",
+     "--exit-code",
+     "origin",
+     "refs/heads/main"
+    ],
+    "satisface": [
+     "V5"
+    ]
+   }
+  ],
+  "modulos_internos": [
+   "contextlib",
+   "observador",
+   "prevuelo",
+   "sondas",
+   "subprocess"
+  ],
+  "resuelto": {
+   "V1": true,
+   "V2": true,
+   "V3": true,
+   "V4": true,
+   "V5": true
+  },
+  "satisfechas": [
+   "V1",
+   "V2",
+   "V3",
+   "V4",
+   "V5"
+  ]
+ }
+}

@@ -1,0 +1,14 @@
+historia sintetica con merge
+
+*   9a4b116 merge
+|\  
+| * 93cd63b c
+| * 38fbeb3 b
+* | 018e0e7 d
+|/  
+* d80c021 a
+
+
+derivacion efectiva     5
+recorrido primer padre  3
+identidad atravesada    ('constituyente.py', 'derivar_cadencia', 181)

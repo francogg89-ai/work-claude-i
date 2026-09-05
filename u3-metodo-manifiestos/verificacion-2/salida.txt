@@ -1,0 +1,68 @@
+VERIFICACION U3
+contrato   audit-chatgpt-i@856a0782cba7b331ee4f2178b7235553b1787c90
+repo-work  C:\Franco_Metodos_AI\work-claude-i
+
+X0, estrictamente antes de INICIO
+  V1   resuelve=True
+  V2   resuelve=True
+  V3   resuelve=True
+  V4   resuelve=True
+  V5   resuelve=True
+  estado EJECUTABLE   irresolubles ninguna
+  forma del resultado  ['bool']
+  cobertura nominal
+    cat-file -e 05041ddf0e7a687cc8ed1982a3d824570fe57710^{object} satisface ['V1']
+    cat-file -e f44f2a0797cde6f569cca6fe5397d45917680258^{object} satisface ['V2']
+    cat-file -e 636a5d095574130b56c232da7958691f87234516^{object} satisface ['V3']
+    cat-file -e 5bd6b0f582c7970a7b8c6c838b9971a70df43dfc^{object} satisface ['V4']
+    ls-remote --exit-code origin refs/heads/main               satisface ['V5']
+  invocaciones que no son sonda  0
+  aperturas de archivo en X0     0
+  traza interna, modulos         ['contextlib', 'observador', 'prevuelo', 'sondas', 'subprocess']
+  importados por el pre-vuelo    ['prevuelo', 'sondas']
+
+bitacora   C:\Franco_Metodos_AI\work-claude-i\u3-metodo-manifiestos\BITACORA.txt
+  INICIO previo de esta identidad  False
+  lineas ajenas antes              2
+
+candidato  u3-metodo-manifiestos/METODO-MANIFIESTOS.md
+  blob leido  f44f2a0797cde6f569cca6fe5397d45917680258
+  obligaciones 56   secciones 10   no mecanicas [9, 10]
+
+P-C1  origin refs/heads/main -> 05041ddf0e7a687cc8ed1982a3d824570fe57710
+P-C2  paths entre los cortes congelados ['u3-metodo-manifiestos/EVENTO.md', 'u3-metodo-manifiestos/METODO-MANIFIESTOS.md']
+      solapada  procede=False ruteo=True interseccion=2
+      disjunta  procede=True interseccion=0
+P-A   paquete completo   campos 21   secretos 0
+P-B   trabajo aislado    campos PROJECT_* 0
+
+casos de llamada  36   con el resultado que su obligacion predice  36
+comprobaciones    22   todas con superficie material declarada  True
+cobertura         56 obligaciones del candidato, 56 ejercitadas
+controles         33   discriminan 33
+atadura           registros de travesia 59   fallos ninguno
+
+frontera de red
+  X0      ls-remote --exit-code origin refs/heads/main
+  cuerpo  ls-remote origin refs/heads/main
+  interacciones remotas totales  2
+
+bitacora de la unidad
+  ajena    INICIO audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6 f44f2a0797cde6f569cca6fe5397d45917680258
+  ajena    CIERRE audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6 f44f2a0797cde6f569cca6fe5397d45917680258
+  propia   INICIO audit-chatgpt-i@856a0782cba7b331ee4f2178b7235553b1787c90 f44f2a0797cde6f569cca6fe5397d45917680258
+  propia   CIERRE audit-chatgpt-i@856a0782cba7b331ee4f2178b7235553b1787c90 f44f2a0797cde6f569cca6fe5397d45917680258
+
+criterios de exito
+  E1=SI  E2=SI  E3=SI  E4=SI  E5=SI  E6=SI
+  E7=SI  E8=SI  E9=SI  E10=SI  E11=SI  E12=SI
+  E13=SI  E14=SI  E15=SI  E16=SI  E17=SI  E18=SI
+  E19=SI  E20=SI  E21=SI  E22=SI  E23=SI  E24=SI
+  E25=SI  E26=SI  E27=SI  E28=SI  E29=SI  E30=SI
+  E31=SI
+
+terminacion  T1
+criterios de fallo activados  ninguno
+controles que no discriminan  ninguno
+
+VEREDICTO=EXITO
