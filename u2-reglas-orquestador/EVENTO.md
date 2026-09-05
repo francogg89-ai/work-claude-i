@@ -4,15 +4,20 @@ Describe el estado de la unidad. No acumula sus versiones anteriores: la histori
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@3770621bb2d7d7c54f6a743b2748a7219804f1bf` y
-`audit-chatgpt-i@10cb8b07c39f1889feae868ed92e95a67ce5ec0e`.
+El corte `work-claude-i@aa9d66718046eba0a48a8a6d7a1be18c82570a19` y
+`audit-chatgpt-i@f3cf91f7e08752b8941934b84bee1a052e2e430d`.
 
-Esa auditoría interpretó la corrida contra el contrato congelado: `FALLO` por `F11`, terminación
-`T2`, `E8` no evaluado, contrato agotado y reintento prohibido bajo esa identidad. No abrió ningún
-defecto nuevo: clasificó la causa como fallo de preparación del entorno, y comprobó
-independientemente que el corte de audit congelado sí existe en el repositorio autoritativo.
+Esa auditoría confirmó que `D-07` a `D-10` siguen corregidos y aceptó la dirección conceptual de
+`X0`, incluidas su anterioridad a `INICIO`, `NO_EJECUTABLE`, `E18`, la primera rama de `F20` y
+`N21`.
 
-Las auditorías anteriores de esta unidad corrigieron `D-01` a `D-10`.
+No congeló el contrato por `D-11`: `F20` declaraba además que `X0` no puede comprobar nada
+distinto de la resolubilidad, y ningún control alcanzaba esa conducta. `N21` sólo ejercitaba la
+identidad irresoluble.
+
+La corrida anterior había terminado en `FALLO` por `F11` en `P-C`, por un clon local
+desactualizado. El AUDITOR clasificó esa causa como fallo de preparación del entorno y no abrió
+defecto.
 
 ## D-03: lo que hice mal
 
@@ -35,9 +40,9 @@ quien ejecuta.
 
 ## Qué hizo esta intervención
 
-Propone un contrato previo nuevo, con identidad nueva, para una corrida nueva de `U2`. No tocó el
-candidato, que conserva su blob `b871240fd38d28430fc86fc4b14f1b851dad1f10`, no ejecutó ninguna
-corrida y no escribió mecanismo nuevo.
+Corrigió `D-11` en el contrato propuesto para la corrida nueva de `U2`. No tocó el candidato, que
+conserva su blob `b871240fd38d28430fc86fc4b14f1b851dad1f10`, no ejecutó ninguna corrida y no
+escribió mecanismo nuevo. Lo aceptado de `D-07` a `D-10` y de `X0` se conserva.
 
 `verificador/`, `verificacion-2/`, `verificacion-3/`, `verificacion-4/` y
 `u2-reglas-orquestador/BITACORA.txt` quedan intactas. La corrida fallida y su `INICIO`/`CIERRE`
@@ -69,8 +74,40 @@ cualquier problema posterior a INICIO sigue siendo T2/F11, sin excepción
 
 Un pre-vuelo que mirara algo más que la resolubilidad de las identidades congeladas ya sería parte
 de la corrida, y ahí `X0` dejaría de ser una precaución para pasar a ser el agujero que evita.
-`E18` exige que su resultado quede preservado identidad por identidad, y `F20` y `N21` lo vuelven
-comprobable.
+
+### D-11: la frontera declarada y no observada
+
+En la propuesta anterior esa frontera estaba escrita y nada la observaba. `E18` preserva el
+resultado de resolubilidad y `N21` ejercita la identidad irresoluble, pero un `X0` que resolviera
+las identidades **y además** leyera el candidato o corriera una comprobación satisfacía los dos y
+quedaba indistinguible del correcto.
+
+Es el mismo defecto que `D-07`, una vuelta más arriba: declarar una conducta prohibida sin nada
+que la vuelva observable no prohíbe nada. Que yo escribiera «`X0` no lee el candidato» no impide
+que lo lea.
+
+La corrección hace observable la conducta efectiva del pre-vuelo, no su declaración.
+
+`X0` se ejecuta bajo intercepción de sus interacciones externas —invocaciones de proceso y
+aperturas de archivo— y esa traza se preserva. La frontera pasa a ser una propiedad de la traza:
+
+```text
+por cada identidad congelada, exactamente una sonda de resolubilidad
+ninguna otra invocación externa
+ninguna apertura de archivo
+```
+
+Una sonda de resolubilidad es una operación Git de sólo lectura que resuelve exactamente una
+identidad y **no devuelve el contenido del objeto**. Esa última condición es la que separa
+resolver de leer: un `X0` que trajera el contenido del candidato para comprobar que existe estaría
+leyendo el candidato, y la traza lo mostraría.
+
+La traza se obtiene interceptando las interacciones, no preguntándole a `X0` qué hizo. Un
+pre-vuelo que se auto-reportara sería otra comprobación que no puede fallar.
+
+`E19` exige esa propiedad, `F21` la niega y `N22` demuestra que el control discrimina: un `X0`
+sintético que resuelve las identidades y además lee el candidato debe producir `F21`, y su traza
+debe diferir de la del `X0` real.
 
 ### D-10: qué califica un criterio sobre un archivo con historia
 
@@ -360,6 +397,8 @@ P-E  el denominador de la cobertura es el conjunto completo de obligaciones etiq
      candidato, y su estructura no admite contenido normativo fuera de ese conjunto
 P-F  cada comprobación estructural discrimina de verdad: su mutante viola la obligación que la
      comprobación lee, y esa diferencia queda observable en la evidencia
+P-G  el pre-vuelo se limita a resolver las identidades congeladas, y esa limitación es
+     observable en su traza de interacciones y no sólo declarada
 ```
 
 ### Entorno y fuentes relevantes
@@ -440,6 +479,9 @@ E16  las líneas de otras identidades presentes al abrir están, byte a byte, al
 E17  la ruta de la bitácora es la constante fija de la unidad, y el mecanismo no la deriva de su
      propio directorio ni usa ninguna otra
 E18  la evidencia preserva el resultado de X0 identidad por identidad, y todas resolvieron
+E19  la evidencia preserva la traza de interacciones externas de X0, obtenida por intercepción y
+     no por auto-reporte, y esa traza contiene exactamente una sonda de resolubilidad por
+     identidad congelada, ninguna otra invocación externa y ninguna apertura de archivo
 E13  los controles de reintento y de aborto atraviesan la misma función de corrida que la
      invocación real, y observan su decisión efectiva y no una función auxiliar consultada aparte
 E14  el control de reintento devuelve el resultado de reintento: no anota en su bitácora
@@ -486,8 +528,10 @@ F13  la bitácora preservada no contiene exactamente un INICIO y un CIERRE de la
 F18  alguna línea de otra identidad presente al abrir fue borrada, alterada o reordenada
 F19  la ruta de la bitácora no es la constante fija de la unidad, o el mecanismo la deriva de su
      propio directorio
-F20  se anotó INICIO con alguna identidad congelada irresoluble, o X0 comprobó algo distinto de
-     la resolubilidad de las identidades congeladas
+F20  se anotó INICIO con alguna identidad congelada irresoluble
+F21  la traza de X0 contiene una interacción que no es una sonda de resolubilidad de una
+     identidad congelada, le falta la sonda de alguna de ellas, o alguna sonda devuelve el
+     contenido del objeto en lugar de sólo resolverlo
 F14  el control de reintento o el de aborto no atraviesa la función de corrida real, u observa
      una función auxiliar consultada aparte en lugar de su decisión efectiva
 F15  el control de reintento anotó en su bitácora sintética o evaluó los demás criterios en lugar
@@ -561,6 +605,9 @@ N20  un mecanismo sintético que derive la ruta de la bitácora de su propio dir
 N21  un conjunto sintético de identidades congeladas que contenga una irresoluble debe hacer que
      X0 termine NO_EJECUTABLE, nombrando esa identidad y sin anotar nada en su bitácora
      sintética. Si en cambio X0 la deja pasar, el pre-vuelo no discrimina y la corrida es FALLO
+N22  un X0 sintético que resuelve todas las identidades y además lee el candidato o ejecuta una
+     comprobación debe producir F21, y su traza debe diferir de la del X0 real. Si la traza no
+     los distingue, la frontera del pre-vuelo está declarada y no observada
 ```
 
 `N16` reproduce sintéticamente el defecto de `S24` y `S28` y obliga al mecanismo a demostrar que
@@ -647,6 +694,8 @@ D-10  cerrado llevando la bitácora a un path fijo de la unidad y calificando to
       historia y E17/F19 más N20 impidiendo el reinicio por mudanza
 X0    agregado tras el fallo de preparación de la corrida anterior: pre-vuelo de resolubilidad
       anterior a INICIO, acotado a las identidades congeladas, con E18, F20 y N21
+D-11  cerrado haciendo observable la frontera del pre-vuelo: P-G, E19, F21 y N22 sobre la traza
+      de interacciones interceptadas de X0, en lugar de una prohibición sólo declarada
 ```
 
 El candidato no cambia: no hubo razón material para modificarlo. Su blob sigue siendo
