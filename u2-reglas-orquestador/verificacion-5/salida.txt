@@ -1,0 +1,195 @@
+X0 PRE-VUELO, ESTRICTAMENTE ANTES DE INICIO
+  CANDIDATE_WORK_SHA       f2429c2be622c305d4cfd6cebcd00837ea3ed42d  resuelve=True
+  CANDIDATE_BLOB_SHA       b871240fd38d28430fc86fc4b14f1b851dad1f10  resuelve=True
+  TRANSPORT_AUTHORITY_SHA  e05b24cc501ce839ffabee6d9666d069e056255c  resuelve=True
+  P_C_WORK_SHA             f2429c2be622c305d4cfd6cebcd00837ea3ed42d  resuelve=True
+  P_C_AUDIT_SHA            063cb3ac7edaa9a1457708a17be1789a862f6bd9  resuelve=True
+  identidades irresolubles: ninguna
+
+REGLA DE EJECUCION
+  contrato  audit-chatgpt-i@32c65a5d82b4f274ecd2fd82aefd30602da80c59
+  candidato b871240fd38d28430fc86fc4b14f1b851dad1f10
+  bitacora  C:\Franco_Metodos_AI\work-claude-i\u2-reglas-orquestador\BITACORA.txt
+  lineas al abrir: 2 (ajenas a esta identidad: 2)
+  E11 no existe INICIO previo de esta identidad
+  INICIO anotado antes del primer caso
+
+E18 RESULTADO DE X0, IDENTIDAD POR IDENTIDAD
+  CANDIDATE_WORK_SHA       f2429c2be622c305d4cfd6cebcd00837ea3ed42d work-claude-i  resuelve=True
+  CANDIDATE_BLOB_SHA       b871240fd38d28430fc86fc4b14f1b851dad1f10 work-claude-i  resuelve=True
+  TRANSPORT_AUTHORITY_SHA  e05b24cc501ce839ffabee6d9666d069e056255c revolutions-orchestra-ai  resuelve=True
+  P_C_WORK_SHA             f2429c2be622c305d4cfd6cebcd00837ea3ed42d work-claude-i  resuelve=True
+  P_C_AUDIT_SHA            063cb3ac7edaa9a1457708a17be1789a862f6bd9 audit-chatgpt-i  resuelve=True
+
+E19 TRAZA EXTERNA DE X0 (interceptada)
+  proceso  git -C C:/Franco_Metodos_AI/work-claude-i cat-file -e f2429c2be622c305d4cfd6cebcd00837ea3ed42d^{object}   sonda=True
+  proceso  git -C C:/Franco_Metodos_AI/work-claude-i cat-file -e b871240fd38d28430fc86fc4b14f1b851dad1f10^{object}   sonda=True
+  proceso  git -C C:/Franco_Metodos_AI/revolutions-orchestra-ai cat-file -e e05b24cc501ce839ffabee6d9666d069e056255c^{object}   sonda=True
+  proceso  git -C C:/Franco_Metodos_AI/work-claude-i cat-file -e f2429c2be622c305d4cfd6cebcd00837ea3ed42d^{object}   sonda=True
+  proceso  git -C C:/Franco_Metodos_AI/audit-chatgpt-i cat-file -e 063cb3ac7edaa9a1457708a17be1789a862f6bd9^{object}   sonda=True
+  aperturas de archivo: 0
+  sondas=5 identidades=4 no-sondas=0 archivos=0 -> E19=False
+
+E20 TRAZA INTERNA DE X0 (interceptada)
+  modulos llamados: ['__main__', 'abc', 'collections.abc', 'contextlib', 'instrumentacion', 'os', 'prevuelo', 'sondas', 'subprocess']
+  llamadas a modulos de la corrida: ninguna
+  lectura aplicada: la clausula operativa, ninguna llamada a ['autoridad', 'candidato', 'corpus', 'estructurales', 'orquestador', 'verificar']
+  nota: una lectura literal de 'solo prevuelo o sondas' incluiria los frames de la
+        biblioteca estandar que toda sonda Git necesita, y ninguna implementacion
+        correcta podria satisfacerla. Queda declarado para lectura del AUDITOR.
+
+E21 AISLAMIENTO POR IMPORTACION DEL PRE-VUELO
+  prevuelo     importa ['sondas']   cruce con la corrida: ninguno
+  sondas       importa ['subprocess']   cruce con la corrida: ninguno
+
+E9 IDENTIDAD DEL CANDIDATO, LEIDA DESPUES DE INICIO
+  leido     b871240fd38d28430fc86fc4b14f1b851dad1f10
+  congelado b871240fd38d28430fc86fc4b14f1b851dad1f10
+  coincide  True
+
+SUPERFICIE NORMATIVA EXTRAIDA DEL CANDIDATO
+  obligaciones            83
+  identificadores unicos  83
+  secciones numeradas     ['1', '1.1', '2', '3', '4', '5', '6', '6.1', '7', '8', '9', '9.1', '9.2', '9.3', '10', '10.1', '11', '12', '13']
+  no mecanicas declaradas ['12', '13']
+  secciones mecanicas     17
+
+AUTORIDAD DE TRANSPORTE (derivada, no inventada)
+  fuente e05b24cc501ce839ffabee6d9666d069e056255c:metodo/REVOLUTIONS.md
+  campos actor, commit, final, human_need, next_actor, next_instance, next_prompt, protocol, repository, turn_id, unit, work_id
+  formas admitidas ((False, False, False), (True, False, True), (False, True, True))
+
+E4 SECCIONES CON OBLIGACION
+  mecanicas sin obligacion: ninguna
+
+E5 FORMA DE LAS SECCIONES MECANICAS
+  sin violaciones
+
+CASOS
+  OK    T01   R-1.1-recibe-paquete       
+  OK    T02   R-1.1-abre-auditor         
+  OK    T03   R-1.1-entrega-paquete      
+  OK    T04   R-1.1-entra-al-loop        
+  OK    T05   R-1.1-primer-turn-id       
+  OK    T06   R-2-unicidad               [N10] 
+  OK    T07   R-2-sin-posterior          [N11] 
+  OK    T08   R-2-parseo                 
+  OK    T09   R-2-toma-el-bloque         
+  OK    T10   R-2-no-prosa               
+  OK    T11   R-3-orden                  
+  OK    T12   R-V1                       [N7] 
+  OK    T13   R-V2                       [N6] 
+  OK    T14   R-V3                       
+  OK    T15   R-V4                       
+  OK    T16   R-V5                       [N3] 
+  OK    T17   R-V6                       [N5] 
+  OK    T18   R-V7                       [N4] 
+  OK    T19   R-V8                       [N1] 
+  OK    T20   R-V8                       [N2] 
+  OK    T21   R-4-detiene                
+  OK    T22   R-4-reporte                
+  OK    T23   R-5-sucesor                
+  OK    T24   R-5-otro-detiene           [N3] 
+  OK    T25   R-5-no-reinicio            [N3] 
+  OK    T26   R-6-current                
+  OK    T27   R-6-fresh                  
+  OK    T28   R-6-null                   
+  OK    T29   R-6-fresh-a-current        
+  OK    T30   R-6-solo-next-instance     
+  OK    T31   R-6.1-detiene              [N8] 
+  OK    T32   R-7-necesidad              
+  OK    T33   R-7-final                  
+  OK    T34   R-7-unit                   
+  OK    T35   R-7-orden                  
+  OK    T36   R-7-entrega-literal        
+  OK    T37   R-9.1-constructor-1        
+  OK    T38   R-9.1-constructor-2        
+  OK    T39   R-9.1-constructor-3        
+  OK    T40   R-9.1-auditor-1            
+  OK    T41   R-9.1-auditor-2            
+  OK    T42   R-9.1-auditor-3            
+  OK    T43   R-9.1-natural              
+  OK    T44   R-9.1-pendiente            [N9] 
+  OK    T45   R-9.2-preserva             
+  OK    T46   R-9.2-literal              
+  OK    T47   R-9.3-canal-separado       
+  OK    T48   R-11-literal               
+  OK    S01   R-1-dos-caminos            real=True mutante=False difiere=True | obs_real='ENTREGAR_PAQUETE' | obs_mut='DETENER_REPORTAR'
+  OK    S02   R-1.1-no-interpreta        real=True mutante=False difiere=True | obs_real='WORK_ID=x\n\n```json\n{"a": 1}\n```\n' | obs_mut='WORK_ID=X\n\n```JSON\n{"A": 1}\n```'
+  OK    S03   R-2-no-escanear-prompt     real=True mutante=False difiere=True | obs_real=[('ENTREGAR', 'CONSTRUCTOR', 'C#1'), ('ENTREGAR', 'CONSTRUCTOR', 'C#1')] | obs_mut=[('ENTREGAR', 'CONSTRUCTOR', 'CONSTRUCTOR#t5'), ('ENTREGAR', 'CONSTRUCTOR', 'C#1')]
+  OK    S04   R-2-no-reconstruye         real=True mutante=False difiere=True | obs_real=[('DETENER_REPORTAR', 'R-2-parseo')] | obs_mut=[('DETENER_REPORTAR', 'R-2-parseo', {'protocol': 'revolutions-hop/v1'})]
+  OK    S05   R-3-no-lee-fuentes         real=True mutante=False difiere=True | obs_real=[] | obs_mut=['subprocess']
+  OK    S06   R-4-no-repara              real=True mutante=False difiere=True | obs_real=[('DETENER_REPORTAR', 'R-V1')] | obs_mut=[('DETENER_REPORTAR', 'R-V1', 'sugerencia: corregir protocol')]
+  OK    S07   R-5-no-adivina             real=True mutante=False difiere=True | obs_real=6 | obs_mut=9
+  OK    S08   R-5-git-prevalece          real=True mutante=False difiere=True | obs_real=([('DETENER_REPORTAR', 'R-5-git-prevalece')], 6) | obs_mut=([('RECIBIDO',)], 0)
+  OK    S09   R-6-handle-efimero         real=True mutante=False difiere=True | obs_real=[] | obs_mut=['handle_persistido.tmp']
+  OK    S10   R-6.1-no-degrada           [N8] real=True mutante=False difiere=True | obs_real={} | obs_mut={'CONSTRUCTOR': 'CONSTRUCTOR#t5'}
+  OK    S11   R-6.1-no-inventa           [N8] real=True mutante=False difiere=True | obs_real=[('DETENER_REPORTAR', 'R-6.1-detiene')] | obs_mut=[('ENTREGAR', 'CONSTRUCTOR', 'CONSTRUCTOR#t5', 'prompt literal')]
+  OK    S12   R-7-unit-no-decide         real=True mutante=False difiere=True | obs_real={'CONSTRUCTOR': 'C#1'} | obs_mut={'CONSTRUCTOR': 'C#reabierto'}
+  OK    S13   R-7-no-consulta-git        real=True mutante=False difiere=True | obs_real=[] | obs_mut=['subprocess']
+  OK    S14   R-8-no-decide              real=True mutante=False difiere=True | obs_real=[] | obs_mut=['CERRAR_UNIDAD', 'DECIDIR_RELEVO']
+  OK    S15   R-8-no-elige-modelo        real=True mutante=False difiere=True | obs_real=[] | obs_mut=['ELEGIR_MODELO']
+  OK    S16   R-8-no-cadencia            real=True mutante=False difiere=True | obs_real=([], False) | obs_mut=(['derivar_cadencia'], False)
+  OK    S17   R-8-no-toca-prompt         real=True mutante=False difiere=True | obs_real='línea uno\nlínea dos con acentos: auditoría\nlínea tres' | obs_mut='línea uno'
+  OK    S18   R-8-no-copia-git           real=True mutante=False difiere=True | obs_real='línea uno\nlínea dos con acentos: auditoría\nlínea tres' | obs_mut='línea uno'
+  OK    S19   R-8-no-extiende            real=True mutante=False difiere=True | obs_real=[] | obs_mut=['next_model']
+  OK    S20   R-9-no-necesidad           real=True mutante=False difiere=True | obs_real=[('PAUSA_SOLICITADA',)] | obs_mut=[('MOSTRAR_NECESIDAD',)]
+  OK    S21   R-9-no-git                 real=True mutante=False difiere=True | obs_real=[] | obs_mut=['subprocess']
+  OK    S22   R-9-no-durable             real=True mutante=False difiere=True | obs_real=[] | obs_mut=['detencion_durable.tmp']
+  OK    S23   R-9-flag-efimero           real=True mutante=False difiere=True | obs_real=(True, True) | obs_mut=(True, False)
+  OK    S24   R-9.1-frontera             real=True mutante=False difiere=True | obs_real=(False, True) | obs_mut=(True, False)
+  OK    S25   R-9.2-no-reconstruye       real=True mutante=False difiere=True | obs_real='pase original' | obs_mut='pase reconstruido'
+  OK    S26   R-9.3-no-aplica-relevo     real=True mutante=False difiere=True | obs_real={'AUDITOR': 'A#1'} | obs_mut={'AUDITOR': 'AUDITOR#relevado'}
+  OK    S27   R-9.3-no-modifica          real=True mutante=False difiere=True | obs_real='pase original con acentos: auditoría' | obs_mut='pase original con acentos: auditoría\n\nRELEVAR AUDITOR'
+  OK    S28   R-9.3-no-en-json           real=True mutante=False difiere=True | obs_real=(True, False) | obs_mut=(False, True)
+  OK    S29   R-9.3-no-saltea            real=True mutante=False difiere=True | obs_real=True | obs_mut=False
+  OK    S30   R-10-estado-admitido       real=True mutante=False difiere=True | obs_real=['instancias', 'sobre_pendiente', 'stop_requested', 'ultimo_turn_id'] | obs_mut=['instancias', 'sobre_pendiente', 'stop_requested', 'ultimo_turn_id', 'work_status']
+  OK    S31   R-10-no-paralelo           real=True mutante=False difiere=True | obs_real=[] | obs_mut=['relay_pending']
+  OK    S32   R-10.1-fail-closed         real=True mutante=False difiere=True | obs_real=[('DETENER_REPORTAR', 'R-6.1-detiene')] | obs_mut=[('ENTREGAR', 'CONSTRUCTOR', 'CONSTRUCTOR#t13', 'prompt literal')]
+  OK    S33   R-10.1-no-degrada          real=True mutante=False difiere=True | obs_real={} | obs_mut={'CONSTRUCTOR': 'CONSTRUCTOR#t13'}
+  OK    S34   R-11-no-necesita           real=True mutante=False difiere=True | obs_real=[] | obs_mut=['api_key']
+  OK    S35   R-11-no-resuelve           real=True mutante=False difiere=True | obs_real='usar TOKEN_FUDO → variable de entorno FUDO_TOKEN, sin resolverla' | obs_mut='usar TOKEN_FUDO → variable de entorno valor-expandido, sin resolverla'
+  OK    S36   R-11-no-logs               real=True mutante=False difiere=True | obs_real=[] | obs_mut=['orquestador.log']
+
+E2 ATRIBUCION DE RECHAZOS
+  identificadores emitidos: 13 | ajenos: ninguno
+
+E3 COBERTURA CONTRA EL CANDIDATO
+  obligaciones 83, ejercitadas 83
+  sin caso: ninguna | sobre obligaciones inexistentes: ninguno
+
+CONTROLES SOBRE EL PROPIO MECANISMO
+  N12 obligacion sintetica sin caso -> F3 = True (['R-1-beta'])
+  N13 seccion sintetica sin obligacion -> F5 = True (['3'])
+  N14 contenido sintetico fuera de forma -> F6 = True
+  N15 blob sintetico ajeno -> F10 = True
+  N16 mutante sintetico inerte -> F8 = True
+  N17 aborto capturado via correr() -> ruta=corrida F11=True veredicto=FALLO propias=2
+  N18 reintento via correr() -> ruta=reintento criterios=False bitacora sin cambios=True
+  N19 historia ajena -> intacta=True alterada detectada=True
+  N20 ruta de bitacora -> real=True mutante derivado=False
+  N21 identidad sintetica irresoluble -> NO_EJECUTABLE = True (['SINTETICA_IRRESOLUBLE'])
+  N22 X0 sintetico que lee el candidato -> F21 = True, traza difiere = True
+  N23 X0 sintetico que ejecuta en memoria -> F22 = True ([('corpus', 'sobre')]), traza interna difiere = True, sin interaccion externa extra = True
+  N24 pre-vuelo sintetico que importa la corrida -> F23 = True (['corpus'])
+
+CONTROLES NEGATIVOS DEL CORPUS
+  exigidos  N1..N24
+  presentes ['N1', 'N2', 'N3', 'N4', 'N5', 'N6', 'N7', 'N8', 'N9', 'N10', 'N11', 'N12', 'N13', 'N14', 'N15', 'N16', 'N17', 'N18', 'N19', 'N20', 'N21', 'N22', 'N23', 'N24']
+
+E8 P-C DERIVACION FUERA DEL ORQUESTADOR
+  work  C:/Franco_Metodos_AI/work-claude-i@f2429c2be622c305d4cfd6cebcd00837ea3ed42d
+  audit C:/Franco_Metodos_AI/audit-chatgpt-i@063cb3ac7edaa9a1457708a17be1789a862f6bd9
+  N_AUDITOR      rev-list --count = 25   git log unico = 25   coincide = True
+  N_CONSTRUCTOR  rev-list --count = 20   git log unico = 20   coincide = True
+
+E12 / E16 BITACORA
+  INICIO audit-chatgpt-i@e9d0e9f7f52661b3271ea6cb1840015c944d2933 b871240fd38d28430fc86fc4b14f1b851dad1f10
+  CIERRE audit-chatgpt-i@e9d0e9f7f52661b3271ea6cb1840015c944d2933 b871240fd38d28430fc86fc4b14f1b851dad1f10
+  INICIO audit-chatgpt-i@32c65a5d82b4f274ecd2fd82aefd30602da80c59 b871240fd38d28430fc86fc4b14f1b851dad1f10
+  CIERRE audit-chatgpt-i@32c65a5d82b4f274ecd2fd82aefd30602da80c59 b871240fd38d28430fc86fc4b14f1b851dad1f10
+  coherente = True (propias: INICIO=1 CIERRE=1 | ajenas=2)
+  historia ajena intacta = True (ajenas antes=2 despues=2 iguales=True)
+
+VEREDICTO=FALLO
+  F21 - traza externa de X0 fuera de la frontera
