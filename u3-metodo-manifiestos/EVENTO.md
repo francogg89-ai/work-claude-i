@@ -4,15 +4,17 @@ Describe el estado de la unidad. No acumula sus versiones anteriores: la histori
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@94f283553298d22a01a4325c61ccd2b8fecbcda9` y
-`audit-chatgpt-i@819e47edab6d151e680c37f784527153e14a3fa6`.
+El corte `work-claude-i@fd4a2bcb521ebbc651a0ae5b8d2a277fc73be306` y
+`audit-chatgpt-i@b75c9a084e2fcf3205c2e7735d2e7936620185ee`.
 
-Esa auditoría interpretó la corrida contra el contrato congelado
-`audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6`: `FALLO`, contrato consumido, reintento
-prohibido. El candidato no quedó demostrado defectuoso.
+Esa auditoría declaró el candidato `SUFICIENTE` y el contrato `INSUFICIENTE`: no congelado, corrida
+no autorizada. Aceptó como materialmente correctas la regla de alcance, `E25`-`E28`, `F27`-`F30` y
+la semántica de `N28`-`N31`, y dejó `D-20`, `D-21` y `D-22` abiertos por una sola razón: falta
+cerrar `D-23`. Registró `OBS-04`, editorial y no bloqueante.
 
-Abrió `D-20`, `D-21` y `D-22`, los tres exclusivamente sobre el mecanismo de una futura
-verificación, y registró `OBS-03`.
+Antes, `audit-chatgpt-i@819e47edab6d151e680c37f784527153e14a3fa6` había interpretado la corrida
+contra el contrato congelado `audit-chatgpt-i@af2f37e9dba513523222c79a910ec049030deff6`: `FALLO`,
+contrato consumido, reintento prohibido. El candidato no quedó demostrado defectuoso.
 
 Las auditorías previas cerraron `D-13` a `D-19`.
 
@@ -25,9 +27,9 @@ superficie aprobada de `U2`, `PLAN.md` y el método autoritativo.
 
 ## Qué hizo esta intervención
 
-Propone un contrato previo nuevo, con identidad contractual nueva, para otra corrida de `U3`. No
-tocó el candidato, que conserva su blob `f44f2a0797cde6f569cca6fe5397d45917680258`; no ejecutó
-ninguna mitad, no escribió mecanismo y no agregó ninguna línea a la bitácora.
+Corrige `D-23` sobre el contrato previo propuesto, que sigue sin congelar y sin ejecutar. No tocó
+el candidato, que conserva su blob `f44f2a0797cde6f569cca6fe5397d45917680258`; no ejecutó ninguna
+mitad, no escribió mecanismo y no agregó ninguna línea a la bitácora.
 
 `u3-metodo-manifiestos/BITACORA.txt` y `u3-metodo-manifiestos/verificacion-1/` quedan intactas:
 son evidencia de la corrida agotada. `U1`, `U2`, `PLAN.md` y `BOOTSTRAP.md` tampoco fueron
@@ -70,6 +72,34 @@ el par que cierra `D-20`: alterar la cadena fuera de su obligación no debe camb
 y alterarla dentro sí. `N30` cierra `D-21`. `N31` cierra `D-22` con dos sujetos sintéticos, uno
 que sólo nombra la clave prohibida y otro que efectivamente mantiene ese estado.
 
+### D-23 — atar el control a la conducta efectiva
+
+La regla de alcance es correcta y no alcanza. Un mecanismo puede conservar un `S01` real que sigue
+buscando en todo el documento y, aparte, implementar una comprobación localizada que sólo los
+controles alcanzan: `N28` y `N29` pasan, y el candidato real se sigue calificando con la
+comprobación ancha. Lo mismo con `S06`/`N30` y `S13`/`N31`.
+
+Ese es exactamente el defecto que `D-07` nombró en `U2` y que `D-17` volvió a nombrar acá: un
+control desconectado de la conducta efectiva no demuestra nada. `E20`/`F21`/`N9` lo cerraron para
+una función; `E15` lo cerró para la función de corrida. Faltaba la regla general.
+
+```text
+REGLA DE IDENTIDAD DEL CONTROL
+todo control ejercita la misma comprobacion efectiva que califica al candidato real para la
+obligacion que dice cerrar, y compara el mismo observable.
+Un control cambia el sujeto; no cambia la comprobacion.
+No existe comprobacion alcanzable solo desde un control, ni obligacion cuyo control no ejercite
+la comprobacion que la corrida real uso.
+Declarar la identidad no basta: la evidencia observa que el control atraveso esa comprobacion.
+Cuando un control no puede ejercitar la comprobacion misma, este contrato nombra la equivalencia
+y la evidencia la demuestra; sin esa demostracion el control no cierra nada.
+```
+
+`E29` a `E31`, `F31` a `F33` y los controles `N32` y `N33` la vuelven exigible. `N32` construye
+justamente la ruta paralela que debe quedar imposible. `N33` ataca lo que aprendí en `D-11`:
+declarar una identidad es barato, y la propiedad sólo queda demostrada si la evidencia distingue
+un control que atraviesa la comprobación real de uno que sólo dice atravesarla.
+
 ### OBS-03: leí el transporte como si fuera la autoridad
 
 `EVIDENCIA.md` afirmó que el prompt de congelamiento citaba un path inexistente. La autoridad
@@ -81,6 +111,14 @@ evidencia mientras lo repetía en cada pase.
 
 No reescribo `EVIDENCIA.md`. Queda como está, con su error, porque es evidencia de una corrida ya
 interpretada y corregirla retroactivamente sería peor que el error.
+
+### OBS-04, corregida por ser ahora relevante
+
+La frase heredada «`F1` a `F20` califican la invocación real» quedaba desactualizada frente a
+`F1`-`F30`. `D-23` agrega `F31`-`F33`, así que un rango literal desactualizado ya no es sólo
+editorial: nombra menos criterios de los que el encabezado normativo obliga. La frase ahora dice
+«los criterios de fallo», sin rango. El encabezado `FALLO si ocurre cualquiera` no cambia, y
+ningún criterio se agrega, quita ni reinterpreta por esto.
 
 ### D-18 — dos intentos y qué falló en el primero
 
@@ -339,6 +377,23 @@ mencion del nombre.
 La superficie material de una obligacion es su propia linea etiquetada con sus continuaciones.
 Cuando una obligacion necesita otra superficie, este contrato la nombra.
 
+### Regla de identidad del control
+
+```text
+todo control ejercita la misma comprobacion efectiva que califica al candidato real para la
+obligacion que dice cerrar, y compara el mismo observable.
+Un control cambia el sujeto; no cambia la comprobacion.
+No existe comprobacion alcanzable solo desde un control, ni obligacion cuyo control no ejercite
+la comprobacion que la corrida real uso.
+Declarar la identidad no basta: la evidencia observa que el control atraveso esa comprobacion.
+Cuando un control no puede ejercitar la comprobacion misma, este contrato nombra la equivalencia
+y la evidencia la demuestra; sin esa demostracion el control no cierra nada.
+```
+
+Alcanza a todos los controles negativos de este contrato, no sólo a los que cierran `D-20`,
+`D-21` y `D-22`. Este contrato no nombra ninguna equivalencia: todos sus controles ejercitan la
+comprobación misma sobre un sujeto sintético.
+
 ### Propiedad que debe demostrarse
 
 ```text
@@ -354,6 +409,8 @@ P-E  cada comprobacion estructural discrimina de verdad: su mutante viola la obl
      comprobacion lee, y esa diferencia queda observable en la evidencia
 P-F  el pre-vuelo se limita a resolver las vinculaciones congeladas, y esa limitacion es
      observable en su traza externa, en su traza interna y en sus importaciones
+P-G  cada control ejercita la conducta efectiva que califica al candidato, y no una ruta
+     paralela construida para el control: la evidencia observa la comprobacion atravesada
 ```
 
 ### Entorno y fuentes
@@ -493,6 +550,13 @@ E27  el mutante de cada comprobacion estructural altera la superficie que esa co
      y la diferencia del observable proviene de esa alteracion
 E28  las comprobaciones de estado o registro prohibido observan si el mecanismo lo mantiene o lo
      usa, no si su nombre aparece en la fuente
+E29  cada control declara la comprobacion que ejercita, y la evidencia observa que atraveso esa
+     misma comprobacion, no una equivalente por nombre
+E30  la comprobacion que un control atraviesa para una obligacion es la que califico al candidato
+     real para esa obligacion, y compara el mismo observable
+E31  ninguna comprobacion es alcanzable solo desde un control: el conjunto nominal de
+     comprobaciones que los controles atraviesan esta contenido en el que califico al candidato,
+     y toda obligacion que un control dice cerrar tiene ahi su comprobacion
 ```
 
 ### Criterio discriminante de fallo
@@ -542,12 +606,18 @@ F29  el mutante de alguna comprobacion estructural altera algo fuera de la super
      comprobacion lee
 F30  alguna comprobacion de estado prohibido se satisface o falla por la ocurrencia lexica de un
      nombre en lugar de por la conducta del mecanismo
+F31  algun control atraviesa una comprobacion distinta de la que califico al candidato real para
+     la obligacion que ese control dice cerrar, o compara otro observable
+F32  existe una comprobacion alcanzable solo desde los controles, o una obligacion cuyo control
+     no atraviesa ninguna comprobacion de la calificacion real
+F33  un control declara una identidad de comprobacion que la evidencia no observa atravesada, o
+     invoca una equivalencia que este contrato no nombra o que la evidencia no demuestra
 ```
 
 No existe tercera salida.
 
-`F1` a `F20` califican la invocación real. Los resultados de las invocaciones sintéticas de los
-controles son observaciones de esos controles, no fallos de la corrida.
+Los criterios de fallo califican la invocación real. Los resultados de las invocaciones
+sintéticas de los controles son observaciones de esos controles, no fallos de la corrida.
 
 ### Control negativo
 
@@ -609,6 +679,13 @@ N30  un mutante sintetico que altere algo fuera de la superficie que su comproba
 N31  dos sujetos sinteticos frente a una prohibicion de estado: uno que solo nombra la clave
      para rechazarla debe pasar, y uno que efectivamente mantiene ese estado debe fallar. Si la
      comprobacion no los distingue, mide ocurrencia lexica y no conducta
+N32  un mecanismo sintetico con ruta paralela: la comprobacion que califica al sujeto lee de mas,
+     y una comprobacion localizada alcanzable solo desde el control satisface N28 y N29. Debe
+     producir F31 y F32, y las identidades de comprobacion atravesadas deben diferir entre el
+     control y la calificacion. Si no difieren, la atadura esta declarada y no observada
+N33  un control sintetico que declara la identidad de la comprobacion real pero atraviesa otra
+     debe producir F33, y la evidencia debe distinguirlo de un control que si la atraviesa. Si no
+     los distingue, la identidad es una etiqueta y no una observacion
 ```
 
 `N9` es el control que ejercita, sobre una historia sintética con merge, la razón por la que
@@ -650,10 +727,14 @@ Nada. Construye el candidato y propone el contrato.
 
 ## Resultado
 
-Este contrato previo nuevo, propuesto y no ejecutado, con `D-20`, `D-21` y `D-22` cerrados por la
-regla de alcance y por `E25`-`E28`, `F27`-`F30` y los controles `N28`-`N31`. Conserva lo aceptado
-de `D-13` a `D-19`: `X0`-`X5`, `T1`-`T3`, `V1`-`V5`, `R1`/`R2`, `P-C1`/`P-C2`, `E20`/`F21`/`N9`,
-`E21`/`F22`/`N24`, `E23`/`E24`/`F24`/`F26`/`N25`/`N27` y la regla de medición nominal.
+Este contrato previo, propuesto y no ejecutado, con `D-23` cerrado por la regla de identidad del
+control y por `E29`-`E31`, `F31`-`F33` y los controles `N32` y `N33`, que son lo que ata `N28`-`N31`
+a las comprobaciones efectivas y por lo tanto lo que cierra `D-20`, `D-21` y `D-22`.
+
+Conserva sin cambios materiales la regla de alcance, `E25`-`E28`, `F27`-`F30` y `N28`-`N31`, y lo
+aceptado de `D-13` a `D-19`: `X0`-`X5`, `T1`-`T3`, `V1`-`V5`, `R1`/`R2`, `P-C1`/`P-C2`,
+`E20`/`F21`/`N9`, `E21`/`F22`/`N24`, `E23`/`E24`/`F24`/`F26`/`N25`/`N27` y la regla de medición
+nominal. La única otra modificación es `OBS-04`, declarada arriba.
 
 La bitácora de la unidad ya contiene el `INICIO` y el `CIERRE` del contrato consumido. Para esta
 identidad son líneas ajenas: no cuentan para `E13`/`E14` y deben quedar byte a byte, de modo que
