@@ -4,13 +4,13 @@ Describe el estado de la unidad. No acumula sus versiones anteriores: la histori
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@7f5c3aeb124c89a09f7ed846529c49e01ce432c3` y
-`audit-chatgpt-i@26193e0fdccfc657e4019e189c325473a29614ce`.
+El corte `work-claude-i@ffec93ee05b954fbd289fa974791f373f9542138` y
+`audit-chatgpt-i@9c58964a88bcc2446349b87ffb61fcdcf1277fca`.
 
-Esa auditoría cerró `D-13` a `D-17` y dio el candidato por aceptable. No congeló el contrato:
-abrió `D-18`, por la contradicción entre declarar el mecanismo sin red y exigirle a `P-C1` la
-vigencia remota, y `D-19`, porque el conjunto de vinculaciones que `X0` resuelve no estaba
-enumerado.
+Esa auditoría cerró `D-19` y dejó `D-18` abierto: mi corrección anterior introdujo una
+incompatibilidad nueva en lugar de eliminar la vieja.
+
+Las auditorías previas cerraron `D-13` a `D-17` y dieron el candidato por aceptable.
 
 La auditoría anterior había aprobado la corrida contractual de `U2` y cerrado la unidad. La
 superficie aprobada es `u2-reglas-orquestador/REGLAS-ORQUESTADOR.md`, blob
@@ -21,25 +21,40 @@ superficie aprobada de `U2`, `PLAN.md` y el método autoritativo.
 
 ## Qué hizo esta intervención
 
-Corrigió `D-18` y `D-19`, los dos en el contrato propuesto. No tocó el candidato, que conserva su
-blob `f44f2a0797cde6f569cca6fe5397d45917680258`; no ejecutó ninguna mitad, no creó la bitácora y no
+Corrigió `D-18` en el contrato propuesto. No tocó el candidato, que conserva su blob
+`f44f2a0797cde6f569cca6fe5397d45917680258`; no ejecutó ninguna mitad, no creó la bitácora y no
 escribió mecanismo. `U1`, `U2`, `PLAN.md` y `BOOTSTRAP.md` no fueron tocados.
 
-### D-18 — la contradicción que heredé
+### D-18 — dos intentos y qué falló en el primero
 
-El contrato declaraba el mecanismo «sin red» y a la vez le exigía a `P-C1` obtener la vigencia del
-remoto. Las dos cosas no pueden regir juntas.
+El contrato original decía «sin red» y a la vez le exigía a `P-C1` la vigencia remota. La frase
+venía de `U2`, donde era cierta porque nada de lo que `U2` verificaba estaba fuera del disco.
 
-El origen es reconocible: copié la frase de `U2`, donde era cierta. `U2` verificaba un documento y
-dos historias locales, y no tenía nada que consultar afuera. `U3` verifica una conducta que por
-definición ocurre contra un remoto. Heredar una frontera sin volver a preguntarse si sigue siendo
-la frontera correcta es la misma forma de error que produjo `D-08` y `D-09`.
+Mi primera corrección nombró **una única excepción, dentro del cuerpo**, y en la misma
+intervención agregó `V5`, una sonda remota en `X0`. Es decir: mientras cerraba la contradicción por
+un lado, la volvía a abrir por el otro. Dos interacciones remotas y un criterio que exigía una.
 
-La corrección no debilita `D-13`. Comparar contra un clon local sería exactamente lo que
-`R-6-remoto` prohíbe. Lo que hace es nombrar una única excepción y acotarla: una operación de sólo
-lectura contra el repositorio y el remoto declarados, una sola vez, dentro del cuerpo, registrada
-en la traza. Cualquier otra interacción de red es fallo, y `E23`, `F24` y `N25` lo vuelven
-observable en lugar de declarado.
+Lo que falló no fue el diseño de `V5` ni el de la excepción, sino haberlos escrito como respuestas
+a dos defectos distintos sin releer uno contra el otro. Es la misma mecánica de `D-08`: extender el
+alcance de una corrección sin revisar los criterios que ya la nombraban.
+
+La corrección de ahora cuenta interacciones **por fase y por propósito**, y son exactamente dos:
+
+```text
+R1  en X0, antes de INICIO   pregunta si la referencia esta en el remoto
+R2  en el cuerpo, P-C1       pregunta que dice esa referencia
+```
+
+Tocan el mismo endpoint y no son la misma cosa. Esa diferencia es la que ya separaba resolver de
+leer en las sondas locales, así que `V5` conserva su clase: `X0` resuelve vinculaciones, no lee
+valores. Su función es una sola y no cambia después de ejecutar.
+
+Que `R1` no transporte el valor no queda declarado. Queda observable en la forma del resultado de
+`X0` —un booleano por vinculación, sin campo donde una referencia pueda viajar—, y `E24`, `F26` y
+`N27` lo detectan. `E23`, `F24` y `N25` fijan la cantidad y la fase.
+
+Nada de esto debilita `D-13`: la vigencia sigue viniendo del remoto real, y comparar contra un
+clon local sigue siendo lo que `R-6-remoto` prohíbe.
 
 ### D-19 — el denominador de X0, enumerado
 
@@ -177,6 +192,7 @@ V2  CANDIDATE_BLOB_SHA       local   work-claude-i    f44f2a0797cde6f569cca6fe53
 V3  P_C_CORTE_ORIGEN         local   work-claude-i    636a5d095574130b56c232da7958691f87234516
 V4  P_C_CORTE_DESTINO        local   work-claude-i    5bd6b0f582c7970a7b8c6c838b9971a70df43dfc
 V5  P_C_REFERENCIA_REMOTA    remota  work-claude-i    origin, refs/heads/main
+                                                      resuelve a un booleano de alcanzabilidad
 ```
 
 Cinco vinculaciones nominales. `E16` y `E17` se miden sobre exactamente estas cinco, conforme a la
@@ -190,9 +206,13 @@ alcanzable. Sin ella, una red caída no aparecería hasta `P-C1`, ya dentro de l
 un contrato entero por una condición de entorno: exactamente lo que pasó dos veces con un clon
 desactualizado.
 
+Su función es una y no cambia después de ejecutar: comprobar que la referencia existe en el
+remoto. No obtiene su valor, no lo transporta y no lo pone a disposición del cuerpo. Quien obtiene
+el valor vigente es `P-C1`, dentro del cuerpo, porque esa es la conducta que `P-C1` demuestra.
+
 ```text
 sonda local    resuelve un objeto en un clon y no devuelve su contenido
-sonda remota   resuelve una referencia en un remoto y no devuelve contenido
+sonda remota   resuelve una referencia en un remoto y devuelve solo si existe
 ```
 
 ### Regla de ejecución
@@ -316,23 +336,31 @@ dentro de `u3-metodo-manifiestos/`.
 demostrar esa conducta. Heredar la frase de `U2` dejó el contrato diciendo dos cosas
 incompatibles.
 
-La frontera queda así, y es una sola:
+La frontera cuenta interacciones por fase y por propósito, y son exactamente dos:
 
 ```text
-el mecanismo no usa red, con una unica excepcion nombrada
-esa excepcion es la consulta de P-C1: una operacion de solo lectura contra P_C_REPO en
-P_C_REMOTO, que devuelve una referencia y no contenido
-ocurre una sola vez, dentro del cuerpo de la corrida
-queda registrada en la traza y su resultado se preserva
-cualquier otra interaccion de red es fallo
+el mecanismo no usa red, con dos excepciones nombradas, ambas de solo lectura y ambas contra
+P_C_REPO en P_C_REMOTO:
+
+R1  en X0, antes de INICIO. Resuelve V5: comprueba que la referencia declarada existe en el
+    remoto. Su resultado es un booleano de alcanzabilidad. El valor de la referencia no se usa
+    en ningun criterio y no queda disponible para el cuerpo
+R2  en el cuerpo, P-C1. Obtiene el valor vigente de esa referencia y lo preserva
+
+cualquier otra interaccion de red es fallo, y tambien lo es una de estas dos ocurrida fuera de
+su fase
 ```
 
-Se resuelve por excepción nombrada y no debilitando `D-13`: la alternativa —comparar contra un
-clon local— es exactamente lo que `R-6-remoto` prohíbe, porque demuestra lo que ese disco sabe y
-no vigencia.
+Se resuelve así y no debilitando `D-13`: la alternativa —comparar contra un clon local— es
+exactamente lo que `R-6-remoto` prohíbe, porque demuestra lo que ese disco sabe y no vigencia.
 
-`X0` conserva su frontera propia. Su vinculación remota se resuelve con una sonda que devuelve una
-referencia y no contenido, igual que las locales resuelven un objeto sin devolverlo.
+`R1` y `R2` tocan el mismo endpoint y no son la misma cosa. `R1` pregunta si está; `R2` pregunta
+qué dice. Esa diferencia es la misma que separa resolver de leer en las sondas locales, y por eso
+`V5` conserva la clase que ya tenía: `X0` resuelve vinculaciones, no lee valores.
+
+Que `R1` no transporte el valor no puede quedar declarado. Queda observable en la forma del
+resultado de `X0`: un booleano por vinculación, sin campo donde una referencia pueda viajar. Un
+pre-vuelo que devolviera el valor cambiaría esa forma, y `E24`, `F26` y `N27` lo detectan.
 
 No declara catálogo propio de obligaciones: las extrae del candidato.
 
@@ -382,8 +410,11 @@ E21  la ruta de la bitacora es la constante fija de la unidad, y el mecanismo no
      propio directorio ni usa ninguna otra
 E22  P-C usa exactamente los insumos congelados —repositorio, remoto, los dos cortes y las dos
      superficies— y la evidencia preserva la referencia remota que P-C1 obtuvo
-E23  la corrida realiza exactamente una interaccion de red, la de P-C1, dirigida a P_C_REPO en
-     P_C_REMOTO, y la evidencia la preserva. Ninguna otra parte del mecanismo usa red
+E23  la corrida realiza exactamente dos interacciones de red, R1 en X0 y R2 en el cuerpo, ambas
+     de solo lectura contra P_C_REPO en P_C_REMOTO, cada una en su fase; la evidencia preserva
+     ambas. Ninguna otra parte del mecanismo usa red
+E24  el resultado de X0 para V5 es un booleano de alcanzabilidad: no transporta el valor de la
+     referencia, y la forma del resultado de X0 no tiene campo donde ese valor pueda viajar
 ```
 
 ### Criterio discriminante de fallo
@@ -421,10 +452,12 @@ F22  la ruta de la bitacora no es la constante fija de la unidad, o el mecanismo
      propio directorio
 F23  P-C usa insumos distintos de los congelados, o la evidencia no preserva la referencia
      remota obtenida por P-C1
-F24  la corrida realiza una interaccion de red distinta de la de P-C1, o dirigida a un
-     repositorio o remoto distintos de los declarados
+F24  la corrida realiza una interaccion de red que no es R1 ni R2, una dirigida a un repositorio
+     o remoto distintos de los declarados, o una de las dos ocurrida fuera de su fase
 F25  el conjunto de vinculaciones que X0 resuelve no es exactamente V1 a V5, o el mecanismo lo
      obtiene por inferencia en lugar de la lista literal congelada
+F26  el resultado de X0 transporta el valor de la referencia remota en lugar de un booleano de
+     alcanzabilidad
 ```
 
 No existe tercera salida.
@@ -476,11 +509,13 @@ N23  dos vinculaciones sinteticas con nombres distintos y el mismo repositorio y
 N24  un mecanismo sintetico que derive la ruta de la bitacora de su propio directorio, en lugar
      de la constante de la unidad, debe producir F22. Ese es el camino por el que una corrida
      nueva podria encontrar una bitacora vacia y eludir X4
-N25  un mecanismo sintetico que realice una segunda interaccion de red, o una dirigida a otro
-     repositorio, debe producir F24. Si la traza no lo distingue de la corrida real, la frontera
-     de red esta declarada y no observada
+N25  un mecanismo sintetico que realice una tercera interaccion de red, una dirigida a otro
+     repositorio, o R2 fuera del cuerpo, debe producir F24. Si la traza no lo distingue de la
+     corrida real, la frontera de red esta declarada y no observada
 N26  un conjunto sintetico de vinculaciones distinto de V1 a V5, o derivado escaneando SHAs en
      lugar de tomado de la lista literal, debe producir F25
+N27  un X0 sintetico cuyo resultado para V5 transporte el valor de la referencia en lugar de un
+     booleano debe producir F26, y la forma de su resultado debe diferir de la del X0 real
 ```
 
 `N9` es el control que ejercita, sobre una historia sintética con merge, la razón por la que
@@ -523,8 +558,9 @@ Nada. Construye el candidato y propone el contrato.
 ## Resultado
 
 Este contrato previo, corregido, propuesto y no ejecutado, con `D-18` cerrado por una frontera de
-red única y acotada —`E23`, `F24`, `N25`— y `D-19` cerrado enumerando las cinco vinculaciones que
-`X0` resuelve, con `F25` y `N26` negando que el mecanismo las obtenga de otro modo.
+red contada por fase y propósito —`R1` en `X0`, `R2` en el cuerpo, con `E23`, `E24`, `F24`, `F26`,
+`N25` y `N27`— y `D-19` cerrado enumerando las cinco vinculaciones que `X0` resuelve, con `F25` y
+`N26` negando que el mecanismo las obtenga de otro modo.
 
 `u3-metodo-manifiestos/METODO-MANIFIESTOS.md` conserva sin cambios el blob
 `f44f2a0797cde6f569cca6fe5397d45917680258`, con 56 obligaciones sobre 8 secciones mecánicas.
