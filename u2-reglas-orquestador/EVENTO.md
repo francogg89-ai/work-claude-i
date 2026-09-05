@@ -4,16 +4,15 @@ Describe el estado de la unidad. No acumula sus versiones anteriores: la histori
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@b2cb76be7ba4b2e901bf89e7512cb81ae1d6ac37` y
-`audit-chatgpt-i@d6dba9decf6091078fa1b7f4f49b044e59f4df02`.
+El corte `work-claude-i@3770621bb2d7d7c54f6a743b2748a7219804f1bf` y
+`audit-chatgpt-i@10cb8b07c39f1889feae868ed92e95a67ce5ec0e`.
 
-Esa auditoría dio `D-09` por corregido y confirmó que `D-07` y `D-08` siguen corregidos.
+Esa auditoría interpretó la corrida contra el contrato congelado: `FALLO` por `F11`, terminación
+`T2`, `E8` no evaluado, contrato agotado y reintento prohibido bajo esa identidad. No abrió ningún
+defecto nuevo: clasificó la causa como fallo de preparación del entorno, y comprobó
+independientemente que el corte de audit congelado sí existe en el repositorio autoritativo.
 
-No congeló el contrato por `D-10`: la bitácora estaba fijada dentro del directorio de un mecanismo
-cuyo archivo ya contenía eventos de un contrato anterior, y `E12`/`F13` no definían si calificaban
-el archivo físico completo o sólo los eventos de la identidad congelada.
-
-Las auditorías anteriores de esta unidad corrigieron `D-01` a `D-09`.
+Las auditorías anteriores de esta unidad corrigieron `D-01` a `D-10`.
 
 ## D-03: lo que hice mal
 
@@ -36,10 +35,42 @@ quien ejecuta.
 
 ## Qué hizo esta intervención
 
-Corrigió `D-10` en el contrato propuesto. No tocó el candidato, que conserva su blob
-`b871240fd38d28430fc86fc4b14f1b851dad1f10`, no ejecutó ninguna corrida y no escribió mecanismo
-nuevo. `verificador/`, `verificacion-2/` y `verificacion-3/` quedan intactas. Las correcciones
-aceptadas de `D-07`, `D-08` y `D-09` se conservan.
+Propone un contrato previo nuevo, con identidad nueva, para una corrida nueva de `U2`. No tocó el
+candidato, que conserva su blob `b871240fd38d28430fc86fc4b14f1b851dad1f10`, no ejecutó ninguna
+corrida y no escribió mecanismo nuevo.
+
+`verificador/`, `verificacion-2/`, `verificacion-3/`, `verificacion-4/` y
+`u2-reglas-orquestador/BITACORA.txt` quedan intactas. La corrida fallida y su `INICIO`/`CIERRE`
+son evidencia autoritativa: no se borran, no se sustituyen y no se completan.
+
+### La falla de preparación, y qué agrega este contrato
+
+La corrida anterior murió en `P-C` porque el clon local de `audit-chatgpt-i` no tenía el objeto
+que el contrato congelaba. El corte existía en el repositorio autoritativo; lo que faltaba era un
+`fetch`. Preparación, no diseño.
+
+El AUDITOR no abrió un defecto por eso, y es correcto: el contrato no prometía nada sobre el
+entorno. Pero que no sea un defecto no lo vuelve tolerable. Gastó una corrida entera, y el
+contrato que sigue no puede quedar expuesto a lo mismo.
+
+Lo que agrega es un pre-vuelo, `X0`, anterior a `INICIO`: el mecanismo resuelve toda identidad Git
+que el contrato congela, y si alguna no resuelve termina como `NO_EJECUTABLE` sin anotar nada.
+
+La tentación evidente es que `NO_EJECUTABLE` se convierta en una vía de escape: correr, ver algo
+feo y declararlo no ejecutable. Por eso queda acotado con dureza:
+
+```text
+ocurre estrictamente antes de INICIO
+comprueba una sola cosa: que cada identidad congelada resuelve como objeto Git
+no lee el candidato, no ejecuta ningún caso y no evalúa ningún criterio
+no es un veredicto, no consume el contrato y no deja línea en la bitácora
+cualquier problema posterior a INICIO sigue siendo T2/F11, sin excepción
+```
+
+Un pre-vuelo que mirara algo más que la resolubilidad de las identidades congeladas ya sería parte
+de la corrida, y ahí `X0` dejaría de ser una precaución para pasar a ser el agujero que evita.
+`E18` exige que su resultado quede preservado identidad por identidad, y `F20` y `N21` lo vuelven
+comprobable.
 
 ### D-10: qué califica un criterio sobre un archivo con historia
 
@@ -65,8 +96,7 @@ cambiara.
 `verificacion-3/BITACORA.txt` no se migra ni se toca: es evidencia de aquella corrida bajo un
 contrato agotado. Migrar sus marcas sería escribir en un registro hechos que no presenció, que es
 la clase de reconstrucción que un append-only existe para no tener que creer. La bitácora de la
-unidad empieza vacía con este contrato; es una transición única y queda declarada en el contrato
-para que se vea.
+unidad se creó vacía con aquel contrato y hoy conserva las marcas de la corrida que lo agotó.
 
 ### D-09: dos semánticas para la misma cosa
 
@@ -208,7 +238,11 @@ blob         b871240fd38d28430fc86fc4b14f1b851dad1f10
 Esta regla gobierna sobre cualquier otra lectura del contrato.
 
 ```text
-X1  antes del primer caso, el mecanismo lee la bitácora de la unidad, busca en ella una marca de
+X0  antes de todo lo demás, el mecanismo resuelve cada identidad Git que este contrato congela.
+    Si alguna no resuelve en los clones locales, termina como NO_EJECUTABLE informando cuáles:
+    no anota INICIO, no ejecuta ningún caso, no evalúa ningún criterio, no emite veredicto, no
+    consume el contrato y no deja línea en la bitácora. X0 no comprueba ninguna otra cosa
+X1  superado X0, el mecanismo lee la bitácora de la unidad, busca en ella una marca de
     inicio de la identidad congelada y, si no la hay, anota la suya
 X2  toda invocación que anotó INICIO es una ejecución observada, cualquiera sea su final
 X3  una invocación observada sólo puede aprobarse si emitió veredicto EXITO. Cualquier otro
@@ -291,18 +325,20 @@ Que el archivo contenga historia de contratos anteriores no es una anomalía: es
 registro append-only compartido debe verse. Lo que sí sería una anomalía es que esa historia
 cambiara.
 
-#### La transición, dicha explícitamente
+#### Lo que la bitácora de la unidad ya contiene
 
 `u2-reglas-orquestador/verificacion-3/BITACORA.txt` no es esta bitácora. Es evidencia de aquella
-corrida, bajo un contrato agotado, y queda donde está sin modificarse.
+corrida, bajo un contrato agotado, y queda donde está sin modificarse. Sus marcas no se migran:
+migrarlas sería escribir en un registro hechos que no presenció, que es la clase de
+reconstrucción que un append-only existe para no tener que creer.
 
-Sus marcas no se migran a la bitácora de la unidad. Migrarlas sería escribir en un registro
-hechos que ese registro no presenció, que es la clase de reconstrucción que un append-only
-existe para no tener que creer.
+La bitácora de la unidad se creó con el contrato anterior y ya contiene su `INICIO` y su `CIERRE`
+bajo `audit-chatgpt-i@e9d0e9f7f52661b3271ea6cb1840015c944d2933`. Esa corrida terminó en `FALLO`
+por `F11`, y su registro se conserva.
 
-La bitácora de la unidad empieza vacía con este contrato. Es una transición única y queda
-declarada aquí para que se vea: de aquí en adelante el path no cambia, y cualquier corrida futura
-de esta unidad encuentra en él todo lo que ocurrió antes.
+Para este contrato, esas dos líneas son **ajenas**: no se cuentan para `E12`, y `E16` exige que
+estén byte a byte al cerrar. Es la primera vez que `E16` se ejercita sobre historia real y no
+sobre un insumo sintético, que es exactamente para lo que fue diseñado.
 
 La bitácora se preserva en Git junto con la evidencia. Su contenido es parte del delta que el
 AUDITOR inspecciona, de modo que la cantidad de invocaciones deja de ser algo que el CONSTRUCTOR
@@ -340,8 +376,17 @@ fuentes   el candidato, del que se leen obligaciones, secciones y declaración d
 ### Mecanismo
 
 Un verificador determinista, sin modelo de lenguaje y sin red, en un directorio propio de este
-contrato dentro de `u2-reglas-orquestador/`. `verificador/`, `verificacion-2/` y `verificacion-3/`
-no se modifican: son evidencia de corridas ya interpretadas.
+contrato dentro de `u2-reglas-orquestador/`. `verificador/`, `verificacion-2/`, `verificacion-3/`
+y `verificacion-4/` no se modifican: son evidencia de corridas ya interpretadas.
+
+Antes de todo lo demás ejecuta `X0` sobre las identidades que este contrato congela: el work SHA
+y el blob del candidato, la identidad de la autoridad de transporte, y los dos cortes de `P-C`.
+Cada una se resuelve con una operación Git de sólo lectura, y el resultado se preserva identidad
+por identidad. Si alguna no resuelve, termina `NO_EJECUTABLE` sin tocar la bitácora.
+
+La preparación del entorno es obligación de quien ejecuta: los clones que la corrida lee deben
+estar sincronizados antes de invocarla. `X0` no sustituye esa obligación; la vuelve comprobable y
+evita que su incumplimiento consuma un contrato.
 
 La ruta de la bitácora es una constante de la unidad y no se deriva del directorio del mecanismo.
 El mecanismo cambia de directorio con cada contrato; la bitácora no cambia de lugar nunca.
@@ -394,6 +439,7 @@ E16  las líneas de otras identidades presentes al abrir están, byte a byte, al
      fue borrada, alterada ni reordenada
 E17  la ruta de la bitácora es la constante fija de la unidad, y el mecanismo no la deriva de su
      propio directorio ni usa ninguna otra
+E18  la evidencia preserva el resultado de X0 identidad por identidad, y todas resolvieron
 E13  los controles de reintento y de aborto atraviesan la misma función de corrida que la
      invocación real, y observan su decisión efectiva y no una función auxiliar consultada aparte
 E14  el control de reintento devuelve el resultado de reintento: no anota en su bitácora
@@ -440,6 +486,8 @@ F13  la bitácora preservada no contiene exactamente un INICIO y un CIERRE de la
 F18  alguna línea de otra identidad presente al abrir fue borrada, alterada o reordenada
 F19  la ruta de la bitácora no es la constante fija de la unidad, o el mecanismo la deriva de su
      propio directorio
+F20  se anotó INICIO con alguna identidad congelada irresoluble, o X0 comprobó algo distinto de
+     la resolubilidad de las identidades congeladas
 F14  el control de reintento o el de aborto no atraviesa la función de corrida real, u observa
      una función auxiliar consultada aparte en lugar de su decisión efectiva
 F15  el control de reintento anotó en su bitácora sintética o evaluó los demás criterios en lugar
@@ -510,6 +558,9 @@ N19  sobre una bitácora sintética que contiene líneas de otra identidad, una 
 N20  un mecanismo sintético que derive la ruta de la bitácora de su propio directorio, en lugar
      de la constante de la unidad, debe producir F19. Ese es el camino por el que una corrida
      nueva podría encontrar una bitácora vacía y eludir X4
+N21  un conjunto sintético de identidades congeladas que contenga una irresoluble debe hacer que
+     X0 termine NO_EJECUTABLE, nombrando esa identidad y sin anotar nada en su bitácora
+     sintética. Si en cambio X0 la deja pasar, el pre-vuelo no discrimina y la corrida es FALLO
 ```
 
 `N16` reproduce sintéticamente el defecto de `S24` y `S28` y obliga al mecanismo a demostrar que
@@ -550,70 +601,24 @@ y cierra. Esa separación es la corrección de `D-08`.
 
 ---
 
-## La corrida anterior, no aprobada
+## Las corridas ya interpretadas
 
-Se ejecutó una única corrida contra el candidato y el criterio congelados en
-`audit-chatgpt-i@c1586576249d37070a8f2fb9ecaa1d3740e522b0`, y el mecanismo emitió `EXITO`. El
-AUDITOR no lo aprobó por `D-07`, y ese contrato quedó agotado.
-
-Lo que sigue es el registro de esa corrida, no un resultado vigente. Su mecanismo, corpus,
-insumos sintéticos, bitácora, salida literal y evidencia se conservan sin modificación en
-`u2-reglas-orquestador/verificacion-3/`, junto con `verificador/` y `verificacion-2/`.
+Cuatro corridas de `U2` fueron ejecutadas e interpretadas. Ninguna aprobó el candidato, y todas
+conservan su mecanismo, su corpus, su salida literal y su evidencia sin modificación.
 
 ```text
-código de retorno   0
-VEREDICTO           EXITO
+verificador/       primer contrato    FALLO   E3 no demostrado: la cobertura se medía contra una
+                                              lista escrita dentro del mecanismo
+verificacion-2/    segundo contrato   FALLO   F6 por la forma de 10.1, y F7 en dos comprobaciones
+                                              que no fallaban sobre su mutante
+verificacion-3/    tercer contrato    EXITO   no aprobado: D-07, el control de reintento no
+                                              atravesaba la guardia que decía comprobar
+verificacion-4/    cuarto contrato    FALLO   F11 en P-C: el clon local no tenía el corte de
+                                              audit congelado. Preparación, no diseño
 ```
 
-### Regla de ejecución
-
-```text
-su bitácora antes de la corrida     no existía
-INICIO                             anotado antes del primer caso
-CIERRE                             anotado al emitir el veredicto
-coherencia                         un INICIO y un CIERRE, sin líneas ajenas
-```
-
-### Resultado contra el criterio congelado
-
-```text
-E1   84 casos, todos con el resultado que su obligación predice            SI
-E2   13 identificadores emitidos, ninguno ajeno al candidato               SI
-E3   83 obligaciones, 83 ejercitadas                                       SI
-E4   ninguna sección mecánica sin obligación                               SI
-E5   ninguna sección mecánica viola su forma declarada                     SI
-E6   toda comprobación estructural falla sobre su mutante                  SI
-E7   el observable difiere entre real y mutante en las 36 comprobaciones   SI
-E8   P-C: N_CONSTRUCTOR = 11, N_AUDITOR = 14, coincidentes                 SI
-E9   el blob leído es exactamente el congelado                             SI
-E10  INICIO y CIERRE preservados                                           SI
-E11  no existía INICIO previo para esta identidad                          SI
-E12  bitácora coherente                                                    SI
-
-F1 a F13   ninguno ocurrió
-N1 a N18   todos presentes; N1-N11 rechazados, N12-N18 discriminaron
-```
-
-### Las dos comprobaciones que antes no discriminaban
-
-`S24` y `S28` habían activado `F7` en la corrida anterior. Con las obligaciones reformuladas y
-`E7` exigiendo que el observable difiera, ahora discriminan:
-
-```text
-S24  obs_real = (entregado False, conservado True)   obs_mut = (True, False)
-S28  obs_real = (identico True, contiene False)      obs_mut = (False, True)
-```
-
-`N16` reproduce sintéticamente ese defecto y demuestra que el mecanismo lo detecta; `N17` y `N18`
-hacen lo mismo con las dos mitades de `D-03`.
-
-### Trabajo previo a INICIO, declarado
-
-Antes de invocar la corrida se ejecutó una prueba de humo que sólo importó los módulos, ejercitó
-los insumos sintéticos y comprobó que la bitácora de aquella corrida no existía. No leyó el candidato, no ejecutó
-ningún caso del corpus y no ejercitó ninguna comprobación estructural sobre el sujeto real.
-`EVIDENCIA.md` la declara en detalle. La frontera de la corrida es `INICIO`, y qué ocurrió antes
-de ella debe poder juzgarlo el AUDITOR sin depender de que se lo cuenten después.
+La bitácora de la unidad conserva el `INICIO` y el `CIERRE` de la cuarta. Para este contrato son
+líneas ajenas: no se cuentan y deben quedar byte a byte.
 
 ## Limitaciones de esta entrega
 
@@ -640,11 +645,18 @@ D-09  cerrado eligiendo T2 como semántica contractual de la falla: el mecanismo
 D-10  cerrado llevando la bitácora a un path fijo de la unidad y calificando todo criterio
       exclusivamente sobre las líneas de la identidad congelada, con E16/F18 protegiendo la
       historia y E17/F19 más N20 impidiendo el reinicio por mudanza
+X0    agregado tras el fallo de preparación de la corrida anterior: pre-vuelo de resolubilidad
+      anterior a INICIO, acotado a las identidades congeladas, con E18, F20 y N21
 ```
 
+El candidato no cambia: no hubo razón material para modificarlo. Su blob sigue siendo
+`b871240fd38d28430fc86fc4b14f1b851dad1f10`, y la corrida anterior lo leyó, lo comprobó contra el
+congelado y ejercitó sus 83 obligaciones sin una sola discrepancia antes de morir en `P-C`.
+
 `u2-reglas-orquestador/REGLAS-ORQUESTADOR.md` conserva sin cambios el blob
-`b871240fd38d28430fc86fc4b14f1b851dad1f10`. `verificador/`, `verificacion-2/` y `verificacion-3/`
-quedan intactas como historia y evidencia de tres corridas ya interpretadas.
+`b871240fd38d28430fc86fc4b14f1b851dad1f10`. `verificador/`, `verificacion-2/`, `verificacion-3/`,
+`verificacion-4/` y `u2-reglas-orquestador/BITACORA.txt` quedan intactas como historia y evidencia
+de cuatro corridas ya interpretadas.
 
 ## Necesidad humana detectada
 
