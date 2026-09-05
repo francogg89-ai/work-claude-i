@@ -39,6 +39,12 @@ R-1-no-amplia         ninguno amplia las autoridades de REVOLUTIONS
 R-1-no-ejecuta        este metodo no ejecuta el trabajo tecnico
 R-1-no-decide         no decide durante la ejecucion aquello que corresponde al CONSTRUCTOR, al
                       AUDITOR o al HUMANO
+R-1-referencias       cuando este documento necesita una regla ajena la referencia por
+                      repositorio, path y nombre de contrato. Sus dependencias externas son
+                      CT-6, en manifiestos-trabajo-ai : README.md, y CT-7, en
+                      reglas-orquestador-ai : REGLAS-ORQUESTADOR.md
+R-1-sin-sha           esas referencias no congelan un SHA de los documentos citados: congelar
+                      identidades entre documentos que se citan mutuamente produce un ciclo
 ```
 
 Nota. Cada pieza conoce su lugar en la cadena porque ninguna puede inferirlo. Este documento es el
@@ -182,9 +188,11 @@ R-6-aislado           un trabajo aislado no necesita PROJECT.md, y el metodo no 
                       simetria
 R-6-superficie        una superficie se declara como repositorio mas conjunto de paths
 R-6-descubrimiento    antes de una mutacion material sobre una superficie compartida se toma el
-                      corte constitutivo de ese repositorio congelado en el bootstrap, se lee su
-                      referencia actual, se obtienen los paths modificados entre ambos y se
-                      intersectan con la superficie propia declarada
+                      corte constitutivo de ese repositorio congelado en el bootstrap, se lee la
+                      referencia actual del mismo repositorio en su remoto, se obtienen los paths
+                      modificados entre ambos y se intersectan con la superficie propia declarada
+R-6-remoto            la referencia actual se obtiene del remoto: un clon local puede estar
+                      desactualizado y una comparacion contra el no demuestra vigencia
 R-6-no-presuncion     interseccion vacia significa compatibilidad demostrable y habilita
                       proceder; interseccion no vacia significa compatibilidad no demostrable y
                       no se procede por presuncion
@@ -258,13 +266,22 @@ reglas-orquestador-ai      transporta, y no interpreta el trabajo
 manifiestos-trabajo-ai     conserva la intencion humana aprobada y su identidad exacta
 ```
 
-Cuando este documento necesita una regla ajena la referencia por repositorio, path y contrato, sin
-reproducir su texto normativo y sin congelar un SHA de esos documentos. Congelar identidades entre
-documentos que se citan mutuamente produciría el ciclo que el manifiesto excluye.
+Las dos dependencias externas de este documento, localizables por repositorio, path y nombre de
+contrato:
 
-La estructura de paths de la biblioteca, sus reglas de creación y modificación y la identidad de
-publicación son autoridad de `manifiestos-trabajo-ai : README.md`. El comportamiento mecánico del
-orquestador es autoridad de `reglas-orquestador-ai : REGLAS-ORQUESTADOR.md`.
+```text
+CT-6  identidad de publicacion y estructura de la biblioteca
+      manifiestos-trabajo-ai : README.md
+
+CT-7  mecanica del ORQUESTADOR
+      reglas-orquestador-ai : REGLAS-ORQUESTADOR.md
+```
+
+`CT-6` gobierna la estructura de paths de la biblioteca, sus reglas de creación y modificación y
+la identidad de publicación. `CT-7` gobierna el comportamiento mecánico del orquestador.
+
+Este documento no reproduce su texto normativo y no congela un SHA de ellos: congelar identidades
+entre documentos que se citan mutuamente produciría el ciclo que el manifiesto excluye.
 
 ---
 

@@ -4,11 +4,14 @@ Describe el estado de la unidad. No acumula sus versiones anteriores: la histori
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@636a5d095574130b56c232da7958691f87234516` y
-`audit-chatgpt-i@d67bde33a78ae1e86584933d1f42f69ba8f14379`.
+El corte `work-claude-i@5bd6b0f582c7970a7b8c6c838b9971a70df43dfc` y
+`audit-chatgpt-i@c2d4e67c0d3c0e3ca8e1b4886f693f8361c8af48`.
 
-Esa auditoría aprobó la corrida contractual de `U2` y cerró la unidad. La superficie aprobada es
-`u2-reglas-orquestador/REGLAS-ORQUESTADOR.md`, blob
+Esa auditoría declaró el candidato con corrección requerida y el contrato insuficiente, y abrió
+`D-13` a `D-17`. No congeló contrato y no autorizó corrida.
+
+La auditoría anterior había aprobado la corrida contractual de `U2` y cerrado la unidad. La
+superficie aprobada es `u2-reglas-orquestador/REGLAS-ORQUESTADOR.md`, blob
 `b871240fd38d28430fc86fc4b14f1b851dad1f10`.
 
 Autoridades aguas arriba de esta unidad: los contratos transversales cerrados en `U1`, la
@@ -16,13 +19,57 @@ superficie aprobada de `U2`, `PLAN.md` y el método autoritativo.
 
 ## Qué hizo esta intervención
 
-Creó `u3-metodo-manifiestos/` y construyó el candidato `METODO-MANIFIESTOS.md`, documento
-autoritativo de `CT-1`, `CT-2`, `CT-3`, `CT-4` y `CT-5` conforme a la asignación cerrada en `U1`.
+Corrigió `D-13` a `D-17`: dos en el candidato y tres en el contrato propuesto. No ejecutó ninguna
+mitad, no creó la bitácora y no escribió mecanismo. `U1`, `U2`, `PLAN.md` y `BOOTSTRAP.md` no
+fueron tocados.
 
-Propone el contrato previo de la verificación discriminante que `PLAN.md` `D5` y `§5.1` asignan a
-esta unidad. No ejecutó ninguna mitad y no escribió mecanismo.
+### D-13 — el descubrimiento contra el remoto
 
-`u2-reglas-orquestador/` no fue tocada.
+`R-6-descubrimiento` decía «se lee su referencia actual» sin decir de dónde. Un clon local puede
+estar desactualizado, y comparar contra él no demuestra vigencia: demuestra lo que este disco sabe.
+
+`PLAN.md` `D2` dice remoto, y ahora el candidato también. Se agregó además `R-6-remoto`, que
+enuncia la razón en lugar de dejarla implícita.
+
+Esa distinción no es teórica en este trabajo: dos corridas de `U2` se perdieron porque un clon
+local no tenía un objeto que sí existía en el remoto.
+
+### D-14 — las dependencias externas, localizables
+
+El candidato citaba los documentos ajenos por repositorio y path, pero no nombraba los contratos.
+`R-1-referencias` los nombra ahora: `CT-6` en `manifiestos-trabajo-ai : README.md` y `CT-7` en
+`reglas-orquestador-ai : REGLAS-ORQUESTADOR.md`. `R-1-sin-sha` conserva la prohibición de congelar
+sus identidades, que es lo que evitaría el ciclo.
+
+Un path sin nombre de contrato obliga a leer el documento entero para saber qué se está citando.
+Con el nombre, la dependencia queda localizable, que es lo que `D7` pedía.
+
+### D-15 — los insumos de P-C, nombrados antes
+
+El contrato decía «dos repositorios reales sobre cortes congelados y superficies declaradas», que
+es exactamente el margen que permite elegir los insumos después de ver cómo se comporta el
+mecanismo. Ahora están nombrados: repositorio, remoto, los dos cortes y las dos superficies.
+
+`P-C` se parte en dos porque son dos propiedades distintas. `P-C1` demuestra la conducta —obtener
+la referencia del remoto— y su valor no se congela, porque congelar la vigencia sería negarla.
+`P-C2` demuestra la discriminación sobre cortes fijos, para que la corrida sea determinista. La
+limitación que eso deja está declarada por adelantado.
+
+### D-16 — una sola bitácora, y comprobable
+
+Decir que la bitácora vive en un path fijo no impide que una implementación la derive de su propio
+directorio y aparezca vacía. `E21`, `F22` y el control `N24` lo vuelven exigible, igual que en
+`U2`: mover y reiniciar no pueden ser indistinguibles.
+
+### D-17 — N9 contra la derivación efectiva
+
+`N9` demostraba que un recorrido por primer padre da un número menor sobre una historia con merge.
+Eso es cierto y no dice nada del mecanismo: podía convivir con un camino real que usara primer
+padre igual.
+
+Ahora `N9` ejercita **la misma función** que implementa `R-5-derivacion` en el camino real, y
+`E20`/`F21` exigen que sea una sola. Un control desconectado de la conducta efectiva es el defecto
+que `D-07` nombró en `U2`, y no tenía por qué repetirse acá.
 
 ### Las cinco autoridades que este documento recibe
 
@@ -34,8 +81,9 @@ CT-4  descubrimiento de concurrencia y semantica de PROJECT.md
 CT-5  fuentes auxiliares y no ampliacion de autoridad
 ```
 
-`CT-6` es autoridad del `README.md` de la biblioteca y `CT-7` de `REGLAS-ORQUESTADOR.md`. Este
-documento los referencia por repositorio, path y contrato, y no reproduce su texto normativo.
+`CT-6` es autoridad del `README.md` de la biblioteca y `CT-7` de `REGLAS-ORQUESTADOR.md`. El
+candidato los nombra en `R-1-referencias` por repositorio, path y nombre de contrato, no reproduce
+su texto normativo y no congela sus identidades.
 
 ### El contorno que U2 fija
 
@@ -56,7 +104,7 @@ No es simetría. Es la única forma en que la cobertura de una verificación pue
 documento en vez de contra una lista paralela, que es lo que costó tres correcciones en `U2`. Un
 documento sin esa convención sólo admite cobertura declarada.
 
-Resultado: 53 obligaciones sobre 8 secciones mecánicas, con `9` y `10` declaradas no mecánicas.
+Resultado: 56 obligaciones sobre 8 secciones mecánicas, con `9` y `10` declaradas no mecánicas.
 
 Al construirlo apareció la misma trampa que `OBS-01` encontró en `U2`: `§8` terminaba con un
 separador `---` sin `Nota.` previa, fuera de la forma que el propio documento declara. Se corrigió
@@ -79,7 +127,7 @@ evalúe y lo congele.
 ```text
 repositorio  https://github.com/francogg89-ai/work-claude-i
 path         u3-metodo-manifiestos/METODO-MANIFIESTOS.md
-blob         296a2f5d9b70bd8890c5c832556fabc572fe2ede
+blob         f44f2a0797cde6f569cca6fe5397d45917680258
 ```
 
 ### Regla de ejecución
@@ -157,11 +205,39 @@ P-F  el pre-vuelo se limita a resolver las vinculaciones congeladas, y esa limit
 ```text
 entorno   Windows local bajo C:\Franco_Metodos_AI, dentro del perimetro constitutivo
 fuentes   el candidato, del que se leen sus obligaciones y su estructura
-          para P-C, dos repositorios reales sobre cortes congelados, y superficies declaradas
-          dentro de la unidad
           un corpus de recorridos y de comparaciones definido dentro de la unidad, sin secretos
           insumos sinteticos para los controles negativos, nunca el candidato real
 ```
+
+#### Insumos de P-C, congelados antes de ejecutar
+
+El repositorio, los dos cortes y las dos superficies quedan nombrados aquí. La evaluación no
+puede elegirlos después de observar el mecanismo.
+
+```text
+P_C_REPO              https://github.com/francogg89-ai/work-claude-i
+P_C_REMOTO            origin
+P_C_CORTE_ORIGEN      636a5d095574130b56c232da7958691f87234516
+P_C_CORTE_DESTINO     5bd6b0f582c7970a7b8c6c838b9971a70df43dfc
+
+SUPERFICIE_DISJUNTA   work-claude-i : u1-contratos-transversales/
+SUPERFICIE_SOLAPADA   work-claude-i : u3-metodo-manifiestos/
+```
+
+`P-C` se demuestra en dos partes, y las dos son necesarias:
+
+```text
+P-C1  conducta: el descubridor obtiene la referencia actual del remoto declarado con una
+      operacion de solo lectura, y la evidencia preserva que obtuvo. Su valor no se congela
+      porque es, por definicion, la vigencia
+P-C2  discriminacion: sobre los dos cortes congelados, la superficie disjunta produce
+      interseccion vacia y procede, y la superficie solapada produce interseccion no vacia y no
+      procede
+```
+
+Nota de limitación, declarada por adelantado: `P-C2` congela el corte destino para que la corrida
+sea determinista. En uso real ese corte es la referencia remota vigente, y `P-C1` es lo que
+demuestra que el descubridor la obtiene del remoto y no de un clon local.
 
 ### Mecanismo
 
@@ -210,6 +286,12 @@ E17  la traza externa de X0 cubre nominalmente cada vinculacion, sin invocacion 
      y sin apertura de archivo
 E18  la traza interna de X0 no contiene llamadas a los modulos de la corrida
 E19  el modulo del pre-vuelo no importa ningun modulo de la corrida
+E20  la derivacion de cadencia es una unica funcion del mecanismo: la que ejercita N9 es la misma
+     que implementa R-5-derivacion en el camino real, y la evidencia lo hace verificable
+E21  la ruta de la bitacora es la constante fija de la unidad, y el mecanismo no la deriva de su
+     propio directorio ni usa ninguna otra
+E22  P-C usa exactamente los insumos congelados —repositorio, remoto, los dos cortes y las dos
+     superficies— y la evidencia preserva la referencia remota que P-C1 obtuvo
 ```
 
 ### Criterio discriminante de fallo
@@ -242,6 +324,11 @@ F18  la traza externa de X0 deja una vinculacion sin cubrir, contiene una invoca
      sonda, abre un archivo, o alguna sonda devuelve contenido
 F19  la traza interna de X0 contiene una llamada a un modulo de la corrida
 F20  el modulo del pre-vuelo importa algun modulo de la corrida
+F21  la derivacion de cadencia que ejercita N9 no es la que el camino real usa
+F22  la ruta de la bitacora no es la constante fija de la unidad, o el mecanismo la deriva de su
+     propio directorio
+F23  P-C usa insumos distintos de los congelados, o la evidencia no preserva la referencia
+     remota obtenida por P-C1
 ```
 
 No existe tercera salida.
@@ -262,8 +349,11 @@ N5   un descubrimiento con interseccion no vacia que procede debe rechazarse
 N6   un descubrimiento con interseccion vacia que no procede debe rechazarse
 N7   un PROJECT.md sintetico que registra ultimo SHA o lista de carriles debe rechazarse
 N8   una politica de relevo sintetica que persiste un contador debe rechazarse
-N9   una cadencia sintetica derivada por primer padre sobre una historia con merge debe diferir
-     de la derivacion completa, y la derivacion completa es la correcta
+N9   sobre una historia Git sintetica que contiene un merge, la derivacion efectiva —la misma
+     funcion que el mecanismo usa para implementar R-5-derivacion— debe contar el conjunto
+     alcanzable completo, y un recorrido por primer padre sobre esa misma historia debe dar un
+     numero menor. La evidencia preserva el log de esa historia y ambos numeros. Si los dos
+     numeros coinciden, la historia sintetica no discrimina y el control no demuestra nada
 N10  una fuente auxiliar sintetica que pretende ampliar una capacidad debe rechazarse
 ```
 
@@ -287,6 +377,9 @@ N21  un X0 sintetico que ejecuta en memoria un caso, sin interaccion externa adi
 N22  un modulo de pre-vuelo sintetico que importa un modulo de la corrida debe producir F20
 N23  dos vinculaciones sinteticas con nombres distintos y el mismo repositorio y SHA deben
      evaluarse como dos vinculaciones cubiertas, no como una
+N24  un mecanismo sintetico que derive la ruta de la bitacora de su propio directorio, en lugar
+     de la constante de la unidad, debe producir F22. Ese es el camino por el que una corrida
+     nueva podria encontrar una bitacora vacia y eludir X4
 ```
 
 `N9` es el control que ejercita, sobre una historia sintética con merge, la razón por la que
@@ -324,13 +417,13 @@ Nada. Construye el candidato y propone el contrato.
   `REGLAS-ORQUESTADOR.md`, ya aprobado. Las referencias son por repositorio, path y contrato, y
   no congelan SHA, por lo que no crean dependencia circular ni quedan rotas cuando `U4` escriba
   el suyo.
-- Que las 53 obligaciones agoten lo que `CT-1` a `CT-5` deben exigir es lectura del AUDITOR.
+- Que las 56 obligaciones agoten lo que `CT-1` a `CT-5` deben exigir es lectura del AUDITOR.
 
 ## Resultado
 
 `u3-metodo-manifiestos/METODO-MANIFIESTOS.md`, candidato de `CT-1` a `CT-5`, blob
-`296a2f5d9b70bd8890c5c832556fabc572fe2ede`, con 53 obligaciones sobre 8 secciones mecánicas; y
-este contrato previo propuesto y no ejecutado.
+`f44f2a0797cde6f569cca6fe5397d45917680258`, con 56 obligaciones sobre 8 secciones mecánicas; y
+este contrato previo corregido, propuesto y no ejecutado.
 
 ## Necesidad humana detectada
 
