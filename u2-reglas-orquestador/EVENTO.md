@@ -4,20 +4,18 @@ Describe el estado de la unidad. No acumula sus versiones anteriores: la histori
 
 ## Qué recibió el CONSTRUCTOR
 
-El corte `work-claude-i@c04c3437888f2bb2d74675ba3e0e0ac2346f479b` y
-`audit-chatgpt-i@063cb3ac7edaa9a1457708a17be1789a862f6bd9`.
+El corte `work-claude-i@917e4c40602f4c22e2c8c42a9351275e361c2f1d` y
+`audit-chatgpt-i@5d7aa9c4a739b7fd908c894329739fe81c7cb61b`.
 
-Esa auditoría confirmó que `D-07` a `D-10` siguen corregidos, que las partes ya aceptadas de `X0`
-siguen válidas, y aceptó `P-G`, `E19`, `F21` y `N22` como avance sobre las interacciones externas.
+Esa auditoría interpretó la corrida contra el contrato congelado: `FALLO`, contrato agotado,
+candidato no aprobado por esa corrida. `D-07` a `D-11` permanecen corregidos, `E20` quedó
+satisfecho bajo la interpretación durable ya congelada, y `N23`, `E21` y `N24` discriminaron.
 
-No congeló el contrato porque `D-11` no quedaba completamente cerrado: la traza externa no
-demuestra que `X0` se abstenga de ejecutar, antes de `INICIO`, lógica ya disponible en memoria. Un
-`X0` podría hacer todas las sondas permitidas, no abrir archivos ni invocar procesos, y aun así
-ejecutar un caso o evaluar un criterio con la misma traza externa que un `X0` correcto.
-
-La corrida anterior había terminado en `FALLO` por `F11` en `P-C`, por un clon local
-desactualizado. El AUDITOR clasificó esa causa como fallo de preparación del entorno y no abrió
-defecto.
+La causa es `D-12`: la conducta de `X0` satisfizo materialmente `E19` —cinco sondas válidas, sin
+aperturas de archivo, sin invocaciones ajenas y sin lectura de contenido— y `F21` se activó
+igualmente porque mi evaluación construyó las identidades esperadas como un conjunto de pares
+`repositorio + SHA`. `CANDIDATE_WORK_SHA` y `P_C_WORK_SHA` son vinculaciones distintas que
+comparten valor, el conjunto las colapsó a cuatro, y produjo una falsa activación.
 
 ## D-03: lo que hice mal
 
@@ -40,13 +38,52 @@ quien ejecuta.
 
 ## Qué hizo esta intervención
 
-Completó `D-11` en el contrato propuesto para la corrida nueva de `U2`. No tocó el candidato, que
-conserva su blob `b871240fd38d28430fc86fc4b14f1b851dad1f10`, no ejecutó ninguna corrida y no
-escribió mecanismo nuevo. Lo aceptado de `D-07` a `D-10` y de `X0` se conserva.
+Corrigió `D-12` y propone un contrato previo nuevo, con identidad contractual nueva, para otra
+corrida de `U2`. No tocó el candidato, que conserva su blob
+`b871240fd38d28430fc86fc4b14f1b851dad1f10`, no ejecutó ninguna corrida y no escribió mecanismo
+nuevo. Lo aceptado de `D-07` a `D-11`, de `X0`, `P-G`, `E18`-`E21`, `F20`-`F23` y `N21`-`N24` se
+conserva.
 
-`verificador/`, `verificacion-2/`, `verificacion-3/`, `verificacion-4/` y
-`u2-reglas-orquestador/BITACORA.txt` quedan intactas. La corrida fallida y su `INICIO`/`CIERRE`
-son evidencia autoritativa: no se borran, no se sustituyen y no se completan.
+### D-12, y la regla que faltaba
+
+El defecto concreto es chico y el patrón no.
+
+`E19` exige una sonda por identidad congelada. Mi evaluación construyó el conjunto esperado como
+pares `repositorio + SHA`, y `CANDIDATE_WORK_SHA` y `P_C_WORK_SHA` comparten valor: el conjunto
+las colapsó a cuatro, la traza tenía cinco sondas correctas, y el criterio se activó contra una
+conducta que lo satisfacía.
+
+Es la tercera vez que una comprobación mía mide algo **adyacente** a lo que el criterio nombra.
+La primera midió cobertura contra una lista propia en vez de contra el candidato. La segunda
+observó el sobre antes de la mutación en vez de en el instante que la obligación fija. Esta midió
+valores donde el contrato cuenta vinculaciones.
+
+Por eso la corrección no es sólo reescribir `E19`. El contrato incorpora la regla que las tres
+violaron:
+
+```text
+REGLA DE MEDICION
+toda cobertura se mide sobre el conjunto nominal que el contrato declara,
+nunca sobre un conjunto derivado de sus valores.
+Dos elementos con nombres distintos siguen siendo dos aunque compartan valor.
+```
+
+Una vinculación contractual es un par `nombre + valor`, donde el valor es `repositorio + SHA`. El
+nombre es lo que la identifica. Que dos vinculaciones apunten al mismo objeto es un hecho del
+mundo, no una fusión de las dos.
+
+`E19` queda reescrita sobre esa base: la traza debe contener, **por cada vinculación y
+nombrándola**, una resolución que la satisfaga. Si una misma resolución física satisface varias
+—porque el objeto es el mismo—, la evidencia declara explícitamente cuáles, y esa deduplicación no
+reduce la cobertura ni activa el criterio.
+
+`N25` lo vuelve comprobable: un conjunto sintético con dos vinculaciones de nombres distintos y el
+mismo `repositorio + SHA` debe evaluarse como dos vinculaciones cubiertas. Una evaluación que las
+colapse debe quedar detectada.
+
+`verificador/`, `verificacion-2/`, `verificacion-3/`, `verificacion-4/`, `verificacion-5/` y
+`u2-reglas-orquestador/BITACORA.txt` con sus cuatro líneas quedan intactas. Las corridas fallidas
+y sus marcas son evidencia autoritativa: no se borran, no se sustituyen y no se completan.
 
 ### La falla de preparación, y qué agrega este contrato
 
@@ -92,8 +129,8 @@ La corrección hace observable la conducta efectiva del pre-vuelo, no su declara
 aperturas de archivo— y esa traza se preserva. La frontera pasa a ser una propiedad de la traza:
 
 ```text
-por cada identidad congelada, exactamente una sonda de resolubilidad
-ninguna otra invocación externa
+por cada vinculación congelada, y nombrándola, una resolución que la satisfaga
+ninguna invocación externa que no sea una sonda de resolubilidad
 ninguna apertura de archivo
 ```
 
@@ -493,6 +530,21 @@ su mutante, y ambos valores se preservan en la evidencia.
 
 Para `P-C` ejecuta operaciones Git de sólo lectura sobre los SHAs congelados, por dos caminos.
 
+### Regla de medición
+
+Gobierna cómo se evalúa cualquier criterio de cobertura de este contrato.
+
+```text
+toda cobertura se mide sobre el conjunto nominal que el contrato declara,
+nunca sobre un conjunto derivado de sus valores.
+Dos elementos con nombres distintos siguen siendo dos aunque compartan valor.
+```
+
+Alcanza a las obligaciones del candidato en `E3`, a las vinculaciones congeladas en `E19`, y a
+los controles negativos en su enumeración. Una comprobación que mida un conjunto derivado mide
+algo adyacente a lo que el criterio nombra, y puede activarse contra una conducta que lo
+satisface.
+
 ### Criterio discriminante de éxito
 
 ÉXITO si y sólo si simultáneamente:
@@ -519,8 +571,11 @@ E17  la ruta de la bitácora es la constante fija de la unidad, y el mecanismo n
      propio directorio ni usa ninguna otra
 E18  la evidencia preserva el resultado de X0 identidad por identidad, y todas resolvieron
 E19  la evidencia preserva la traza de interacciones externas de X0, obtenida por intercepción y
-     no por auto-reporte, y esa traza contiene exactamente una sonda de resolubilidad por
-     identidad congelada, ninguna otra invocación externa y ninguna apertura de archivo
+     no por auto-reporte. Por cada vinculación contractual congelada, y nombrándola, esa traza
+     contiene una resolución que la satisface; ninguna invocación externa que no sea una sonda de
+     resolubilidad; ninguna apertura de archivo. Si una misma resolución satisface varias
+     vinculaciones porque comparten valor, la evidencia declara cuáles, y esa deduplicación no
+     reduce la cobertura
 E20  la evidencia preserva la traza de llamadas internas de X0, obtenida por intercepción del
      intérprete y no por auto-reporte, y toda llamada pertenece al módulo del pre-vuelo o a su
      ayudante de sondeo: ninguna pertenece a los módulos de la corrida ni a su cuerpo
@@ -574,8 +629,9 @@ F19  la ruta de la bitácora no es la constante fija de la unidad, o el mecanism
      propio directorio
 F20  se anotó INICIO con alguna identidad congelada irresoluble
 F21  la traza externa de X0 contiene una interacción que no es una sonda de resolubilidad de una
-     identidad congelada, le falta la sonda de alguna de ellas, o alguna sonda devuelve el
-     contenido del objeto en lugar de sólo resolverlo
+     vinculación congelada; alguna vinculación queda sin resolución que la satisfaga; alguna
+     sonda devuelve el contenido del objeto en lugar de sólo resolverlo; o la evidencia no
+     declara qué vinculaciones satisface cada resolución
 F22  la traza interna de X0 contiene una llamada a un módulo de la corrida o a su cuerpo
 F23  el módulo del pre-vuelo importa algún módulo de la corrida
 F14  el control de reintento o el de aborto no atraviesa la función de corrida real, u observa
@@ -658,6 +714,10 @@ N23  un X0 sintético que, sin abrir archivos ni invocar procesos adicionales, e
      un caso del corpus o una comprobación estructural debe producir F22, y su traza interna
      debe diferir de la del X0 real. Ese es el punto ciego que la traza externa no alcanza
 N24  un módulo de pre-vuelo sintético que importe un módulo de la corrida debe producir F23
+N25  un conjunto sintético de vinculaciones con dos nombres distintos y el mismo repositorio y
+     SHA debe evaluarse como dos vinculaciones cubiertas, no como una. Una evaluación que las
+     colapse debe quedar detectada; si la comprobación no distingue ambos resultados, la regla
+     de medición no discrimina
 ```
 
 `N16` reproduce sintéticamente el defecto de `S24` y `S28` y obliga al mecanismo a demostrar que
@@ -712,10 +772,12 @@ verificacion-3/    tercer contrato    EXITO   no aprobado: D-07, el control de r
                                               atravesaba la guardia que decía comprobar
 verificacion-4/    cuarto contrato    FALLO   F11 en P-C: el clon local no tenía el corte de
                                               audit congelado. Preparación, no diseño
+verificacion-5/    quinto contrato    FALLO   F21 falso: la evaluación contó valores donde el
+                                              contrato cuenta vinculaciones
 ```
 
-La bitácora de la unidad conserva el `INICIO` y el `CIERRE` de la cuarta. Para este contrato son
-líneas ajenas: no se cuentan y deben quedar byte a byte.
+La bitácora de la unidad conserva el `INICIO` y el `CIERRE` de la cuarta y de la quinta. Para este
+contrato son líneas ajenas: no se cuentan y deben quedar byte a byte.
 
 ## Limitaciones de esta entrega
 
@@ -747,6 +809,8 @@ X0    agregado tras el fallo de preparación de la corrida anterior: pre-vuelo d
 D-11  cerrado haciendo observable la frontera del pre-vuelo por tres vías interceptadas y no
       declaradas: E19/F21/N22 sobre las interacciones externas, E20/F22/N23 sobre las llamadas
       internas, y E21/F23/N24 sobre los módulos que el pre-vuelo puede alcanzar
+D-12  cerrado con la regla de medición, E19 reescrita sobre vinculaciones nominales y el control
+      N25, que detecta el colapso de dos vinculaciones que comparten valor
 ```
 
 El candidato no cambia: no hubo razón material para modificarlo. Su blob sigue siendo
@@ -755,8 +819,8 @@ congelado y ejercitó sus 83 obligaciones sin una sola discrepancia antes de mor
 
 `u2-reglas-orquestador/REGLAS-ORQUESTADOR.md` conserva sin cambios el blob
 `b871240fd38d28430fc86fc4b14f1b851dad1f10`. `verificador/`, `verificacion-2/`, `verificacion-3/`,
-`verificacion-4/` y `u2-reglas-orquestador/BITACORA.txt` quedan intactas como historia y evidencia
-de cuatro corridas ya interpretadas.
+`verificacion-4/`, `verificacion-5/` y `u2-reglas-orquestador/BITACORA.txt` quedan intactas como
+historia y evidencia de cinco corridas ya interpretadas.
 
 ## Necesidad humana detectada
 
